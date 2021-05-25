@@ -1,0 +1,234 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:postgres@localhost:5432/ImaginativeNewsMainDatabase"
+}
+
+model SequelizeMeta {
+  name String @id @db.VarChar(255)
+}
+
+model Currencies {
+  id        String   @id @db.Uuid
+  code      String   @db.VarChar(10)
+  symbol    String   @db.VarChar(10)
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("currencies")
+}
+
+model Disclaimers {
+  id        String   @id @db.Uuid
+  code      String   @db.VarChar(150)
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("disclaimers")
+}
+
+model HiringTypes {
+  id        String   @id @db.Uuid
+  code      String   @db.VarChar(128)
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("hiring_types")
+}
+
+model ListingFollowers {
+  id        String   @id @db.Uuid
+  userId    String   @db.VarChar(50)
+  listingId String?  @db.VarChar(50)
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("listing_followers")
+}
+
+model ListingReviews {
+  id                  String   @id @db.Uuid
+  userId              String   @db.VarChar(50)
+  listingId           String?  @db.VarChar(50)
+  title               String   @db.VarChar(50)
+  goodAboutListing    String   @db.VarChar(50)
+  notGoodAboutListing String   @db.VarChar(50)
+  reviewText          String   @db.VarChar(500)
+  starRating          Float
+  createdAt           DateTime @db.Timestamptz(6)
+  updatedAt           DateTime @db.Timestamptz(6)
+
+  @@map("listing_reviews")
+}
+
+model ListingTypes {
+  id        String   @id @db.Uuid
+  code      String   @db.VarChar(150)
+  category  String   @db.VarChar(50)
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("listing_types")
+}
+
+model Listings {
+  id                String   @id @db.Uuid
+  ownerId           String   @db.VarChar(50)
+  pageType          String   @db.VarChar(50)
+  listingTypeId     String   @db.VarChar(50)
+  privacy           String   @db.VarChar(50)
+  media             Json     @db.Json
+  name              String   @db.VarChar(200)
+  brandName         String   @db.VarChar(200)
+  description       String   @db.VarChar(3000)
+  stockAvailability String   @db.VarChar(70)
+  advantages        String   @db.VarChar(2000)
+  uses              String   @db.VarChar(1500)
+  credentials       String   @db.VarChar(3000)
+  url               String   @db.VarChar(400)
+  priceTypeId       String   @db.VarChar(50)
+  otherPriceType    String?  @db.VarChar(150)
+  price             Float
+  currencyId        String?  @db.VarChar(50)
+  hiringTypeId      String?  @db.VarChar(50)
+  otherHiring       String?  @db.VarChar(150)
+  offerPrice        Float
+  offerDescription  String   @db.VarChar(3000)
+  socialLinks       Json     @db.Json
+  viewsCount        Int
+  createdAt         DateTime @db.Timestamptz(6)
+  updatedAt         DateTime @db.Timestamptz(6)
+  status            Int      @db.SmallInt
+  isEdited          Boolean
+  overallRating     Float
+  totalRatingCount  Float
+
+  @@map("listings")
+}
+
+model LocalizedCurrencies {
+  id           String   @id @db.Uuid
+  name         String   @db.VarChar(255)
+  standardCode String   @db.VarChar(255)
+  language     String   @db.VarChar(255)
+  refId        String   @db.Uuid
+  createdAt    DateTime @db.Timestamptz(6)
+  updatedAt    DateTime @db.Timestamptz(6)
+
+  @@map("localized_currencies")
+}
+
+model LocalizedDisclaimers {
+  id        String   @id @db.Uuid
+  name      String   @db.VarChar(150)
+  language  String   @db.VarChar(10)
+  refId     String   @db.Uuid
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("localized_disclaimers")
+}
+
+model LocalizedHiringTypes {
+  id        String   @id @db.Uuid
+  name      String   @db.VarChar(100)
+  language  String   @db.VarChar(10)
+  refId     String   @db.Uuid
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("localized_hiring_types")
+}
+
+model LocalizedListingTypes {
+  id        String   @id @db.Uuid
+  name      String   @db.VarChar(150)
+  language  String   @db.VarChar(255)
+  refId     String   @db.Uuid
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("localized_listing_types")
+}
+
+model LocalizedPriceTypes {
+  id        String   @id @db.Uuid
+  name      String   @db.VarChar(150)
+  format    String   @db.VarChar(150)
+  language  String   @db.VarChar(10)
+  refId     String   @db.Uuid
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("localized_price_types")
+}
+
+model PasswordRecoveryTokens {
+  id        String   @id @db.Uuid
+  userId    String   @db.Uuid
+  token     String
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("password_recovery_tokens")
+}
+
+model PriceTypes {
+  id        String   @id @db.Uuid
+  code      String   @db.VarChar(150)
+  createdAt DateTime @db.Timestamptz(6)
+  updatedAt DateTime @db.Timestamptz(6)
+
+  @@map("price_types")
+}
+
+model Story {
+  id              String   @id @db.Uuid
+  ownerId         String   @db.VarChar(50)
+  listingId       String?  @db.VarChar(50)
+  privacy         String   @db.VarChar(50)
+  media           Json     @db.Json
+  headerLine      String   @db.VarChar(200)
+  disclaimerId    String   @db.VarChar(50)
+  intro           String?  @db.VarChar(3000)
+  body            String?  @db.VarChar(3000)
+  tagline         String?  @db.VarChar(200)
+  conclusion      String?  @db.VarChar(3000)
+  imaginativeYear Int
+  status          Int      @db.SmallInt
+  createdAt       DateTime @db.Timestamptz(6)
+  updatedAt       DateTime @db.Timestamptz(6)
+
+  @@map("stories")
+}
+
+model UserFollowers {
+  id         String   @id @db.Uuid
+  userId     String   @db.VarChar(50)
+  followerId String?  @db.VarChar(50)
+  createdAt  DateTime @db.Timestamptz(6)
+  updatedAt  DateTime @db.Timestamptz(6)
+
+  @@map("user_followers")
+}
+
+model User {
+  id                   String   @id @db.Uuid
+  name                 String   @db.VarChar(255)
+  email                String   @db.VarChar(255)
+  photoUrl             String?  @db.VarChar(300)
+  featuredProductName  String?  @db.VarChar(200)
+  featuredProductId    String?  @db.VarChar(50)
+  hash                 String?  @db.VarChar(255)
+  googleId             String?
+  facebookId           String?
+  createdAt            DateTime @db.Timestamptz(6)
+  updatedAt            DateTime @db.Timestamptz(6)
+  notificationsEnabled Boolean  @default(false)
+
+  // map is the name of model in database
+  @@map("users")
+}
