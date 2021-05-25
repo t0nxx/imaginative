@@ -2,6 +2,17 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
+    "plugins": [
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "classValidatorShim": false,
+          "introspectComments": true,
+          "dtoFileNameSuffix" : [".dto.ts"],
+          "controllerFileNameSuffix" : [".controller.ts"]
+        }
+      }
+  ],
     "assets": [
       "i18n/**/*"
     ]

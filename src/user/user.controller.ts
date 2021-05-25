@@ -20,7 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { endWithInternalServerError } from './../utils/Http';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
-import LoginUserDto from './dto/LoginUserDto';
+import LoginUserDto from './dto/LoginUserdto';
 import { User } from './user.decorator';
 import OperationResult from '@/shared/models/OperationResult';
 import ToggleUserFollowDto from './dto/ToggleUserFollowDto';
