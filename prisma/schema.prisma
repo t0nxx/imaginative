@@ -12,70 +12,133 @@ model SequelizeMeta {
 }
 
 model Currencies {
-  id        String   @id @db.Uuid
-  code      String   @db.VarChar(10)
-  symbol    String   @db.VarChar(10)
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
+  id        Int      @id @default(autoincrement())
+  code      String   @db.VarChar(500)
+  symbol    String   @db.VarChar(500)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
+  LocalizedCurrencies LocalizedCurrencies[]
   @@map("currencies")
 }
 
+model LocalizedCurrencies {
+  id           Int        @id @default(autoincrement())
+  name         String     @db.VarChar(255)
+  standardCode String     @db.VarChar(255)
+  language     String     @db.VarChar(255)
+  refId        Int
+  Currencies   Currencies @relation(fields: [refId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("localized_currencies")
+}
+
+model PriceTypes {
+  id                  Int                   @id @default(autoincrement())
+  code                String                @db.VarChar(150)
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  LocalizedPriceTypes LocalizedPriceTypes[]
+
+  @@map("price_types")
+}
+
+model LocalizedPriceTypes {
+  id         Int        @id @default(autoincrement())
+  name       String     @db.VarChar(150)
+  format     String     @db.VarChar(150)
+  language   String     @db.VarChar(10)
+  refId      Int
+  PriceTypes PriceTypes @relation(fields: [refId], references: [id])
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@map("localized_price_types")
+}
+
 model Disclaimers {
-  id        String   @id @db.Uuid
-  code      String   @db.VarChar(150)
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
+  id                   Int                    @id @default(autoincrement())
+  code                 String                 @db.VarChar(150)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  LocalizedDisclaimers LocalizedDisclaimers[]
 
   @@map("disclaimers")
 }
 
-model HiringTypes {
-  id        String   @id @db.Uuid
-  code      String   @db.VarChar(128)
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
+model LocalizedDisclaimers {
+  id          Int         @id @default(autoincrement())
+  name        String      @db.VarChar(150)
+  language    String      @db.VarChar(10)
+  refId       Int
+  Disclaimers Disclaimers @relation(fields: [refId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 
+  @@map("localized_disclaimers")
+}
+
+model HiringTypes {
+  id        Int      @id @default(autoincrement())
+  code      String   @db.VarChar(128)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  LocalizedHiringTypes LocalizedHiringTypes[]
   @@map("hiring_types")
 }
 
+model LocalizedHiringTypes {
+  id          Int         @id @default(autoincrement())
+  name        String      @db.VarChar(100)
+  language    String      @db.VarChar(10)
+  refId       Int
+  HiringTypes HiringTypes @relation(fields: [refId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("localized_hiring_types")
+}
+
+model ListingTypes {
+  id        Int      @id @default(autoincrement())
+  code      String   @db.VarChar(150)
+  category  String   @db.VarChar(50)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  LocalizedListingTypes LocalizedListingTypes[]
+  @@map("listing_types")
+}
+
+model LocalizedListingTypes {
+  id           Int          @id @default(autoincrement())
+  name         String       @db.VarChar(150)
+  language     String       @db.VarChar(255)
+  refId        Int
+  ListingTypes ListingTypes @relation(fields: [refId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("localized_listing_types")
+}
+
 model ListingFollowers {
-  id        String   @id @db.Uuid
-  userId    String   @db.VarChar(50)
-  listingId String?  @db.VarChar(50)
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  listingId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("listing_followers")
 }
 
-model ListingReviews {
-  id                  String   @id @db.Uuid
-  userId              String   @db.VarChar(50)
-  listingId           String?  @db.VarChar(50)
-  title               String   @db.VarChar(50)
-  goodAboutListing    String   @db.VarChar(50)
-  notGoodAboutListing String   @db.VarChar(50)
-  reviewText          String   @db.VarChar(500)
-  starRating          Float
-  createdAt           DateTime @db.Timestamptz(6)
-  updatedAt           DateTime @db.Timestamptz(6)
-
-  @@map("listing_reviews")
-}
-
-model ListingTypes {
-  id        String   @id @db.Uuid
-  code      String   @db.VarChar(150)
-  category  String   @db.VarChar(50)
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
-
-  @@map("listing_types")
-}
-
 model Listings {
-  id                String   @id @db.Uuid
+  id                Int      @id @default(autoincrement())
   ownerId           String   @db.VarChar(50)
   pageType          String   @db.VarChar(50)
   listingTypeId     String   @db.VarChar(50)
@@ -99,8 +162,8 @@ model Listings {
   offerDescription  String   @db.VarChar(3000)
   socialLinks       Json     @db.Json
   viewsCount        Int
-  createdAt         DateTime @db.Timestamptz(6)
-  updatedAt         DateTime @db.Timestamptz(6)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
   status            Int      @db.SmallInt
   isEdited          Boolean
   overallRating     Float
@@ -109,84 +172,23 @@ model Listings {
   @@map("listings")
 }
 
-model LocalizedCurrencies {
-  id           String   @id @db.Uuid
-  name         String   @db.VarChar(255)
-  standardCode String   @db.VarChar(255)
-  language     String   @db.VarChar(255)
-  refId        String   @db.Uuid
-  createdAt    DateTime @db.Timestamptz(6)
-  updatedAt    DateTime @db.Timestamptz(6)
+model ListingReviews {
+  id                  Int      @id @default(autoincrement())
+  userId              Int
+  listingId           Int
+  title               String   @db.VarChar(50)
+  goodAboutListing    String   @db.VarChar(50)
+  notGoodAboutListing String   @db.VarChar(50)
+  reviewText          String   @db.VarChar(500)
+  starRating          Float
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
-  @@map("localized_currencies")
-}
-
-model LocalizedDisclaimers {
-  id        String   @id @db.Uuid
-  name      String   @db.VarChar(150)
-  language  String   @db.VarChar(10)
-  refId     String   @db.Uuid
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
-
-  @@map("localized_disclaimers")
-}
-
-model LocalizedHiringTypes {
-  id        String   @id @db.Uuid
-  name      String   @db.VarChar(100)
-  language  String   @db.VarChar(10)
-  refId     String   @db.Uuid
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
-
-  @@map("localized_hiring_types")
-}
-
-model LocalizedListingTypes {
-  id        String   @id @db.Uuid
-  name      String   @db.VarChar(150)
-  language  String   @db.VarChar(255)
-  refId     String   @db.Uuid
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
-
-  @@map("localized_listing_types")
-}
-
-model LocalizedPriceTypes {
-  id        String   @id @db.Uuid
-  name      String   @db.VarChar(150)
-  format    String   @db.VarChar(150)
-  language  String   @db.VarChar(10)
-  refId     String   @db.Uuid
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
-
-  @@map("localized_price_types")
-}
-
-model PasswordRecoveryTokens {
-  id        String   @id @db.Uuid
-  userId    String   @db.Uuid
-  token     String
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
-
-  @@map("password_recovery_tokens")
-}
-
-model PriceTypes {
-  id        String   @id @db.Uuid
-  code      String   @db.VarChar(150)
-  createdAt DateTime @db.Timestamptz(6)
-  updatedAt DateTime @db.Timestamptz(6)
-
-  @@map("price_types")
+  @@map("listing_reviews")
 }
 
 model Story {
-  id              String   @id @db.Uuid
+  id              Int      @id @default(autoincrement())
   ownerId         String   @db.VarChar(50)
   listingId       String?  @db.VarChar(50)
   privacy         String   @db.VarChar(50)
@@ -199,36 +201,69 @@ model Story {
   conclusion      String?  @db.VarChar(3000)
   imaginativeYear Int
   status          Int      @db.SmallInt
-  createdAt       DateTime @db.Timestamptz(6)
-  updatedAt       DateTime @db.Timestamptz(6)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@map("stories")
 }
 
+model User {
+  id                   Int           @id @default(autoincrement())
+  name                 String        @db.VarChar(500)
+  email                String        @unique @db.VarChar(500)
+  photoUrl             String        @db.VarChar(500)
+  featuredProductName  String?       @db.VarChar(200)
+  featuredProductId    String?       @db.VarChar(50)
+  password             String        @db.VarChar(255)
+  googleId             String?
+  facebookId           String?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  notificationsEnabled Boolean       @default(false)
+  UserSetting          UserSettings?
+
+  // map is the name of model in database
+  @@map("users")
+}
+
+model UserPasswordRecoveryTokens {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_recovery__password_tokens")
+}
+
+model UserSettings {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  User   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_settings")
+}
+
 model UserFollowers {
-  id         String   @id @db.Uuid
-  userId     String   @db.VarChar(50)
-  followerId String?  @db.VarChar(50)
-  createdAt  DateTime @db.Timestamptz(6)
-  updatedAt  DateTime @db.Timestamptz(6)
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  followerId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@map("user_followers")
 }
 
-model User {
-  id                   String   @id @db.Uuid
-  name                 String   @db.VarChar(255)
-  email                String   @db.VarChar(255)
-  photoUrl             String?  @db.VarChar(300)
-  featuredProductName  String?  @db.VarChar(200)
-  featuredProductId    String?  @db.VarChar(50)
-  hash                 String?  @db.VarChar(255)
-  googleId             String?
-  facebookId           String?
-  createdAt            DateTime @db.Timestamptz(6)
-  updatedAt            DateTime @db.Timestamptz(6)
-  notificationsEnabled Boolean  @default(false)
+model UserFriendShip {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  friendId  Int
+  confirmed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  // map is the name of model in database
-  @@map("users")
+  @@map("user_friendship")
 }
