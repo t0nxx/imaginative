@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 const NODE_ENV = process.env.NODE_ENV;
 
-const envFilePath = NODE_ENV === 'production' ? '.env' : '.env.example';
+const envFilePath = NODE_ENV === 'production' ? '.env.prod' : '.env.dev';
 
 const env =
   dotenv.config({
