@@ -215,6 +215,7 @@ model User {
   featuredProductName  String?       @db.VarChar(200)
   featuredProductId    String?       @db.VarChar(50)
   password             String        @db.VarChar(255)
+  lang                 String        @default("en")
   googleId             String?
   facebookId           String?
   createdAt            DateTime      @default(now())
