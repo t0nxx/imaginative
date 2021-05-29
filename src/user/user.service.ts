@@ -1,13 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import Axios from 'axios';
 import { Op } from 'sequelize';
 import User from './../models/User';
 import { v4 } from 'uuid';
+import { addDays } from 'date-fns';
 import { sendWelcomeNotification } from '../shared/core/OneSignal';
 import { google } from 'googleapis';
 import crypto from 'crypto';
+import { hashSync, compareSync } from 'bcrypt';
 import IGoogleProfile from './dto/GooglePofile';
-import RegisterUser from './dto/RegisterUser';
+import RegisterUser from './dto/RegisterUser.dto';
 import ResetPassword from './dto/ResetPassword';
 import PasswordRecoveryToken from './../models/PasswordRecoveryToken';
 import FireBase from './../shared/core/FireBase';
@@ -24,6 +31,7 @@ import Story from './../models/Story';
 import { UserSnippetDto } from './dto/UserSnippetDto';
 import ListingFollower from './../models/ListingFollower';
 import { PrismaService } from '@/shared/core/prisma.service';
+import LoginUserDto from './dto/LoginUser.dto';
 const JWT_SECRET = env.JWT_SECRET;
 
 const OAuth2 = google.auth.OAuth2;
@@ -45,7 +53,7 @@ export class UserService {
     });
 
     const prUser = await this.db.user.findFirst({
-      where: { id: id },
+      where: { id: +id },
     });
     console.log(prUser);
 
@@ -159,22 +167,27 @@ export class UserService {
     return null;
   }
 
-  async localLogin(email: string, password: string): Promise<any> {
-    const user = await User.findOne({
+  async localLogin(body: LoginUserDto): Promise<any> {
+    const user = await this.db.user.findUnique({
       where: {
-        email: email,
+        email: body.email,
       },
     });
     if (!user) {
-      return { status: 'ERROR', error: { message: 'Invalid user name' } };
+      throw new NotFoundException('user not found');
     }
-    const hash = crypto.createHash('sha256').update(password).digest('base64');
+    const isPasswordCorrect = compareSync(body.password, user.password);
 
-    if (user.hash === hash) {
-      return { status: 'SUCCESS', data: user };
+    if (!isPasswordCorrect) {
+      throw new BadRequestException('invalid password');
     }
 
-    return { status: 'ERROR', error: { message: 'Invalid Password' } };
+    delete user.password;
+    const token = this.generateJWT(user);
+    const refreshToken = await this.generateRefreshToken(user);
+
+    const result = { ...user, token, refreshToken };
+    return { data: result };
   }
 
   async facebookLogin(token: string): Promise<any> {
@@ -279,34 +292,30 @@ export class UserService {
     }
   }
 
-  async register(_user: RegisterUser): Promise<any> {
-    try {
-      const existingUser = await User.findOne({
-        where: { email: _user.email },
-      });
-      if (existingUser) {
-        return {
-          status: 'ERROR',
-          error: { message: 'A user with this email address already exists!' },
-        };
-      }
-
-      const hash = crypto
-        .createHash('sha256')
-        .update(_user.password)
-        .digest('base64');
-      _user.hash = hash;
-      _user.id = v4();
-      const user = await User.create(_user);
-
-      if (_user.notificationsEnabled) {
-        await sendWelcomeNotification(_user.email);
-      }
-
-      return { status: 'SUCCESS', data: user };
-    } catch (err) {
-      return { status: 'ERROR', error: err };
+  async register(body: RegisterUser): Promise<any> {
+    const existingUser = await this.db.user.findUnique({
+      where: { email: body.email },
+    });
+    if (existingUser) {
+      throw new BadRequestException(
+        'A user with this email address already exists!',
+      );
     }
+
+    body.password = hashSync(body.password, 10);
+    const user = await this.db.user.create({
+      data: body,
+    });
+
+    // @ mail queue
+    // if (_user.notificationsEnabled) {
+    //   await sendWelcomeNotification(_user.email);
+    // }
+
+    delete user.password;
+    const token = this.generateJWT(user);
+    const result = { ...user, token };
+    return { data: result };
   }
 
   async resetPassword(input: ResetPassword) {
@@ -368,13 +377,19 @@ export class UserService {
 
     return jwt.sign(
       {
-        id: user.id,
-        name: user.name,
-        email: user.email,
+        ...user,
         exp: exp.getTime() / 1000,
       },
       JWT_SECRET,
     );
+  }
+
+  public async generateRefreshToken(user) {
+    const expireDate = addDays(new Date(), 30);
+    const rez = await this.db.userRefreshTokens.create({
+      data: { userId: user.id, expireAt: expireDate },
+    });
+    return rez.token;
   }
 
   public async getUserFollowers(
@@ -564,5 +579,40 @@ export class UserService {
       userId: r.userId,
       followersCount: Number(r.followerId),
     }));
+  }
+
+  ///////////////////////////////////// new ///////////////////////////////
+
+  async refreshToken(body: string) {
+    const tokenToFound = await this.db.userRefreshTokens.findUnique({
+      where: {
+        token: body,
+      },
+    });
+    if (!tokenToFound) {
+      throw new UnauthorizedException('invalid or expired token');
+    }
+
+    const user = await this.db.user.findUnique({
+      where: {
+        id: tokenToFound.userId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+
+    /// remove refresh token once it will be used
+    await this.db.userRefreshTokens.delete({
+      where: { token: tokenToFound.token },
+    });
+
+    delete user.password;
+    const token = this.generateJWT(user);
+    const refreshToken = await this.generateRefreshToken(user);
+
+    const result = { token, refreshToken };
+    return { data: result };
   }
 }

@@ -211,7 +211,7 @@ model User {
   id                   Int           @id @default(autoincrement())
   name                 String        @db.VarChar(500)
   email                String        @unique @db.VarChar(500)
-  photoUrl             String        @db.VarChar(500)
+  photoUrl             String        @default("https://gravatar.com/avatar/14978c9024af3c17cf195dff095d79e8?s=400&d=robohash&r=x")
   featuredProductName  String?       @db.VarChar(200)
   featuredProductId    String?       @db.VarChar(50)
   password             String        @db.VarChar(255)
@@ -234,6 +234,15 @@ model UserPasswordRecoveryTokens {
   updatedAt DateTime @updatedAt
 
   @@map("user_recovery__password_tokens")
+}
+
+model UserRefreshTokens {
+  token     String   @id @default(uuid())
+  userId    Int
+  createdAt DateTime @default(now())
+  expireAt  DateTime
+
+  @@map("user_refresh_tokens")
 }
 
 model UserSettings {

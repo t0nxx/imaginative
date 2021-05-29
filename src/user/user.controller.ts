@@ -20,12 +20,14 @@ import {
 } from '@nestjs/swagger';
 import { endWithInternalServerError } from './../utils/Http';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
-import LoginUserDto from './dto/LoginUserdto';
+import LoginUserDto from './dto/LoginUser.dto';
 import { User } from './user.decorator';
 import OperationResult from '@/shared/models/OperationResult';
 import ToggleUserFollowDto from './dto/ToggleUserFollowDto';
 import UserDto from './dto/UserDto';
 import { UserSnippetDto } from './dto/UserSnippetDto';
+import RegisterUserDto from './dto/RegisterUser.dto';
+import RefreshTokenDto from './dto/RefreshToken.dto';
 
 @ApiBearerAuth()
 @ApiTags('Authentication')
@@ -34,28 +36,18 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('v1/auth/register')
-  async register(@Req() req: Request, @Res() res: Response): Promise<any> {
-    const result = await this.userService.register(req.body);
-    if (result.status === 'ERROR') {
-      throw new HttpException(
-        { errors: result.error },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    } else if (result.status === 'SUCCESS') {
-      const token = this.userService.generateJWT(result.data);
-      res.send({
-        id: result.data.id,
-        name: result.data.name,
-        email: result.data.email,
-        token: token,
-      });
-      // return req.logIn(result.data, (err) => {
-      //   if (err) {
-      //     return next(err);
-      //   }
-      //   return res.send({ ...(result.data as any).dataValues, hash: null });
-      // });
-    }
+  async register(@Body() body: RegisterUserDto): Promise<any> {
+    return this.userService.register(body);
+  }
+
+  @Post('v1/auth/login')
+  async login(@Body() body: LoginUserDto): Promise<any> {
+    return this.userService.localLogin(body);
+  }
+
+  @Post('v1/auth/refresh-token')
+  async refreshToken(@Body() body: RefreshTokenDto): Promise<any> {
+    return this.userService.refreshToken(body.refreshToken);
   }
 
   @Post('v1/auth/forgot-password')
@@ -81,43 +73,6 @@ export class UserController {
     } else {
       res.send({ message: 'Password reset successfully!' });
     }
-  }
-
-  //@UsePipes(new ValidationPipe())
-  @Post('v1/auth/login')
-  async login(@Body() loginDto: LoginUserDto): Promise<any> {
-    const result = await this.userService.localLogin(
-      loginDto.email,
-      loginDto.password,
-    );
-    if (result.status === 'SUCCESS') {
-      const token = await this.userService.generateJWT(result.data);
-      return {
-        id: result.data.id,
-        name: result.data.name,
-        email: result.data.email,
-        token: token,
-      };
-    } else {
-      throw new HttpException({ errors: result.error }, 401);
-    }
-
-    // return passport.authenticate("local", (err, user, info) => {
-    //   if (err) {
-    //     return next(err);
-    //   }
-    //   if (!user) {
-    //     return res.status(HttpStatus.UNAUTHORIZED).send({
-    //       errors: [!!info ? info.message : "Incorrect email or password!"],
-    //     });
-    //   }
-    //   req.logIn(user, (err) => {
-    //     if (err) {
-    //       return next(err);
-    //     }
-    //     return res.send({ ...user.dataValues, hash: null });
-    //   });
-    // })(req, res, next);
   }
 
   @Post('v1/auth/facebook')

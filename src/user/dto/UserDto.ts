@@ -2,7 +2,6 @@ import { IsNotEmpty } from 'class-validator';
 
 export default class UserDto {
   id: string;
-  @IsNotEmpty()
   name: string;
   type: string;
   photoUrl?: string;
