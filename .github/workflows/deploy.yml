@@ -1,0 +1,39 @@
+name: Imaginative CI/CD
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    env: 
+      CI : true
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: SSH and deploy app
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd ~/backend-new
+          git pull
+          npm install 
+          pm2 stop new-imaginative-backend
+          npm run build
+          pm2 start dist/main.js --name "new-imaginative-backend"
