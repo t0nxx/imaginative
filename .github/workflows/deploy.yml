@@ -26,51 +26,49 @@ jobs:
           node-version: "12.x"
 
       - run: npm install -g @nestjs/cli
-      - run: npm install
+
       - run: npm run build
-      - run: pwd
-      - run: ls
 
-      - name: Copy folder content recursively to remote
-
-        uses: garygrossgarten/github-action-scp@release
+      - name: Copy folder content to remote
+        uses: appleboy/scp-action@master
         with:
-          local: dist/
-          remote: "~/backend-new/dist"
           host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
           username: ${{ secrets.SSH_USERNAME }}
-          privateKey: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "dist/"
+          target: "~/backend-new/dist"
+          strip_components: 10
+
+    # uses: garygrossgarten/github-action-scp@release
+    # with:
+    #   local: dist/
+    #   remote: "~/backend-new/dist"
+    #   host: ${{ secrets.SSH_HOST }}
+    #   port: ${{ secrets.SSH_PORT }}
+    #   username: ${{ secrets.SSH_USERNAME }}
+    #   privateKey: ${{ secrets.SSH_KEY }}
 
     env:
       CI: true
-  #  - uses: appleboy/scp-action@master
-  #    with:
-  #     host: ${{ secrets.SSH_HOST }}
-  #     username: ${{ secrets.SSH_USERNAME }}
-  #     port: ${{ secrets.SSH_PORT }}
-  #     key: ${{ secrets.SSH_KEY }}
-  #     source: "./dist/"
-  #     target: "~/backend-new/dist"
-  #     strip_components: 10
 
-  deploy:
-    needs: [build]
-    runs-on: ubuntu-latest
+  # deploy:
+  #   needs: [build]
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: SSH and deploy app
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            cd ~/backend-new
-            git checkout dev-new
-            git pull
-            npm install 
-            pm2 stop new-imaginative-backend
-            npm run build
-            NODE_ENV=production pm2 start dist/src/main.js --name "new-imaginative-backend"
+  #   steps:
+  #     - name: SSH and deploy app
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.SSH_HOST }}
+  #         username: ${{ secrets.SSH_USERNAME }}
+  #         key: ${{ secrets.SSH_KEY }}
+  #         port: ${{ secrets.SSH_PORT }}
+  #         script: |
+  #           cd ~/backend-new
+  #           git checkout dev-new
+  #           git pull
+  #           npm install 
+  #           pm2 stop new-imaginative-backend
+  #           npm run build
+  #           NODE_ENV=production pm2 start dist/src/main.js --name "new-imaginative-backend"
