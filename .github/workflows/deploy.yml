@@ -40,6 +40,8 @@ jobs:
       key: ${{ secrets.SSH_KEY }}
       source: "./dist/"
       target: "~/backend-new/dist"
+      strip_components: 10
+
 
 
   deploy:
