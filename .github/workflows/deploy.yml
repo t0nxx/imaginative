@@ -38,37 +38,26 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: "dist/"
           target: "~/backend-new/dist"
+          rm : true
           strip_components: 10
-
-    # uses: garygrossgarten/github-action-scp@release
-    # with:
-    #   local: dist/
-    #   remote: "~/backend-new/dist"
-    #   host: ${{ secrets.SSH_HOST }}
-    #   port: ${{ secrets.SSH_PORT }}
-    #   username: ${{ secrets.SSH_USERNAME }}
-    #   privateKey: ${{ secrets.SSH_KEY }}
-
     env:
       CI: true
 
-  # deploy:
-  #   needs: [build]
-  #   runs-on: ubuntu-latest
+  after-deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: SSH and deploy app
-  #       uses: appleboy/ssh-action@master
-  #       with:
-  #         host: ${{ secrets.SSH_HOST }}
-  #         username: ${{ secrets.SSH_USERNAME }}
-  #         key: ${{ secrets.SSH_KEY }}
-  #         port: ${{ secrets.SSH_PORT }}
-  #         script: |
-  #           cd ~/backend-new
-  #           git checkout dev-new
-  #           git pull
-  #           npm install 
-  #           pm2 stop new-imaginative-backend
-  #           npm run build
-  #           NODE_ENV=production pm2 start dist/src/main.js --name "new-imaginative-backend"
+    steps:
+      - name: SSH and deploy app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/backend-new
+            git checkout dev-new
+            npm install 
+            pm2 stop new-imaginative-backend
+            NODE_ENV=production pm2 start dist/src/main.js --name "new-imaginative-backend"
