@@ -19,7 +19,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
@@ -31,17 +31,11 @@ jobs:
       - run: pwd
       - run: ls
 
-    env:
-      CI: true
+      - name: Copy folder content recursively to remote
 
-  copy-build-folder-to-server:
-    needs: [build]
-
-    runs-on: ubuntu-latest
-    steps:
-      - uses: garygrossgarten/github-action-scp@release
+        uses: garygrossgarten/github-action-scp@release
         with:
-          local: dist
+          local: dist/
           remote: "~/backend-new/dist"
           host: ${{ secrets.SSH_HOST }}
           port: ${{ secrets.SSH_PORT }}
