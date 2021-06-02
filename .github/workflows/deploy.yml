@@ -57,6 +57,7 @@ jobs:
           script: |
             cd ~/backend-new
             git checkout dev-new
+            git pull
             npm install 
             pm2 stop new-imaginative-backend
             NODE_ENV=production pm2 start dist/src/main.js --name "new-imaginative-backend"
