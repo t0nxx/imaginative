@@ -12,7 +12,7 @@ import { addDays } from 'date-fns';
 import { sendWelcomeNotification } from '../shared/core/OneSignal';
 import { google } from 'googleapis';
 import crypto from 'crypto';
-import { hashSync, compareSync } from 'bcrypt';
+import { hashSync, compareSync } from 'bcryptjs';
 import IGoogleProfile from './dto/GooglePofile';
 import RegisterUser from './dto/RegisterUser.dto';
 import ResetPassword from './dto/ResetPassword';
