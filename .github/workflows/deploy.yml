@@ -25,6 +25,7 @@ jobs:
 
 
   copy-build-folder-to-server :
+   needs: [build]
 
    runs-on: ubuntu-latest
    steps:
@@ -39,6 +40,7 @@ jobs:
 
 
   deploy:
+    needs: [copy-build-folder-to-server]
     runs-on: ubuntu-latest
 
     steps:
