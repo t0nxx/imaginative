@@ -20,6 +20,9 @@ jobs:
     - run:  npm install -g @nestjs/cli
     - run: npm install 
     - run: npm run build
+    - run: pwd
+    - run: ls
+    
     env: 
       CI : true
 
@@ -35,7 +38,7 @@ jobs:
       username: ${{ secrets.SSH_USERNAME }}
       port: ${{ secrets.SSH_PORT }}
       key: ${{ secrets.SSH_KEY }}
-      source: "/home/runner/work/backend/backend/dist/*"
+      source: "/home/runner/work/backend/backend/dist/"
       target: "~/backend-new/dist"
 
 
