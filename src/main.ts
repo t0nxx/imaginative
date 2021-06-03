@@ -50,10 +50,9 @@ async function bootstrap() {
   // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMzFkZjlmLWI1NzQtNDVkYS1hODNmLTVjODM2ZjgwOGQxNiIsIm5hbWUiOiJ0ZXN0MSIsImVtYWlsIjoiYUBhLmNvbSIsImV4cCI6MTYyNzA3MDQ4Ny43OTQsImlhdCI6MTYyMTg4NjQ4N30.125A_XjdRcK1e5hT1s8nIgG0XWakDixKtG-bmZp_Rsg
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/docs', app, document);
-  console.log(process.env.PORT || 3000);
   console.log(
     `******************** app started in ${process.env.NODE_ENV}  enviroment `,
   );
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 5000);
 }
 bootstrap();
