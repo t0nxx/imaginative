@@ -4,7 +4,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import * as path from 'path';
 import { BullModule } from '@nestjs/bull';
 
-import FireBase from './FireBase';
+import FireBaseService from './FireBase.service';
 import { PrismaService } from './prisma.service';
 import env from '@/shared/core/Environment';
 import { MailsService } from './mail.service';
@@ -28,7 +28,8 @@ import { MailProcessor } from './mail.processor';
       },
       preview: true,
       template: {
-        dir: path.join(__dirname, '..', 'mail-templates'),
+        /// root of folder
+        dir: path.join(__dirname, '..', '..', '..', 'mail-templates'),
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
@@ -45,9 +46,9 @@ import { MailProcessor } from './mail.processor';
       },
     }),
   ],
-  providers: [FireBase, PrismaService, MailsService, MailProcessor],
+  providers: [FireBaseService, PrismaService, MailsService, MailProcessor],
   controllers: [],
-  exports: [MailsService, FireBase, PrismaService],
+  exports: [MailsService, FireBaseService, PrismaService],
 })
 export class CoreModule implements NestModule {
   public configure() {}

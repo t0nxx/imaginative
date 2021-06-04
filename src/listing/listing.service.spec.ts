@@ -6,7 +6,7 @@ import { LookupsService } from '@/lookups/lookups.service';
 // import {ListingStatus} from '@/shared/constants';
 import { UserService } from '@/user/user.service';
 import MailManager from '@/shared/core/MailManager';
-import FireBase from '@/shared/core/FireBase';
+import FireBase from '@/shared/core/FireBase.service';
 
 let listingService: ListingService;
 

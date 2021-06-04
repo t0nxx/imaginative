@@ -1,19 +1,26 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Process, Processor } from '@nestjs/bull';
+import FireBaseService from './FireBase.service';
 import { Job } from 'bull';
 
 @Processor('mails')
 export class MailProcessor {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(
+    private readonly mailerService: MailerService,
+    private readonly fireBaseService: FireBaseService,
+  ) {}
 
   @Process('sendResetPasswordEmail')
   async sendResetPasswordEmail(
     job: Job<{ username: string; email: string; resetCode: string }>,
   ) {
-    const link = 'logic to do here';
+    const link = await this.fireBaseService.getFirebaseDynamicLink(
+      'forgot-password',
+      { email: job.data.email, token: job.data.resetCode },
+    );
     try {
       await this.mailerService.sendMail({
-        template: 'resetPassword',
+        template: './forgotPassword',
         context: {
           username: job.data.username,
           link,

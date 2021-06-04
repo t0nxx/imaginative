@@ -28,6 +28,8 @@ import UserDto from './dto/UserDto';
 import { UserSnippetDto } from './dto/UserSnippetDto';
 import RegisterUserDto from './dto/RegisterUser.dto';
 import RefreshTokenDto from './dto/RefreshToken.dto';
+import ForgetPasswordDto from './dto/ForgetPassword.dto';
+import ResetPasswordDto from './dto/ResetPassword';
 
 @ApiBearerAuth()
 @ApiTags('Authentication')
@@ -51,28 +53,13 @@ export class UserController {
   }
 
   @Post('v1/auth/forgot-password')
-  async forgotPassword(
-    @Req() req: Request,
-    @Res() res: Response,
-  ): Promise<any> {
-    const result = await this.userService.forgotPassword(req.body.email);
-    if (result.status === 'NOT_FOUND') {
-      return res.status(HttpStatus.NOT_FOUND).end();
-    } else if (result.status === 'SUCCESS') {
-      res.send({ message: 'Recovery token sent successfully!' });
-    } else {
-      endWithInternalServerError(res, result.error);
-    }
+  async forgotPassword(@Body() body: ForgetPasswordDto) {
+    return this.userService.forgotPassword(body.email);
   }
 
   @Post('v1/auth/reset-password')
-  async resetPassword(@Req() req: Request, @Res() res: Response): Promise<any> {
-    const result = await this.userService.resetPassword(req.body);
-    if (result.status === 'NOT_FOUND') {
-      return res.status(HttpStatus.NOT_FOUND).end();
-    } else {
-      res.send({ message: 'Password reset successfully!' });
-    }
+  async resetPassword(@Body() body: ResetPasswordDto): Promise<any> {
+    await this.userService.resetPassword(body);
   }
 
   @Post('v1/auth/facebook')

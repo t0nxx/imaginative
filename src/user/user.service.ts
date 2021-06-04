@@ -17,7 +17,7 @@ import IGoogleProfile from './dto/GooglePofile';
 import RegisterUser from './dto/RegisterUser.dto';
 import ResetPassword from './dto/ResetPassword';
 import PasswordRecoveryToken from './../models/PasswordRecoveryToken';
-import FireBase from './../shared/core/FireBase';
+import FireBase from '../shared/core/FireBase.service';
 import UserDto from './dto/UserDto';
 import env from '@/shared/core/Environment';
 import * as jwt from 'jsonwebtoken';
@@ -31,6 +31,7 @@ import { UserSnippetDto } from './dto/UserSnippetDto';
 import ListingFollower from './../models/ListingFollower';
 import { PrismaService } from '@/shared/core/prisma.service';
 import LoginUserDto from './dto/LoginUser.dto';
+import { MailsService } from '@/shared/core/mail.service';
 const JWT_SECRET = env.JWT_SECRET;
 
 const OAuth2 = google.auth.OAuth2;
@@ -39,8 +40,8 @@ const oauth2Client = new OAuth2();
 @Injectable()
 export class UserService {
   constructor(
-    private readonly fireBase: FireBase,
     private readonly db: PrismaService,
+    private readonly mailsService: MailsService,
   ) {}
 
   async getUser(id: string): Promise<UserDto | null> {
@@ -338,34 +339,25 @@ export class UserService {
   }
 
   async forgotPassword(email: string): Promise<any> {
-    try {
-      const user = await User.findOne({ where: { email } });
-      if (!user) {
-        return { status: 'NOT_FOUND' };
-      }
-
-      const recoveryToken = crypto.randomBytes(128).toString('hex');
-      await PasswordRecoveryToken.create({
-        id: v4(),
-        token: recoveryToken,
-        userId: user.id,
-      });
-
-      const firebaseDynamicLink = await this.fireBase.getFirebaseDynamicLink(
-        recoveryToken,
-        email,
-      );
-
-      // await this.mailManager.sendRecoveryLink(
-      //   email,
-      //   user.name,
-      //   firebaseDynamicLink.data.shortLink,
-      // );
-
-      return { status: 'SUCCESS' };
-    } catch (err) {
-      return { status: 'ERROR', error: err };
+    const user = await this.db.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('user not found');
     }
+
+    const resetCode = crypto.randomBytes(128).toString('hex');
+    await this.db.userPasswordRecoveryTokens.create({
+      data: {
+        userId: user.id,
+        token: resetCode,
+      },
+    });
+
+    this.mailsService.sendResetPasswordEmail(user.name, user.email, resetCode);
+    return { message: 'an email has been sent for reset password ' };
   }
 
   public generateJWT(user) {
