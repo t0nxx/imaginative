@@ -15,7 +15,7 @@ import crypto from 'crypto';
 import { hashSync, compareSync } from 'bcryptjs';
 import IGoogleProfile from './dto/GooglePofile';
 import RegisterUser from './dto/RegisterUser.dto';
-import ResetPassword from './dto/ResetPassword';
+import ResetPassword from './dto/ResetPassword.dto';
 import PasswordRecoveryToken from './../models/PasswordRecoveryToken';
 import FireBase from '../shared/core/FireBase.service';
 import UserDto from './dto/UserDto';
@@ -317,25 +317,38 @@ export class UserService {
     return { data: result };
   }
 
-  async resetPassword(input: ResetPassword) {
-    const user = await User.findOne({ where: { email: input.email } });
-    if (!user) {
-      return { status: 'NOT_FOUND' };
-    }
-
-    const recoveryToken = await PasswordRecoveryToken.findOne({
-      where: { userId: user.id, token: input.token },
+  async resetPassword(body: ResetPassword) {
+    const user = await this.db.user.findUnique({
+      where: {
+        email: body.email,
+      },
     });
-    if (!recoveryToken) {
-      return { status: 'NOT_FOUND' };
+    if (!user) {
+      throw new NotFoundException('user not found');
     }
+    const isTokenExist = await this.db.userPasswordRecoveryTokens.findFirst({
+      where: {
+        userId: user.id,
+        token: body.token,
+      },
+    });
+    if (!isTokenExist) {
+      throw new NotFoundException('invalid reset token');
+    }
+    const newPass = hashSync(body.newPassword, 10);
 
-    const hash = crypto
-      .createHash('sha256')
-      .update(input.newPassword)
-      .digest('base64');
-    await User.update({ hash }, { where: { email: input.email } });
-    return { status: 'SUCCESS' };
+    await this.db.user.update({
+      where: { id: user.id },
+      data: {
+        password: newPass,
+      },
+    });
+    /// after change pass remove token to not use it again
+    await this.db.userPasswordRecoveryTokens.delete({
+      where: { id: isTokenExist.id },
+    });
+
+    return { message: 'password changed successfully' };
   }
 
   async forgotPassword(email: string): Promise<any> {
@@ -347,7 +360,12 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('user not found');
     }
-
+    // delete old tokens for not reuse it again
+    await this.db.userPasswordRecoveryTokens.deleteMany({
+      where: {
+        userId: user.id,
+      },
+    });
     const resetCode = crypto.randomBytes(128).toString('hex');
     await this.db.userPasswordRecoveryTokens.create({
       data: {

@@ -29,7 +29,7 @@ import { UserSnippetDto } from './dto/UserSnippetDto';
 import RegisterUserDto from './dto/RegisterUser.dto';
 import RefreshTokenDto from './dto/RefreshToken.dto';
 import ForgetPasswordDto from './dto/ForgetPassword.dto';
-import ResetPasswordDto from './dto/ResetPassword';
+import ResetPasswordDto from './dto/ResetPassword.dto';
 
 @ApiBearerAuth()
 @ApiTags('Authentication')
@@ -53,13 +53,13 @@ export class UserController {
   }
 
   @Post('v1/auth/forgot-password')
-  async forgotPassword(@Body() body: ForgetPasswordDto) {
+  async forgotPassword(@Body() body: ForgetPasswordDto): Promise<any> {
     return this.userService.forgotPassword(body.email);
   }
 
   @Post('v1/auth/reset-password')
   async resetPassword(@Body() body: ResetPasswordDto): Promise<any> {
-    await this.userService.resetPassword(body);
+    return this.userService.resetPassword(body);
   }
 
   @Post('v1/auth/facebook')
