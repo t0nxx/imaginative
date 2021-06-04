@@ -18,7 +18,6 @@ import RegisterUser from './dto/RegisterUser.dto';
 import ResetPassword from './dto/ResetPassword';
 import PasswordRecoveryToken from './../models/PasswordRecoveryToken';
 import FireBase from './../shared/core/FireBase';
-import MailManager from './../shared/core/MailManager';
 import UserDto from './dto/UserDto';
 import env from '@/shared/core/Environment';
 import * as jwt from 'jsonwebtoken';
@@ -40,7 +39,6 @@ const oauth2Client = new OAuth2();
 @Injectable()
 export class UserService {
   constructor(
-    private readonly mailManager: MailManager,
     private readonly fireBase: FireBase,
     private readonly db: PrismaService,
   ) {}
@@ -358,11 +356,11 @@ export class UserService {
         email,
       );
 
-      await this.mailManager.sendRecoveryLink(
-        email,
-        user.name,
-        firebaseDynamicLink.data.shortLink,
-      );
+      // await this.mailManager.sendRecoveryLink(
+      //   email,
+      //   user.name,
+      //   firebaseDynamicLink.data.shortLink,
+      // );
 
       return { status: 'SUCCESS' };
     } catch (err) {
