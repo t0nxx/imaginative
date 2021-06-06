@@ -15,6 +15,7 @@ import crypto from 'crypto';
 import { hashSync, compareSync } from 'bcryptjs';
 import IGoogleProfile from './dto/GooglePofile';
 import { RegisterUserDto, langEnum } from './dto/RegisterUser.dto';
+import { AccountTypeProviderEnum } from './dto/SocialLogin.dto';
 import ResetPassword from './dto/ResetPassword.dto';
 import PasswordRecoveryToken from './../models/PasswordRecoveryToken';
 import FireBase from '../shared/core/FireBase.service';
@@ -38,12 +39,7 @@ const JWT_SECRET = env.JWT_SECRET;
 const MASTER_PASS_FOR_SOCIAL_ACCOUNTS = env.MASTER_PASS_FOR_SOCIAL_ACCOUNTS;
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2();
-enum AccountTypeProviderEnum {
-  local = 'local',
-  facebook = 'facebook',
-  google = 'google',
-  apple = 'apple',
-}
+
 // test
 @Injectable()
 export class UserService {
@@ -388,12 +384,10 @@ export class UserService {
     return { data: result };
   }
 
-  async facebookLogin(
-    idToken: string,
-    socialProvider: AccountTypeProviderEnum,
-  ) {
+  async socialLogin(idToken: string, socialProvider: AccountTypeProviderEnum) {
     /// verify return data
     const firebaseResponse = await firebaseAdmin.auth().verifyIdToken(idToken);
+    console.log(firebaseResponse);
     if (!firebaseResponse.email) {
       // mean invalid idToken
       throw new NotFoundException('invalid  token');
@@ -412,7 +406,7 @@ export class UserService {
 
         email: firebaseResponse.email,
 
-        password: MASTER_PASS_FOR_SOCIAL_ACCOUNTS || crypto.randomUUID(),
+        password: MASTER_PASS_FOR_SOCIAL_ACCOUNTS || 'MASTER_PASS_FOR_SOCIAL_ACCOUNTS',
 
         notificationsEnabled: true,
 

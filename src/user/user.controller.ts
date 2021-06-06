@@ -30,6 +30,7 @@ import { RegisterUserDto } from './dto/RegisterUser.dto';
 import RefreshTokenDto from './dto/RefreshToken.dto';
 import ForgetPasswordDto from './dto/ForgetPassword.dto';
 import ResetPasswordDto from './dto/ResetPassword.dto';
+import { AccountTypeProviderEnum, SocialLoginDto } from './dto/SocialLogin.dto';
 
 @ApiBearerAuth()
 @ApiTags('Authentication')
@@ -63,55 +64,27 @@ export class UserController {
   }
 
   @Post('v1/auth/facebook')
-  async facebookLogin(): Promise<any> {
-    // const result = await this.userService.facebookLogin(req.body.token);
-    // if (result.status === 'SUCCESS') {
-    //   const token = await this.userService.generateJWT(result.data);
-    //   return _res.send({
-    //     id: result.data.id,
-    //     name: result.data.name,
-    //     email: result.data.email,
-    //     token: token,
-    //   });
-    // } else {
-    //   throw new HttpException({ errors: result.error }, 401);
-    // }
-    // if (result.status === "NO_DATA") {
-    //   res
-    //     .status(HttpStatus.BAD_REQUEST)
-    //     .send({ errors: [getStatusText(HttpStatus.BAD_REQUEST)] });
-    // } else if (result.status === "ERROR") {
-    //   endWithInternalServerError(res, result.error);
-    // } else {
-    //   res.send((result.data as any).dataValues);
-    // }
+  async facebookLogin(@Body() body: SocialLoginDto): Promise<any> {
+    return this.userService.socialLogin(
+      body.token,
+      AccountTypeProviderEnum.facebook,
+    );
   }
 
   @Post('v1/auth/google')
-  async googleLogin(@Req() req: Request, @Res() _res: Response): Promise<any> {
-    const result = await this.userService.googleLogin(req.body.token);
+  async googleLogin(@Body() body: SocialLoginDto): Promise<any> {
+    return this.userService.socialLogin(
+      body.token,
+      AccountTypeProviderEnum.google,
+    );
+  }
 
-    if (result.status === 'SUCCESS') {
-      const token = await this.userService.generateJWT(result.data);
-      _res.send({
-        id: result.data.id,
-        name: result.data.name,
-        email: result.data.email,
-        token: token,
-      });
-    } else {
-      throw new HttpException({ errors: result.error }, 401);
-    }
-
-    // if (result.status === "NO_DATA") {
-    //   res
-    //     .status(HttpStatus.BAD_REQUEST)
-    //     .send({ errors: [getStatusText(HttpStatus.BAD_REQUEST)] });
-    // } else if (result.status === "ERROR") {
-    //   endWithInternalServerError(res, result.error);
-    // } else {
-    //   res.send((result.data as any).dataValues);
-    // }
+  @Post('v1/auth/apple')
+  async appleLogin(@Body() body: SocialLoginDto): Promise<any> {
+    return this.userService.socialLogin(
+      body.token,
+      AccountTypeProviderEnum.apple,
+    );
   }
 
   // @Post("v1/auth/logout")
