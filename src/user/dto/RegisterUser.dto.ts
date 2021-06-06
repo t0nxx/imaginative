@@ -7,11 +7,11 @@ import {
   MinLength,
 } from 'class-validator';
 
-enum langEnum {
+export enum langEnum {
   en = 'en',
   ar = 'ar',
 }
-export default class RegisterUserDto {
+export class RegisterUserDto {
   @IsNotEmpty() name: string;
 
   @IsEmail() email: string;

@@ -14,7 +14,7 @@ import { google } from 'googleapis';
 import crypto from 'crypto';
 import { hashSync, compareSync } from 'bcryptjs';
 import IGoogleProfile from './dto/GooglePofile';
-import RegisterUser from './dto/RegisterUser.dto';
+import { RegisterUserDto, langEnum } from './dto/RegisterUser.dto';
 import ResetPassword from './dto/ResetPassword.dto';
 import PasswordRecoveryToken from './../models/PasswordRecoveryToken';
 import FireBase from '../shared/core/FireBase.service';
@@ -32,10 +32,18 @@ import ListingFollower from './../models/ListingFollower';
 import { PrismaService } from '@/shared/core/prisma.service';
 import LoginUserDto from './dto/LoginUser.dto';
 import { MailsService } from '@/shared/core/mail.service';
-const JWT_SECRET = env.JWT_SECRET;
+import * as firebaseAdmin from 'firebase-admin';
 
+const JWT_SECRET = env.JWT_SECRET;
+const MASTER_PASS_FOR_SOCIAL_ACCOUNTS = env.MASTER_PASS_FOR_SOCIAL_ACCOUNTS;
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2();
+enum AccountTypeProviderEnum {
+  local = 'local',
+  facebook = 'facebook',
+  google = 'google',
+  apple = 'apple',
+}
 // test
 @Injectable()
 export class UserService {
@@ -164,240 +172,6 @@ export class UserService {
         storiesCount: 0,
       }));
     return null;
-  }
-
-  async localLogin(body: LoginUserDto): Promise<any> {
-    const user = await this.db.user.findUnique({
-      where: {
-        email: body.email,
-      },
-    });
-    if (!user) {
-      throw new NotFoundException('user not found');
-    }
-    const isPasswordCorrect = compareSync(body.password, user.password);
-
-    if (!isPasswordCorrect) {
-      throw new BadRequestException('invalid password');
-    }
-
-    delete user.password;
-    const token = this.generateJWT(user);
-    const refreshToken = await this.generateRefreshToken(user);
-
-    const result = { ...user, token, refreshToken };
-    return { data: result };
-  }
-
-  async facebookLogin(token: string): Promise<any> {
-    try {
-      const fbRes = await Axios.get('https://graph.facebook.com/v2.9/me', {
-        params: { access_token: token, fields: 'id,name,email' },
-      });
-      const facebookProfile = fbRes.data;
-
-      let user = await User.findOne({
-        where: {
-          [Op.or]: [
-            { facebookId: facebookProfile.id },
-            { email: facebookProfile.email },
-          ],
-        },
-      });
-
-      if (
-        !facebookProfile.name ||
-        !facebookProfile.email ||
-        !facebookProfile.id
-      ) {
-        return { status: 'NO_DATA' };
-      }
-
-      if (!user) {
-        user = await User.create({
-          id: v4(),
-          name: facebookProfile.name,
-          email: facebookProfile.email,
-          facebookId: facebookProfile.id,
-          hash: '',
-          notificationsEnabled: false,
-        });
-      } else if (user.facebookId !== facebookProfile.id) {
-        await User.update(
-          { facebookId: facebookProfile.id },
-          { where: { email: facebookProfile.email } },
-        );
-      }
-
-      await sendWelcomeNotification(facebookProfile.email);
-
-      return { status: 'SUCCESS', data: user };
-    } catch (err) {
-      return { status: 'ERROR', error: err };
-    }
-  }
-
-  async googleLogin(token): Promise<any> {
-    try {
-      oauth2Client.setCredentials({ access_token: token });
-      const oauth2 = google.oauth2({ auth: oauth2Client, version: 'v2' });
-
-      const googleProfile: IGoogleProfile = await new Promise(
-        (resolve, reject) => {
-          return oauth2.userinfo.get((err, res) => {
-            if (err || !res) {
-              reject(err);
-            } else {
-              resolve(res.data);
-            }
-          });
-        },
-      );
-
-      let user = await User.findOne({
-        where: {
-          [Op.or]: [
-            { googleId: googleProfile.id },
-            { email: googleProfile.email },
-          ],
-        },
-      });
-
-      if (!googleProfile.name || !googleProfile.email || !googleProfile.id) {
-        return { status: 'NO_DATA' };
-      }
-
-      if (!user) {
-        user = await User.create({
-          id: v4(),
-          name: googleProfile.name,
-          email: googleProfile.email,
-          googleId: googleProfile.id,
-          hash: '',
-          notificationsEnabled: false,
-        });
-      } else if (user.googleId !== googleProfile.id) {
-        await User.update(
-          { googleId: googleProfile.id },
-          { where: { email: googleProfile.email } },
-        );
-      }
-
-      await sendWelcomeNotification(googleProfile.email);
-
-      return { status: 'SUCCESS', data: user };
-    } catch (err) {
-      return { status: 'ERROR', error: err };
-    }
-  }
-
-  async register(body: RegisterUser): Promise<any> {
-    const existingUser = await this.db.user.findUnique({
-      where: { email: body.email },
-    });
-    if (existingUser) {
-      throw new BadRequestException(
-        'A user with this email address already exists!',
-      );
-    }
-
-    body.password = hashSync(body.password, 10);
-    const user = await this.db.user.create({
-      data: body,
-    });
-
-    // @ mail queue
-    // if (_user.notificationsEnabled) {
-    //   await sendWelcomeNotification(_user.email);
-    // }
-
-    delete user.password;
-    const token = this.generateJWT(user);
-    const result = { ...user, token };
-    return { data: result };
-  }
-
-  async resetPassword(body: ResetPassword) {
-    const user = await this.db.user.findUnique({
-      where: {
-        email: body.email,
-      },
-    });
-    if (!user) {
-      throw new NotFoundException('user not found');
-    }
-    const isTokenExist = await this.db.userPasswordRecoveryTokens.findFirst({
-      where: {
-        userId: user.id,
-        token: body.token,
-      },
-    });
-    if (!isTokenExist) {
-      throw new NotFoundException('invalid reset token');
-    }
-    const newPass = hashSync(body.newPassword, 10);
-
-    await this.db.user.update({
-      where: { id: user.id },
-      data: {
-        password: newPass,
-      },
-    });
-    /// after change pass remove token to not use it again
-    await this.db.userPasswordRecoveryTokens.delete({
-      where: { id: isTokenExist.id },
-    });
-
-    return { message: 'password changed successfully' };
-  }
-
-  async forgotPassword(email: string): Promise<any> {
-    const user = await this.db.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
-    if (!user) {
-      throw new NotFoundException('user not found');
-    }
-    // delete old tokens for not reuse it again
-    await this.db.userPasswordRecoveryTokens.deleteMany({
-      where: {
-        userId: user.id,
-      },
-    });
-    const resetCode = crypto.randomBytes(128).toString('hex');
-    await this.db.userPasswordRecoveryTokens.create({
-      data: {
-        userId: user.id,
-        token: resetCode,
-      },
-    });
-
-    this.mailsService.sendResetPasswordEmail(user.name, user.email, resetCode);
-    return { message: 'an email has been sent for reset password ' };
-  }
-
-  public generateJWT(user) {
-    const today = new Date();
-    const exp = new Date(today);
-    exp.setDate(today.getDate() + 60);
-
-    return jwt.sign(
-      {
-        ...user,
-        exp: exp.getTime() / 1000,
-      },
-      JWT_SECRET,
-    );
-  }
-
-  public async generateRefreshToken(user) {
-    const expireDate = addDays(new Date(), 30);
-    const rez = await this.db.userRefreshTokens.create({
-      data: { userId: user.id, expireAt: expireDate },
-    });
-    return rez.token;
   }
 
   public async getUserFollowers(
@@ -589,7 +363,241 @@ export class UserService {
     }));
   }
 
-  ///////////////////////////////////// new ///////////////////////////////
+  ///////////////////////////////////// new - mahmoud done ///////////////////////////////
+
+  async localLogin(body: LoginUserDto): Promise<any> {
+    const user = await this.db.user.findUnique({
+      where: {
+        email: body.email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    const isPasswordCorrect = compareSync(body.password, user.password);
+
+    if (!isPasswordCorrect) {
+      throw new BadRequestException('invalid password');
+    }
+
+    delete user.password;
+    const token = this.generateJWT(user);
+    const refreshToken = await this.generateRefreshToken(user);
+
+    const result = { ...user, token, refreshToken };
+    return { data: result };
+  }
+
+  async facebookLogin(
+    idToken: string,
+    socialProvider: AccountTypeProviderEnum,
+  ) {
+    /// verify return data
+    const firebaseResponse = await firebaseAdmin.auth().verifyIdToken(idToken);
+    if (!firebaseResponse.email) {
+      // mean invalid idToken
+      throw new NotFoundException('invalid  token');
+    }
+
+    const user = await this.db.user.findFirst({
+      where: {
+        email: firebaseResponse.email,
+        provider: socialProvider,
+      },
+    });
+
+    if (!user) {
+      const newUser = {
+        name: firebaseResponse.name,
+
+        email: firebaseResponse.email,
+
+        password: MASTER_PASS_FOR_SOCIAL_ACCOUNTS || crypto.randomUUID(),
+
+        notificationsEnabled: true,
+
+        lang: langEnum.en,
+      };
+      return this.register(newUser, socialProvider);
+    }
+
+    delete user.password;
+    const token = this.generateJWT(user);
+    const result = { ...user, token };
+    return { data: result };
+  }
+
+  async googleLogin(token): Promise<any> {
+    try {
+      oauth2Client.setCredentials({ access_token: token });
+      const oauth2 = google.oauth2({ auth: oauth2Client, version: 'v2' });
+
+      const googleProfile: IGoogleProfile = await new Promise(
+        (resolve, reject) => {
+          return oauth2.userinfo.get((err, res) => {
+            if (err || !res) {
+              reject(err);
+            } else {
+              resolve(res.data);
+            }
+          });
+        },
+      );
+
+      let user = await User.findOne({
+        where: {
+          [Op.or]: [
+            { googleId: googleProfile.id },
+            { email: googleProfile.email },
+          ],
+        },
+      });
+
+      if (!googleProfile.name || !googleProfile.email || !googleProfile.id) {
+        return { status: 'NO_DATA' };
+      }
+
+      if (!user) {
+        user = await User.create({
+          id: v4(),
+          name: googleProfile.name,
+          email: googleProfile.email,
+          googleId: googleProfile.id,
+          hash: '',
+          notificationsEnabled: false,
+        });
+      } else if (user.googleId !== googleProfile.id) {
+        await User.update(
+          { googleId: googleProfile.id },
+          { where: { email: googleProfile.email } },
+        );
+      }
+
+      await sendWelcomeNotification(googleProfile.email);
+
+      return { status: 'SUCCESS', data: user };
+    } catch (err) {
+      return { status: 'ERROR', error: err };
+    }
+  }
+
+  async register(
+    body: RegisterUserDto,
+    socialProvider?: AccountTypeProviderEnum,
+  ): Promise<any> {
+    const existingUser = await this.db.user.findUnique({
+      where: { email: body.email },
+    });
+    if (existingUser) {
+      throw new BadRequestException(
+        'A user with this email address already exists!',
+      );
+    }
+
+    body.password = hashSync(body.password, 10);
+    const user = await this.db.user.create({
+      data: {
+        ...body,
+        /// this line to reuse the whole function in face/google/apple login with same implementation
+        provider: socialProvider
+          ? socialProvider
+          : AccountTypeProviderEnum.local,
+      },
+    });
+
+    // @ mail queueAccountTyprProviderEnum
+    // if (_user.notificationsEnabled) {
+    //   await sendWelcomeNotification(_user.email);
+    // }
+
+    delete user.password;
+    const token = this.generateJWT(user);
+    const result = { ...user, token };
+    return { data: result };
+  }
+
+  async resetPassword(body: ResetPassword) {
+    const user = await this.db.user.findUnique({
+      where: {
+        email: body.email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    const isTokenExist = await this.db.userPasswordRecoveryTokens.findFirst({
+      where: {
+        userId: user.id,
+        token: body.token,
+      },
+    });
+    if (!isTokenExist) {
+      throw new NotFoundException('invalid reset token');
+    }
+    const newPass = hashSync(body.newPassword, 10);
+
+    await this.db.user.update({
+      where: { id: user.id },
+      data: {
+        password: newPass,
+      },
+    });
+    /// after change pass remove token to not use it again
+    await this.db.userPasswordRecoveryTokens.delete({
+      where: { id: isTokenExist.id },
+    });
+
+    return { message: 'password changed successfully' };
+  }
+
+  async forgotPassword(email: string): Promise<any> {
+    const user = await this.db.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    // delete old tokens for not reuse it again
+    await this.db.userPasswordRecoveryTokens.deleteMany({
+      where: {
+        userId: user.id,
+      },
+    });
+    const resetCode = crypto.randomBytes(128).toString('hex');
+    await this.db.userPasswordRecoveryTokens.create({
+      data: {
+        userId: user.id,
+        token: resetCode,
+      },
+    });
+
+    this.mailsService.sendResetPasswordEmail(user.name, user.email, resetCode);
+    return { message: 'an email has been sent for reset password ' };
+  }
+
+  public generateJWT(user) {
+    const today = new Date();
+    const exp = new Date(today);
+    exp.setDate(today.getDate() + 60);
+
+    return jwt.sign(
+      {
+        ...user,
+        exp: exp.getTime() / 1000,
+      },
+      JWT_SECRET,
+    );
+  }
+
+  public async generateRefreshToken(user) {
+    const expireDate = addDays(new Date(), 30);
+    const rez = await this.db.userRefreshTokens.create({
+      data: { userId: user.id, expireAt: expireDate },
+    });
+    return rez.token;
+  }
 
   async refreshToken(body: string) {
     const tokenToFound = await this.db.userRefreshTokens.findUnique({

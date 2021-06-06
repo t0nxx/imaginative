@@ -7,6 +7,13 @@ datasource db {
   url      = "postgresql://root:1hNmz0guMYBNNG26yNcZ@imaginativenewsmaininstance.cztsnadwffym.us-east-1.rds.amazonaws.com:5432/ImaginativeNewsMainDatabaseNew"
 }
 
+enum AccountTypeProviderEnum {
+  local
+  facebook
+  google
+  apple
+}
+
 model SequelizeMeta {
   name String @id @db.VarChar(255)
 }
@@ -208,19 +215,18 @@ model Story {
 }
 
 model User {
-  id                   Int           @id @default(autoincrement())
-  name                 String        @db.VarChar(500)
-  email                String        @unique @db.VarChar(500)
-  photoUrl             String        @default("https://gravatar.com/avatar/14978c9024af3c17cf195dff095d79e8?s=400&d=robohash&r=x")
-  featuredProductName  String?       @db.VarChar(200)
-  featuredProductId    String?       @db.VarChar(50)
-  password             String        @db.VarChar(255)
-  lang                 String        @default("en")
-  googleId             String?
-  facebookId           String?
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
-  notificationsEnabled Boolean       @default(false)
+  id                   Int                     @id @default(autoincrement())
+  name                 String                  @db.VarChar(500)
+  email                String                  @unique @db.VarChar(500)
+  photoUrl             String                  @default("https://gravatar.com/avatar/14978c9024af3c17cf195dff095d79e8?s=400&d=robohash&r=x")
+  featuredProductName  String?                 @db.VarChar(200)
+  featuredProductId    String?                 @db.VarChar(50)
+  password             String                  @db.VarChar(255)
+  lang                 String                  @default("en")
+  provider             AccountTypeProviderEnum @default(local)
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
+  notificationsEnabled Boolean                 @default(false)
   UserSetting          UserSettings?
 
   // map is the name of model in database

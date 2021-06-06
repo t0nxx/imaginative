@@ -11,21 +11,13 @@ import { ValidationPipe } from '@nestjs/common';
 //import { pgPool } from "./shared/core/Database";
 const debug = debug0('imaginativenews-api:server');
 //const pgSession = connect_pg_simple(session);
+import * as firebaseAdmin from 'firebase-admin';
+import { serviceAccount } from './shared/core/FireBaseAdminKeys';
 
-declare const module: any;
-
-function onListening() {
-  debug(`Listening on port`);
-}
 async function bootstrap() {
   const appOptions = { cors: true };
   const app = await NestFactory.create(ApplicationModule, appOptions);
-  if (module.hot) {
-    module.hot.accept();
-    module.hot.dispose(() => app.close());
-  }
-  const server = app.getHttpServer();
-  server.on('listening', onListening);
+
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
   app.use(logger('dev'));
@@ -53,6 +45,15 @@ async function bootstrap() {
   console.log(
     `******************** app started in ${process.env.NODE_ENV}  enviroment `,
   );
+
+  firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert({
+      projectId: serviceAccount.project_id,
+      privateKey: serviceAccount.private_key,
+      clientEmail: serviceAccount.client_email,
+    }),
+  });
+
   await app.listen(process.env.PORT || 5000);
 }
 bootstrap();
