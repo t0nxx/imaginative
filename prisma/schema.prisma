@@ -7,6 +7,18 @@ datasource db {
   url      = "postgresql://root:1hNmz0guMYBNNG26yNcZ@imaginativenewsmaininstance.cztsnadwffym.us-east-1.rds.amazonaws.com:5432/ImaginativeNewsMainDatabaseNew"
 }
 
+enum AccountRuleEnum {
+  user
+  admin
+
+}
+
+enum AccountTypeEnum {
+  individual
+  company
+  institute
+}
+
 enum AccountTypeProviderEnum {
   local
   facebook
@@ -224,6 +236,8 @@ model User {
   password             String                  @db.VarChar(255)
   lang                 String                  @default("en")
   provider             AccountTypeProviderEnum @default(local)
+  type                 AccountTypeEnum         @default(individual)
+  role                 AccountRuleEnum         @default(user)
   createdAt            DateTime                @default(now())
   updatedAt            DateTime                @updatedAt
   notificationsEnabled Boolean                 @default(false)

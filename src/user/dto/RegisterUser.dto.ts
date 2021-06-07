@@ -11,6 +11,12 @@ export enum langEnum {
   en = 'en',
   ar = 'ar',
 }
+
+export enum AccountTypeEnum {
+  individual = 'individual',
+  company = 'company',
+  institute = 'institute',
+}
 export class RegisterUserDto {
   @IsNotEmpty() name: string;
 
@@ -20,5 +26,7 @@ export class RegisterUserDto {
 
   @IsNotEmpty() @IsBoolean() notificationsEnabled: boolean;
 
-  @IsOptional() @IsEnum(langEnum) lang: langEnum;
+  @IsNotEmpty() @IsEnum(AccountTypeEnum) type: AccountTypeEnum;
+
+  @IsNotEmpty() @IsEnum(langEnum) lang: langEnum;
 }

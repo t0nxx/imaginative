@@ -14,7 +14,11 @@ import { google } from 'googleapis';
 import crypto from 'crypto';
 import { hashSync, compareSync } from 'bcryptjs';
 import IGoogleProfile from './dto/GooglePofile';
-import { RegisterUserDto, langEnum } from './dto/RegisterUser.dto';
+import {
+  RegisterUserDto,
+  langEnum,
+  AccountTypeEnum,
+} from './dto/RegisterUser.dto';
 import { AccountTypeProviderEnum } from './dto/SocialLogin.dto';
 import ResetPassword from './dto/ResetPassword.dto';
 import PasswordRecoveryToken from './../models/PasswordRecoveryToken';
@@ -406,11 +410,14 @@ export class UserService {
 
         email: firebaseResponse.email,
 
-        password: MASTER_PASS_FOR_SOCIAL_ACCOUNTS || 'MASTER_PASS_FOR_SOCIAL_ACCOUNTS',
+        password:
+          MASTER_PASS_FOR_SOCIAL_ACCOUNTS || 'MASTER_PASS_FOR_SOCIAL_ACCOUNTS',
 
         notificationsEnabled: true,
 
         lang: langEnum.en,
+
+        type: AccountTypeEnum.individual,
       };
       return this.register(newUser, socialProvider);
     }
@@ -419,60 +426,6 @@ export class UserService {
     const token = this.generateJWT(user);
     const result = { ...user, token };
     return { data: result };
-  }
-
-  async googleLogin(token): Promise<any> {
-    try {
-      oauth2Client.setCredentials({ access_token: token });
-      const oauth2 = google.oauth2({ auth: oauth2Client, version: 'v2' });
-
-      const googleProfile: IGoogleProfile = await new Promise(
-        (resolve, reject) => {
-          return oauth2.userinfo.get((err, res) => {
-            if (err || !res) {
-              reject(err);
-            } else {
-              resolve(res.data);
-            }
-          });
-        },
-      );
-
-      let user = await User.findOne({
-        where: {
-          [Op.or]: [
-            { googleId: googleProfile.id },
-            { email: googleProfile.email },
-          ],
-        },
-      });
-
-      if (!googleProfile.name || !googleProfile.email || !googleProfile.id) {
-        return { status: 'NO_DATA' };
-      }
-
-      if (!user) {
-        user = await User.create({
-          id: v4(),
-          name: googleProfile.name,
-          email: googleProfile.email,
-          googleId: googleProfile.id,
-          hash: '',
-          notificationsEnabled: false,
-        });
-      } else if (user.googleId !== googleProfile.id) {
-        await User.update(
-          { googleId: googleProfile.id },
-          { where: { email: googleProfile.email } },
-        );
-      }
-
-      await sendWelcomeNotification(googleProfile.email);
-
-      return { status: 'SUCCESS', data: user };
-    } catch (err) {
-      return { status: 'ERROR', error: err };
-    }
   }
 
   async register(
