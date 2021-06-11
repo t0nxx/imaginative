@@ -1,3 +1,20 @@
+enum AccountRuleEnum {
+  user = 'user',
+  admin = 'admin',
+}
+
+enum AccountTypeEnum {
+  individual = 'individual',
+  company = 'company',
+  institute = 'institute',
+}
+
+enum AccountTypeProviderEnum {
+  local = 'local',
+  facebook = 'facebook',
+  google = 'google',
+  apple = 'apple',
+}
 export const users = [
   {
     id: 1,
@@ -10,12 +27,10 @@ export const users = [
     // this pass is asd123456
     password: '$2a$10$8oopKOygF6kzIu9TT47JrehCw9DK8JUW8bBU0DrHbrAtLQPS3eGCC',
     lang: 'en',
-    createdAt: '2021-06-03 22:07:09.763',
-    updatedAt: '2021-06-06 22:29:19.536',
     notificationsEnabled: true,
-    provider: 'local',
-    type: 'individual',
-    role: 'admin',
+    provider: AccountTypeProviderEnum.local,
+    type: AccountTypeEnum.individual,
+    role: AccountRuleEnum.admin,
   },
   {
     id: 2,
@@ -28,12 +43,10 @@ export const users = [
     // this pass is asd123456
     password: '$2a$10$8oopKOygF6kzIu9TT47JrehCw9DK8JUW8bBU0DrHbrAtLQPS3eGCC',
     lang: 'en',
-    createdAt: '2021-06-07 21:00:02.099',
-    updatedAt: '2021-06-07 21:00:02.1',
     notificationsEnabled: true,
-    provider: 'local',
-    type: 'company',
-    role: 'user',
+    provider: AccountTypeProviderEnum.local,
+    type: AccountTypeEnum.company,
+    role: AccountRuleEnum.user,
   },
   {
     id: 3,
@@ -47,11 +60,9 @@ export const users = [
 
     password: '$2a$10$8oopKOygF6kzIu9TT47JrehCw9DK8JUW8bBU0DrHbrAtLQPS3eGCC',
     lang: 'en',
-    createdAt: '2021-06-07 21:00:02.099',
-    updatedAt: '2021-06-07 21:00:02.1',
     notificationsEnabled: true,
-    provider: 'local',
-    type: 'institute',
-    role: 'user',
+    provider: AccountTypeProviderEnum.local,
+    type: AccountTypeEnum.institute,
+    role: AccountRuleEnum.user,
   },
 ];

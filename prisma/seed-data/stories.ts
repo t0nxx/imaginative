@@ -14,8 +14,6 @@ export const stories = [
     conclusion: 'testtttttttttttttttttttttt',
     imaginativeYear: 2020,
     status: 1,
-    createdAt: '2021-01-06 17:55:37.382+02',
-    updatedAt: '2021-01-06 17:55:37.382+02',
   },
   {
     id: 2,
@@ -32,8 +30,6 @@ export const stories = [
     conclusion: 'The youssef mugs\n',
     imaginativeYear: 2030,
     status: 1,
-    createdAt: '2021-01-13 13:09:09.61+02',
-    updatedAt: '2021-01-13 13:09:09.61+02',
   },
   {
     id: 3,
@@ -50,8 +46,6 @@ export const stories = [
     conclusion: 'The youssef mugs\n',
     imaginativeYear: 2030,
     status: 2,
-    createdAt: '2021-01-13 13:13:56.684+02',
-    updatedAt: '2021-01-13 13:13:56.684+02',
   },
   {
     id: 4,
@@ -68,8 +62,6 @@ export const stories = [
     conclusion: 'Hhjjnnn jjnmmm hnnnn',
     imaginativeYear: 2020,
     status: 2,
-    createdAt: '2021-01-06 13:18:22.592+02',
-    updatedAt: '2021-01-06 13:22:07.404+02',
   },
   {
     id: 5,
@@ -86,8 +78,6 @@ export const stories = [
     conclusion: 'عاءله ‏ووووووووووووووووو\n‏وووووووووووو',
     imaginativeYear: 2040,
     status: 2,
-    createdAt: '2020-12-11 18:19:27.973+02',
-    updatedAt: '2021-01-09 15:46:34.213+02',
   },
   {
     id: 6,
@@ -104,8 +94,6 @@ export const stories = [
     conclusion: 'testtttttttttttttttttttttt',
     imaginativeYear: 2020,
     status: 0,
-    createdAt: '2020-12-12 17:16:38.257+02',
-    updatedAt: '2021-01-06 17:47:47.402+02',
   },
   {
     id: 7,
@@ -122,8 +110,6 @@ export const stories = [
     conclusion: 'Hjjkkmmk',
     imaginativeYear: 2031,
     status: 2,
-    createdAt: '2020-12-01 18:52:34.482+02',
-    updatedAt: '2020-12-14 12:26:00.219+02',
   },
   {
     id: 8,
@@ -144,8 +130,6 @@ export const stories = [
       'الاف ‏الروبوتاتفي ‏سما ‏مصر ‏لخدمتك ‏. ‏. ‏. ‏. ‏اعر ‏ف ‏الاسباب  ‏الاتيه ‏لفعل ‏ذلك ‏',
     imaginativeYear: 2345,
     status: 0,
-    createdAt: '2020-12-03 16:25:13.131+02',
-    updatedAt: '2021-01-09 15:46:34.206+02',
   },
   {
     id: 9,
@@ -162,8 +146,6 @@ export const stories = [
     conclusion: 'The youssef mugs\n',
     imaginativeYear: 2030,
     status: 2,
-    createdAt: '2021-01-13 13:13:56.335+02',
-    updatedAt: '2021-01-13 13:13:56.335+02',
   },
   {
     id: 10,
@@ -180,8 +162,6 @@ export const stories = [
     conclusion: 'The youssef mugs\n',
     imaginativeYear: 2030,
     status: 2,
-    createdAt: '2021-01-21 17:56:57.997+02',
-    updatedAt: '2021-01-21 17:56:57.997+02',
   },
   {
     id: 11,
@@ -202,8 +182,6 @@ export const stories = [
       'الاف ‏الروبوتاتفي ‏سما ‏مصر ‏لخدمتك ‏. ‏. ‏. ‏. ‏اعر ‏ف ‏الاسباب  ‏الاتيه ‏لفعل ‏ذلك ‏',
     imaginativeYear: 2345,
     status: 2,
-    createdAt: '2020-12-03 16:23:00.402+02',
-    updatedAt: '2021-01-09 15:46:34.202+02',
   },
   {
     id: 12,
@@ -220,8 +198,6 @@ export const stories = [
     conclusion: 'The youssef mugs\n',
     imaginativeYear: 2030,
     status: 1,
-    createdAt: '2021-01-13 13:09:09.61+02',
-    updatedAt: '2021-04-05 20:51:50.782+02',
   },
   {
     id: 13,
@@ -238,8 +214,6 @@ export const stories = [
     conclusion: 'Hhjjjjnnmmk\nBbnnnn',
     imaginativeYear: 2045,
     status: 0,
-    createdAt: '2020-12-03 15:51:28.856+02',
-    updatedAt: '2021-01-09 15:46:34.198+02',
   },
   {
     id: 14,
@@ -256,8 +230,6 @@ export const stories = [
     conclusion: 'https://m.facebook.com/',
     imaginativeYear: 2045,
     status: 2,
-    createdAt: '2020-12-11 19:44:01.789+02',
-    updatedAt: '2020-12-23 21:17:16.832+02',
   },
   {
     id: 15,
@@ -274,8 +246,6 @@ export const stories = [
     conclusion: 'https://m.facebook.com/',
     imaginativeYear: 2020,
     status: 2,
-    createdAt: '2020-12-14 13:56:03.374+02',
-    updatedAt: '2020-12-14 14:00:40.484+02',
   },
   {
     id: 16,
@@ -292,7 +262,5 @@ export const stories = [
     conclusion: 'The youssef mugs\n',
     imaginativeYear: 2030,
     status: 2,
-    createdAt: '2021-01-13 13:13:56.456+02',
-    updatedAt: '2021-01-13 13:13:56.456+02',
   },
 ];

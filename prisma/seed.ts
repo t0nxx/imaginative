@@ -1,81 +1,82 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 import { currencies, localizedCurrencies } from './seed-data/currencies';
 import { disclaimers, localizedDisclaimers } from './seed-data/disclaimers';
 import { hiringTypes, localizedHiringTypes } from './seed-data/hiring-types';
 import { listingTypes, localizedListingTypes } from './seed-data/listing-types';
+import { listings } from './seed-data/listings';
 import { priceTypes, localizedPriceTypes } from './seed-data/price-types';
+import { stories } from './seed-data/stories';
+import { users } from './seed-data/users';
 
 async function main() {
-  for (const item of currencies) {
-    const { id, ...rest } = item;
-    await prisma.currencies.create({
-      data: rest,
-    });
-  }
-  for (const item of localizedCurrencies) {
-    const { id, ...rest } = item;
-    await prisma.localizedCurrencies.create({
-      data: rest,
-    });
-  }
+  /// seed currencies
+  await prisma.currencies.createMany({
+    data: currencies,
+  });
+
+  /// seed localizedCurrencies
+  await prisma.localizedCurrencies.createMany({
+    data: localizedCurrencies,
+  });
   ///////////////////////////////////////////////////////////
-  for (const item of disclaimers) {
-    const { id, ...rest } = item;
-    await prisma.disclaimers.create({
-      data: rest,
-    });
-  }
-  for (const item of localizedDisclaimers) {
-    const { id, ...rest } = item;
-    await prisma.localizedDisclaimers.create({
-      data: rest,
-    });
-  }
+  /// seed disclaimers
+
+  await prisma.disclaimers.createMany({
+    data: disclaimers,
+  });
+
+  await prisma.localizedDisclaimers.createMany({
+    data: localizedDisclaimers,
+  });
 
   ///////////////////////////////////////////////////////////////
-  for (const item of priceTypes) {
-    const { id, ...rest } = item;
-    await prisma.priceTypes.create({
-      data: rest,
-    });
-  }
-  for (const item of localizedPriceTypes) {
-    const { id, ...rest } = item;
-    await prisma.localizedPriceTypes.create({
-      data: rest,
-    });
-  }
+
+  await prisma.priceTypes.createMany({
+    data: priceTypes,
+  });
+
+  await prisma.localizedPriceTypes.createMany({
+    data: localizedPriceTypes,
+  });
 
   ///////////////////////////////////////////////////////////////
-  for (const item of hiringTypes) {
-    const { id, ...rest } = item;
-    await prisma.hiringTypes.create({
-      data: rest,
-    });
-  }
-  for (const item of localizedHiringTypes) {
-    const { id, ...rest } = item;
-    await prisma.localizedHiringTypes.create({
-      data: rest,
-    });
-  }
+
+  await prisma.hiringTypes.createMany({
+    data: hiringTypes,
+  });
+
+  await prisma.localizedHiringTypes.createMany({
+    data: localizedHiringTypes,
+  });
 
   ///////////////////////////////////////////////////////////////
-  for (const item of listingTypes) {
-    const { id, ...rest } = item;
-    await prisma.listingTypes.create({
-      data: rest,
-    });
-  }
-  for (const item of localizedListingTypes) {
-    const { id, ...rest } = item;
-    await prisma.localizedListingTypes.create({
-      data: rest,
-    });
-  }
+
+  await prisma.listingTypes.createMany({
+    data: listingTypes,
+  });
+
+  await prisma.localizedListingTypes.createMany({
+    data: localizedListingTypes,
+  });
 
   ///////////////////////////////////////////////////////////////
+
+  await prisma.user.createMany({
+    data: users,
+  });
+
+  ///////////////////////////////////////////////////////////////
+
+  await prisma.story.createMany({
+    data: stories,
+  });
+
+  ///////////////////////////////////////////////////////////////
+
+  await prisma.listings.createMany({
+    data: listings,
+  });
 }
 
 main()

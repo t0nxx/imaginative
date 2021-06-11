@@ -1,8 +1,10 @@
 export const listings = [
   {
     id: 1,
-    ownerId: 1,
+
     pageType: 'Product',
+    ownerId: 1,
+
     listingTypeId: 1,
     privacy: 'Public',
     media:
@@ -23,19 +25,18 @@ export const listings = [
     offerDescription: '',
     socialLinks: '["https://m.facebook.com/","",""]',
     viewsCount: 0,
-    createdAt: '2021-01-13 13:01:57.568+02',
-    updatedAt: '2021-04-05 20:56:10.704+02',
     status: 1,
     isEdited: false,
     otherHiring: null,
     otherPriceType: '',
-    overallRating: '2.3333333333333335',
+    overallRating: 2.3333333333333335,
     totalRatingCount: 3,
   },
   {
     id: 2,
-    ownerId: 1,
     pageType: 'Skill',
+    ownerId: 1,
+
     listingTypeId: 1,
     privacy: 'Public',
     media:
@@ -57,19 +58,18 @@ export const listings = [
     socialLinks:
       '["https://facebook.com","https://Walmart.com","https://xing.com"]',
     viewsCount: 0,
-    createdAt: '2020-11-11 21:03:45.486+02',
-    updatedAt: '2020-11-17 14:54:57.401+02',
     status: 2,
     isEdited: true,
     otherHiring: null,
     otherPriceType: null,
-    overallRating: '0',
+    overallRating: 0,
     totalRatingCount: 0,
   },
   {
     id: 3,
-    ownerId: 1,
     pageType: 'Product',
+    ownerId: 1,
+
     listingTypeId: 1,
     privacy: 'Public',
     media:
@@ -90,13 +90,11 @@ export const listings = [
     offerDescription: '',
     socialLinks: '["https://m.facebook.com/","",""]',
     viewsCount: 0,
-    createdAt: '2021-02-23 15:14:58.822+02',
-    updatedAt: '2021-04-06 14:20:39.769+02',
     status: 1,
     isEdited: false,
     otherHiring: null,
     otherPriceType: '',
-    overallRating: '4.25',
+    overallRating: 4.5,
     totalRatingCount: 2,
   },
 ];
