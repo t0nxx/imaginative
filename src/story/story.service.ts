@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import Story from '../models/Story';
 import CreateStoryDto from './dto/CreateStoryDto';
 import StoryDto from './dto/StoryDto';
@@ -10,6 +10,7 @@ import SearchResultDto from '@/shared/models/SearchResultDto';
 import SearchStoryDto from './dto/SearchStoryDto';
 import { ListingService } from '@/listing/listing.service';
 import ListingDto from '@/listing/dto/ListingDto';
+import { PrismaService } from '@/shared/core/prisma.service';
 
 @Injectable()
 export class StoryService {
@@ -17,26 +18,26 @@ export class StoryService {
     private lookupsService: LookupsService,
     private userService: UserService,
     private listingService: ListingService,
+    private readonly db: PrismaService,
   ) {}
 
-  public async addStory(
-    lang: string,
-    storyData: CreateStoryDto,
-  ): Promise<StoryDto> {
-    const story = await Story.create(storyData);
+  public async addStory(lang: string, storyData: CreateStoryDto) {
+    const story = await this.db.story.create({
+      data: storyData,
+    });
     return this.mapStory(story, lang);
   }
 
   public async updateStory(
     id: string,
     lang: string,
-    storyData: CreateStoryDto,
+    _storyData: CreateStoryDto,
   ): Promise<StoryDto> {
-    await Story.update(storyData, {
-      where: {
-        id: id,
-      },
-    });
+    // await Story.update(storyData, {
+    //   where: {
+    //     id: id,
+    //   },
+    // });
     const story = await Story.findOne({
       where: {
         id: id,
@@ -57,17 +58,17 @@ export class StoryService {
   }
 
   public async getStory(
-    id: string,
+    id: number,
     lang: string,
-    userId?: string,
+    userId?: number,
   ): Promise<StoryDto | null> {
-    const dbStory = await Story.findOne({
+    const dbStory = await this.db.story.findUnique({
       where: {
         id: id,
       },
     });
     if (dbStory) {
-      let userFollowings: string[] = [];
+      let userFollowings: number[] = [];
       if (dbStory && userId) {
         userFollowings = await this.userService.getUserFollowedUsers(userId, [
           dbStory.ownerId,
@@ -89,36 +90,34 @@ export class StoryService {
   }
 
   public async deleteStory(
-    ownerId: string,
-    id: string,
+    _ownerId: number,
+    id: number,
   ): Promise<OperationResult> {
     const result = new OperationResult();
     try {
-      const story = await Story.findOne({
+      const story = await this.db.story.findUnique({
         where: {
           id: id,
-          ownerId: ownerId,
         },
       });
       if (!story) {
         result.success = false;
         result.code = ErrorCodes.NOT_FOUND;
       } else {
-        const mediaFiles = story.media;
-        if (mediaFiles) {
-          for (const media of mediaFiles) {
-            if (media.bucket && media.type && media.fileName)
-              this.lookupsService.deleteFile(
-                media.bucket,
-                media.type,
-                media.fileName,
-              );
-          }
-        }
-        await Story.destroy({
+        // const mediaFiles = story.media;
+        // if (mediaFiles) {
+        //   for (const media of mediaFiles) {
+        //     if (media.bucket && media.type && media.fileName)
+        //       this.lookupsService.deleteFile(
+        //         media.bucket,
+        //         media.type,
+        //         media.fileName,
+        //       );
+        //   }
+        // }
+        await this.db.story.delete({
           where: {
             id: id,
-            ownerId: ownerId,
           },
         });
         result.success = true;
@@ -134,8 +133,8 @@ export class StoryService {
   public async searchStories(
     searchModel: SearchStoryDto,
     lang: string,
-    userId?: string,
-  ): Promise<SearchResultDto<StoryDto>> {
+    userId?: number,
+  ) {
     const where: any = {};
     if (searchModel.ownerId && searchModel.ownerId !== '') {
       where.ownerId = searchModel.ownerId;
@@ -147,35 +146,42 @@ export class StoryService {
       where.status = searchModel.status;
     }
 
-    const stories = await Story.findAndCountAll({
+    const stories = await this.db.story.findMany({
       where: where,
-      offset: ((searchModel.pageIndex || 1) - 1) * (searchModel.pageSize || 10),
-      limit: searchModel.pageSize,
-      order: [['createdAt', 'DESC']],
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
+    // return { data: stories, count: stories.length };
+
+    // const stories = await Story.findAndCountAll({
+    //   where: where,
+    //   offset: ((searchModel.pageIndex || 1) - 1) * (searchModel.pageSize || 10),
+    //   limit: searchModel.pageSize,
+    //   order: [['createdAt', 'DESC']],
+    // });
+
     const result = new SearchResultDto<StoryDto>();
-    result.count = stories.count;
+    result.count = stories.length;
     if (result.count > 0) {
-      const storiesWithListings = stories.rows.filter(
+      const storiesWithListings = stories.filter(
         (story) => story.listingId != undefined,
       );
       let listings: ListingDto[] = [];
       if (storiesWithListings && storiesWithListings.length > 0) {
-        const listingIds = storiesWithListings.map(
-          (story) => story.listingId || '',
-        );
+        const listingIds = storiesWithListings.map((story) => story.listingId);
         listings = await this.listingService.getListingsByIds(lang, listingIds);
       }
-      const ownerIds = stories.rows.map((s) => s.ownerId);
+      const ownerIds = stories.map((s) => s.ownerId);
 
-      let userFollowings: string[] = [];
+      let userFollowings: number[] = [];
       if (userId)
         userFollowings = await this.userService.getUserFollowedUsers(
           userId,
           ownerIds,
         );
-      for (const dbStory of stories.rows) {
+      for (const dbStory of stories) {
         const story = await this.mapStory(dbStory, lang, userFollowings);
         if (dbStory.listingId != undefined) {
           story.listing = this.getListingSnippet(
@@ -191,7 +197,7 @@ export class StoryService {
   async mapStory(
     story: any,
     lang: string,
-    userFollowings: string[] = [],
+    userFollowings: number[] = [],
   ): Promise<StoryDto> {
     const disclaimers = await this.lookupsService.getDisclaimers(lang);
     const user = await this.userService.getUser(story.ownerId);
@@ -245,4 +251,5 @@ export class StoryService {
     }
     return null;
   }
+  ///////////////////////////////////// new - mahmoud done ///////////////////////////////
 }

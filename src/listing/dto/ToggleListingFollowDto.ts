@@ -1,5 +1,5 @@
 export default interface ToggleListingFollowDto {
-  userId: string;
-  listingId: string;
+  userId: number;
+  listingId: number;
   isFollowed: boolean;
 }

@@ -1,10 +1,10 @@
 export default interface ListingDto {
-  id: string;
+  id: number;
   type: string;
-  ownerId: string;
+  ownerId: number;
   owner: any;
   pageType: string;
-  listingTypeId: string;
+  listingTypeId: number;
   listingTypeName: string;
   privacy: string;
   media: any;
@@ -17,15 +17,15 @@ export default interface ListingDto {
   advantages: string;
   url: string;
   price: number;
-  priceTypeId: string;
+  priceTypeId: number;
   otherPriceType?: string;
   priceTypeName: string;
   priceTypeFormat: string;
-  currencyId?: string;
+  currencyId?: number;
   currencyName?: string;
   currencySymbol?: string;
   currencyStandardCode?: string;
-  hiringTypeId?: string;
+  hiringTypeId?: number;
   hiringTypeName?: string;
   otherHiring?: string;
   offerPrice: number;

@@ -38,6 +38,7 @@ import { PrismaService } from '@/shared/core/prisma.service';
 import LoginUserDto from './dto/LoginUser.dto';
 import { MailsService } from '@/shared/core/mail.service';
 import * as firebaseAdmin from 'firebase-admin';
+import { UpdateUserDto } from './dto/UpdateUser.dto';
 
 const JWT_SECRET = env.JWT_SECRET;
 const MASTER_PASS_FOR_SOCIAL_ACCOUNTS = env.MASTER_PASS_FOR_SOCIAL_ACCOUNTS;
@@ -51,60 +52,6 @@ export class UserService {
     private readonly db: PrismaService,
     private readonly mailsService: MailsService,
   ) {}
-
-  async getUser(id: string): Promise<UserDto | null> {
-    const user = await User.findOne({
-      where: {
-        id: id,
-      },
-    });
-
-    const prUser = await this.db.user.findFirst({
-      where: { id: +id },
-    });
-    console.log(prUser);
-
-    if (user) {
-      const followersCounts = await this.getUsersFollowersCount([user.id]);
-      const listings = await Listing.findAndCountAll({
-        where: {
-          ownerId: user.id,
-        },
-      });
-      const stories = await Story.findAndCountAll({
-        where: {
-          ownerId: user.id,
-        },
-      });
-
-      return {
-        type: 'user',
-        id: user.id,
-        name: user.name,
-        photoUrl: user.photoUrl,
-        featuredProductName: user.featuredProductName,
-        featuredProductId: user.featuredProductId,
-        followersCount:
-          followersCounts && followersCounts.length > 0
-            ? followersCounts[0].followersCount
-            : 0,
-        productsCount: listings ? listings.count : 0,
-        storiesCount: stories ? stories.count : 0,
-      };
-    }
-    return null;
-  }
-
-  public async updateUserProfile(user: UserDto): Promise<OperationResult> {
-    await User.update(user, {
-      where: {
-        id: user.id,
-      },
-    });
-    const result = new OperationResult();
-    result.success = true;
-    return result;
-  }
 
   public async toggleUserFollow(
     toggleModel: ToggleUserFollowDto,
@@ -140,13 +87,21 @@ export class UserService {
   }
 
   public async getUserFollowedUsers(
-    followerId: string,
-    userIds: string[],
-  ): Promise<Array<string>> {
-    const followings = await UserFollower.findAll({
+    followerId: number,
+    userIds: number[],
+  ): Promise<Array<number>> {
+    // const followings = await UserFollower.findAll({
+    //   where: {
+    //     followerId: followerId,
+    //     userId: userIds,
+    //   },
+    // });
+    const followings = await this.db.userFollowers.findMany({
       where: {
         followerId: followerId,
-        userId: userIds,
+        userId: {
+          in: userIds,
+        },
       },
     });
     if (followings) return followings.map((f) => f.userId);
@@ -524,6 +479,45 @@ export class UserService {
     return { message: 'an email has been sent for reset password ' };
   }
 
+  async getUser(userId: number) {
+    const user = await this.db.user.findUnique({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    delete user.password;
+    return user;
+  }
+
+  public async updateUserProfile(userId: number, body: UpdateUserDto) {
+
+    
+    if (body.email) {
+      const existingUser = await this.db.user.findUnique({
+        where: { email: body.email },
+      });
+      if (existingUser.id != userId) {
+        console.log(existingUser.id);
+        console.log(userId);
+        throw new BadRequestException(
+          'A user with this email address already exists!',
+        );
+      }
+    }
+    if(body.password) {
+      body.password = hashSync(body.password, 10);
+    }
+    const result = await this.db.user.update({
+      where: {
+        id: userId,
+      },
+      data: body,
+    });
+
+    delete result.password;
+    return { data : result };
+  }
   public generateJWT(user) {
     const today = new Date();
     const exp = new Date(today);

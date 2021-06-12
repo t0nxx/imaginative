@@ -1,8 +1,7 @@
 export default interface CreateListingDto {
-  id: string;
-  ownerId: string;
+  ownerId: number;
   pageType: string;
-  listingTypeId: string;
+  listingTypeId: number;
   privacy: string;
   media: any;
   name: string;
@@ -14,18 +13,13 @@ export default interface CreateListingDto {
   advantages: string;
   url: string;
   price: number;
-  priceTypeId: string;
+  priceTypeId: number;
   otherPriceType?: string;
-  currencyId?: string;
-  hiringTypeId?: string;
-  otherHiring?: string;
+  currencyId?: number;
+  hiringTypeId?: number;
+  otherHiring?: number;
   offerPrice: number;
   offerDescription: string;
   socialLinks: any;
-  viewsCount: number;
   status: number;
-  isEdited: boolean;
-
-  overallRating: number;
-  totalRatingCount: number;
 }

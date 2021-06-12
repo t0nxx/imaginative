@@ -1,11 +1,10 @@
 export default interface CreateStoryDto {
-  id: string;
-  ownerId: string;
-  listingId?: string;
+  ownerId: number;
+  listingId?: number;
   privacy: string;
   media: any;
   headerLine: string;
-  disclaimerId: string;
+  disclaimerId: number;
   intro?: string;
   body?: string;
   tagline?: string;

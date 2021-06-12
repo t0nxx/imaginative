@@ -1,7 +1,7 @@
 export default interface ListingReviewDto {
-  id: string;
-  userId: string;
-  listingId: string;
+  id: number;
+  userId: number;
+  listingId: number;
   title: string;
   goodAboutListing: string;
   notGoodAboutListing: string;

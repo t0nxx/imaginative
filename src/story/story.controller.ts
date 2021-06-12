@@ -29,32 +29,19 @@ import SearchStoryDto from './dto/SearchStoryDto';
 export class StoryController {
   constructor(private readonly storyService: StoryService) {}
 
-  @ApiOperation({ summary: 'Creates new story' })
-  @ApiResponse({
-    status: 201,
-    description: 'The story has been successfully created.',
-  })
-  @ApiBody({ type: 'CreateStoryDto' })
   @Post('v1/stories')
   async createStory(
     @Headers('lang') lang = 'en',
-    @User('id') userid: string,
+    @User('id') userid: number,
     @Body() storyData: CreateStoryDto,
   ): Promise<StoryDto> {
     return await execOperation(async () => {
       storyData.ownerId = userid;
-      storyData.id = v4();
       const story = await this.storyService.addStory(lang, storyData);
       return story;
     });
   }
 
-  @ApiOperation({ summary: 'Updates an existing story' })
-  @ApiResponse({
-    status: 201,
-    description: 'The story has been successfully updated.',
-  })
-  @ApiBody({ type: 'CreateStoryDto' })
   @Put('v1/stories/:id')
   async updateStory(
     @Headers('lang') lang = 'en',
@@ -65,49 +52,41 @@ export class StoryController {
     return story;
   }
 
-  @ApiOperation({ summary: 'Gets all stories' })
-  @ApiResponse({ status: 200, description: 'Return all stories' })
   @Get('v1/stories')
   async getAllStories(@Headers('lang') lang = 'en'): Promise<any> {
     const stories = await this.storyService.getAllStories(lang);
     return stories;
   }
 
-  @ApiOperation({ summary: 'Searches stories using provided field criteria' })
-  @ApiResponse({ status: 200, description: 'Return all matched stories' })
-  @ApiBody({ type: 'SearchStoryDto' })
   @Post('v1/stories/search')
   async searchStories(
-    @User('id') userId: string,
-    @Headers('lang') lang = 'en',
-    @Body() searchModel: SearchStoryDto,
+    @User('id') _userId: string,
+    @Headers('lang') _lang = 'en',
+    @Body() _searchModel: SearchStoryDto,
   ): Promise<any> {
-    const stories = await this.storyService.searchStories(
-      searchModel,
-      lang,
-      userId,
-    );
+    const stories = [];
+    // await this.storyService.searchStories(
+    //   searchModel,
+    //   lang,
+    //   userId,
+    // );
     return stories;
   }
 
-  @ApiOperation({ summary: 'Gets a story given its id' })
-  @ApiResponse({ status: 200, description: 'Returns the story' })
   @Get('v1/stories/:id')
   async getStory(
-    @User('id') userId: string,
+    @User('id') userId: number,
     @Headers('lang') lang = 'en',
-    @Param('id') id: string,
+    @Param('id') id: number,
   ): Promise<any> {
     const story = await this.storyService.getStory(id, lang, userId);
     return story;
   }
 
-  @ApiOperation({ summary: 'Deletes a story given its id' })
-  @ApiResponse({ status: 200, description: 'Returns Operation Result' })
   @Delete('v1/stories/:id')
   async deleteStory(
-    @User('id') userId: string,
-    @Param('id') id: string,
+    @User('id') userId: number,
+    @Param('id') id: number,
   ): Promise<any> {
     const result = await this.storyService.deleteStory(userId, id);
     return result;

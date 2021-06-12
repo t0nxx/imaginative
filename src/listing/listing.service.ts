@@ -13,41 +13,37 @@ import Story from '@/models/Story';
 import CreateListingReviewDto from './dto/CreateListingReviewDto';
 import ListingReviewDto from './dto/ListingReviewDto';
 import ListingReview from '@/models/ListingReview';
-import User from '@/models/User';
-import { v4 } from 'uuid';
 import ToggleListingFollowDto from './dto/ToggleListingFollowDto';
-import ListingFollower from './../models/ListingFollower';
 import sequelize from 'sequelize';
+import { PrismaService } from '@/shared/core/prisma.service';
 
 @Injectable()
 export class ListingService {
   constructor(
     private lookupsService: LookupsService,
     private userService: UserService,
+    private readonly db: PrismaService,
   ) {}
 
-  public async addListing(
-    lang: string,
-    listingData: CreateListingDto,
-  ): Promise<ListingDto> {
-    listingData.overallRating = 0;
-    listingData.totalRatingCount = 0;
-    const listing = await Listing.create(listingData);
-    return this.mapListing(listing, lang);
+  public async addListing(_lang: string, _listingData: CreateListingDto) {
+    // const listing = await this.db.listings.create({
+    //   data : listingData,
+    // });
+    // return this.mapListing(listing, lang);
   }
 
   public async updateListing(
-    id: string,
-    lang: string,
-    listingData: CreateListingDto,
-  ): Promise<ListingDto> {
-    await Listing.update(listingData, {
-      where: {
-        id: id,
-      },
-    });
-    const listing = await this.getListing(id, lang);
-    return this.mapListing(listing, lang);
+    _id: number,
+    _lang: string,
+    _listingData: CreateListingDto,
+  ) {
+    // await Listing.update(listingData, {
+    //   where: {
+    //     id: id,
+    //   },
+    // });
+    // const listing = await this.getListing(id, lang);
+    // return this.mapListing(listing, lang);
   }
 
   public async getAllListings(lang: string): Promise<ListingDto[]> {
@@ -63,28 +59,35 @@ export class ListingService {
 
   public async getListingsByIds(
     lang: string,
-    ids: string[],
+    ids: number[],
   ): Promise<ListingDto[]> {
-    const listings = await Listing.findAll({
+    // const listings = await Listing.findAll({
+    //   where: {
+    //     id: ids,
+    //   },
+    // });
+    const listings = await this.db.listings.findMany({
       where: {
-        id: ids,
+        id: {
+          in: ids,
+        },
       },
     });
     return this.mapListings(listings, lang);
   }
 
   public async getListing(
-    id: string,
+    id: number,
     lang: string,
-    userId?: string,
+    userId?: number,
   ): Promise<ListingDto | null> {
-    const listing = await Listing.findOne({
+    const listing = await this.db.listings.findUnique({
       where: {
         id: id,
       },
     });
-    let userReviews: string[] = [];
-    let userFollowedListings: string[] = [];
+    let userReviews: number[] = [];
+    let userFollowedListings: number[] = [];
     if (userId && listing) {
       userReviews = await this.getUserReviewedListingIds(userId, [listing.id]);
       userFollowedListings = await this.getUserFollowedListingIds(userId, [
@@ -100,8 +103,8 @@ export class ListingService {
   }
 
   public async deleteListing(
-    ownerId: string,
-    id: string,
+    ownerId: number,
+    id: number,
   ): Promise<OperationResult> {
     const result = new OperationResult();
     try {
@@ -177,7 +180,7 @@ export class ListingService {
   public async searchListings(
     searchModel: SearchListingDto,
     lang: string,
-    userId?: string,
+    userId?: number,
   ): Promise<SearchResultDto<ListingDto>> {
     const where: any = {};
     if (searchModel.freeText && searchModel.freeText !== '') {
@@ -203,29 +206,32 @@ export class ListingService {
       where.listingTypeId = searchModel.listingTypeId;
     }
 
-    const listings = await Listing.findAndCountAll({
+    // const listings = await Listing.findAndCountAll({
+    //   where: where,
+    //   offset: ((searchModel.pageIndex || 1) - 1) * (searchModel.pageSize || 10),
+    //   limit: searchModel.pageSize,
+    //   order: [['createdAt', 'DESC']],
+    //   replacements: {
+    //     followerId: searchModel.followerId,
+    //   },
+    // });
+    const listings = await this.db.listings.findMany({
       where: where,
-      offset: ((searchModel.pageIndex || 1) - 1) * (searchModel.pageSize || 10),
-      limit: searchModel.pageSize,
-      order: [['createdAt', 'DESC']],
-      replacements: {
-        followerId: searchModel.followerId,
-      },
     });
     const result = new SearchResultDto<ListingDto>();
-    result.count = listings.count;
+    result.count = listings.length;
     if (result.count > 0) {
-      let userReviews: string[] = [];
-      let userFollowedListings: string[] = [];
-      if (userId && listings.count > 0) {
-        const listingIds = listings.rows.map((r) => r.id);
+      let userReviews: number[] = [];
+      let userFollowedListings: number[] = [];
+      if (userId && listings.length > 0) {
+        const listingIds = listings.map((r) => r.id);
         userReviews = await this.getUserReviewedListingIds(userId, listingIds);
         userFollowedListings = await this.getUserFollowedListingIds(
           userId,
           listingIds,
         );
       }
-      for (const listing of listings.rows) {
+      for (const listing of listings) {
         result.data.push(
           await this.mapListing(
             listing,
@@ -239,166 +245,161 @@ export class ListingService {
     return result;
   }
 
-  public async upsertReview(
-    reviewModel: CreateListingReviewDto,
-  ): Promise<ListingReviewDto> {
-    const existingReview = await ListingReview.findOne({
-      where: {
-        userId: reviewModel.userId,
-        listingId: reviewModel.listingId,
-      },
-    });
-    const listing = await Listing.findOne({
-      where: {
-        id: reviewModel.listingId,
-      },
-    });
-    const user = await User.findOne({
-      where: {
-        id: reviewModel.userId,
-      },
-    });
-
-    if (existingReview) {
-      await ListingReview.update(
-        {
-          goodAboutListing: reviewModel.goodAboutListing,
-          notGoodAboutListing: reviewModel.notGoodAboutListing,
-          starRating: reviewModel.starRating,
-          title: reviewModel.title,
-          reviewText: reviewModel.reviewText,
-        },
-        {
-          where: {
-            userId: reviewModel.userId,
-            listingId: reviewModel.listingId,
-          },
-        },
-      );
-      //Replace current rating of the user in 2 steps:
-      //1-Subtract current user rating
-      let newTotalReviews = (listing?.totalRatingCount ?? 0) - 1;
-      newTotalReviews = newTotalReviews < 0 ? 0 : newTotalReviews;
-      let overallRating =
-        newTotalReviews == 0
-          ? 0
-          : ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) -
-              existingReview.starRating) /
-            newTotalReviews;
-      //2-Then again add the user rating
-      overallRating =
-        (overallRating * newTotalReviews + reviewModel.starRating) /
-        (newTotalReviews + 1);
-      await Listing.update(
-        {
-          overallRating: overallRating,
-          totalRatingCount: newTotalReviews + 1,
-        },
-        {
-          where: {
-            id: reviewModel.listingId,
-          },
-        },
-      );
-      return {
-        id: reviewModel.id,
-        userId: reviewModel.userId,
-        listingId: reviewModel.listingId,
-        title: reviewModel.title,
-        goodAboutListing: reviewModel.goodAboutListing,
-        notGoodAboutListing: reviewModel.notGoodAboutListing,
-        reviewText: reviewModel.reviewText,
-        starRating: reviewModel.starRating,
-        createdAt: existingReview.createdAt,
-        updatedAt: existingReview.updatedAt,
-        userName: user?.name || '',
-      };
-    } else {
-      reviewModel.id = v4();
-      const newReview = await ListingReview.create(reviewModel);
-      const newTotalReviews = (listing?.totalRatingCount ?? 0) + 1;
-      const overallRating =
-        ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) +
-          reviewModel.starRating) /
-        newTotalReviews;
-      await Listing.update(
-        {
-          overallRating: overallRating,
-          totalRatingCount: newTotalReviews,
-        },
-        {
-          where: {
-            id: reviewModel.listingId,
-          },
-        },
-      );
-      return {
-        id: newReview.id,
-        userId: newReview.userId,
-        listingId: newReview.listingId,
-        title: newReview.title,
-        goodAboutListing: newReview.goodAboutListing,
-        notGoodAboutListing: newReview.notGoodAboutListing,
-        reviewText: newReview.reviewText,
-        starRating: newReview.starRating,
-        createdAt: newReview.createdAt,
-        updatedAt: newReview.updatedAt,
-        userName: user?.name || '',
-      };
-    }
+  public async upsertReview(_reviewModel: CreateListingReviewDto) {
+    // const existingReview = await ListingReview.findOne({
+    //   where: {
+    //     userId: reviewModel.userId,
+    //     listingId: reviewModel.listingId,
+    //   },
+    // });
+    // const listing = await Listing.findOne({
+    //   where: {
+    //     id: reviewModel.listingId,
+    //   },
+    // });
+    // const user = await User.findOne({
+    //   where: {
+    //     id: reviewModel.userId,
+    //   },
+    // });
+    // if (existingReview) {
+    //   await ListingReview.update(
+    //     {
+    //       goodAboutListing: reviewModel.goodAboutListing,
+    //       notGoodAboutListing: reviewModel.notGoodAboutListing,
+    //       starRating: reviewModel.starRating,
+    //       title: reviewModel.title,
+    //       reviewText: reviewModel.reviewText,
+    //     },
+    //     {
+    //       where: {
+    //         userId: reviewModel.userId,
+    //         listingId: reviewModel.listingId,
+    //       },
+    //     },
+    //   );
+    //   //Replace current rating of the user in 2 steps:
+    //   //1-Subtract current user rating
+    //   let newTotalReviews = (listing?.totalRatingCount ?? 0) - 1;
+    //   newTotalReviews = newTotalReviews < 0 ? 0 : newTotalReviews;
+    //   let overallRating =
+    //     newTotalReviews == 0
+    //       ? 0
+    //       : ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) -
+    //           existingReview.starRating) /
+    //         newTotalReviews;
+    //   //2-Then again add the user rating
+    //   overallRating =
+    //     (overallRating * newTotalReviews + reviewModel.starRating) /
+    //     (newTotalReviews + 1);
+    //   await Listing.update(
+    //     {
+    //       overallRating: overallRating,
+    //       totalRatingCount: newTotalReviews + 1,
+    //     },
+    //     {
+    //       where: {
+    //         id: reviewModel.listingId,
+    //       },
+    //     },
+    //   );
+    //   return {
+    //     id: reviewModel.id,
+    //     userId: reviewModel.userId,
+    //     listingId: reviewModel.listingId,
+    //     title: reviewModel.title,
+    //     goodAboutListing: reviewModel.goodAboutListing,
+    //     notGoodAboutListing: reviewModel.notGoodAboutListing,
+    //     reviewText: reviewModel.reviewText,
+    //     starRating: reviewModel.starRating,
+    //     createdAt: existingReview.createdAt,
+    //     updatedAt: existingReview.updatedAt,
+    //     userName: user?.name || '',
+    //   };
+    // } else {
+    //   reviewModel.id = v4();
+    //   const newReview = await ListingReview.create(reviewModel);
+    //   const newTotalReviews = (listing?.totalRatingCount ?? 0) + 1;
+    //   const overallRating =
+    //     ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) +
+    //       reviewModel.starRating) /
+    //     newTotalReviews;
+    //   await Listing.update(
+    //     {
+    //       overallRating: overallRating,
+    //       totalRatingCount: newTotalReviews,
+    //     },
+    //     {
+    //       where: {
+    //         id: reviewModel.listingId,
+    //       },
+    //     },
+    //   );
+    //   return {
+    //     id: newReview.id,
+    //     userId: newReview.userId,
+    //     listingId: newReview.listingId,
+    //     title: newReview.title,
+    //     goodAboutListing: newReview.goodAboutListing,
+    //     notGoodAboutListing: newReview.notGoodAboutListing,
+    //     reviewText: newReview.reviewText,
+    //     starRating: newReview.starRating,
+    //     createdAt: newReview.createdAt,
+    //     updatedAt: newReview.updatedAt,
+    //     userName: user?.name || '',
+    //   };
+    // }
   }
 
   public async deleteReview(
-    userId: string,
-    reviewId: string,
-    listingId: string,
+    _userId: number,
+    _reviewId: number,
+    _listingId: number,
   ): Promise<OperationResult> {
     const result = new OperationResult();
     try {
-      const existingReview = await ListingReview.findOne({
-        where: {
-          id: reviewId,
-          userId: userId,
-        },
-      });
-      if (existingReview && existingReview.listingId === listingId) {
-        const listing = await Listing.findOne({
-          where: {
-            id: existingReview.listingId,
-          },
-        });
-
-        await ListingReview.destroy({
-          where: {
-            id: reviewId,
-          },
-        });
-
-        let newTotalReviews = (listing?.totalRatingCount ?? 0) - 1;
-        newTotalReviews = newTotalReviews < 0 ? 0 : newTotalReviews;
-        const overallRating =
-          newTotalReviews == 0
-            ? 0
-            : ((listing?.overallRating ?? 0) *
-                (listing?.totalRatingCount ?? 0) -
-                existingReview.starRating) /
-              newTotalReviews;
-        await Listing.update(
-          {
-            overallRating: overallRating,
-            totalRatingCount: newTotalReviews,
-          },
-          {
-            where: {
-              id: existingReview.listingId,
-            },
-          },
-        );
-        result.success = true;
-      } else {
-        result.success = false;
-        result.code = ErrorCodes.NOT_FOUND;
-      }
+      // const existingReview = await ListingReview.findOne({
+      //   where: {
+      //     id: reviewId,
+      //     userId: userId,
+      //   },
+      // });
+      // if (existingReview && existingReview.listingId === listingId) {
+      //   const listing = await Listing.findOne({
+      //     where: {
+      //       id: existingReview.listingId,
+      //     },
+      //   });
+      //   await ListingReview.destroy({
+      //     where: {
+      //       id: reviewId,
+      //     },
+      //   });
+      //   let newTotalReviews = (listing?.totalRatingCount ?? 0) - 1;
+      //   newTotalReviews = newTotalReviews < 0 ? 0 : newTotalReviews;
+      //   const overallRating =
+      //     newTotalReviews == 0
+      //       ? 0
+      //       : ((listing?.overallRating ?? 0) *
+      //           (listing?.totalRatingCount ?? 0) -
+      //           existingReview.starRating) /
+      //         newTotalReviews;
+      //   await Listing.update(
+      //     {
+      //       overallRating: overallRating,
+      //       totalRatingCount: newTotalReviews,
+      //     },
+      //     {
+      //       where: {
+      //         id: existingReview.listingId,
+      //       },
+      //     },
+      //   );
+      //   result.success = true;
+      // } else {
+      //   result.success = false;
+      //   result.code = ErrorCodes.NOT_FOUND;
+      // }
     } catch (error) {
       result.success = false;
       result.code = ErrorCodes.GENERAL_ERROR;
@@ -408,7 +409,7 @@ export class ListingService {
   }
 
   public async getListingReviews(
-    listingId: string,
+    listingId: number,
     pageIndex: number,
     pageSize: number,
   ): Promise<SearchResultDto<ListingReviewDto>> {
@@ -448,31 +449,30 @@ export class ListingService {
   }
 
   public async toggleListingFollow(
-    toggleModel: ToggleListingFollowDto,
+    _toggleModel: ToggleListingFollowDto,
   ): Promise<OperationResult> {
     const result = new OperationResult();
     try {
-      const existingFollower = await ListingFollower.findOne({
-        where: {
-          userId: toggleModel.userId,
-          listingId: toggleModel.listingId,
-        },
-      });
-
-      if (!existingFollower && toggleModel.isFollowed === true) {
-        await ListingFollower.create({
-          id: v4(),
-          userId: toggleModel.userId,
-          listingId: toggleModel.listingId,
-        });
-      } else if (existingFollower && toggleModel.isFollowed === false) {
-        await ListingFollower.destroy({
-          where: {
-            id: existingFollower.id,
-          },
-        });
-      }
-      result.success = true;
+      // const existingFollower = await ListingFollower.findOne({
+      //   where: {
+      //     userId: toggleModel.userId,
+      //     listingId: toggleModel.listingId,
+      //   },
+      // });
+      // if (!existingFollower && toggleModel.isFollowed === true) {
+      //   await ListingFollower.create({
+      //     id: v4(),
+      //     userId: toggleModel.userId,
+      //     listingId: toggleModel.listingId,
+      //   });
+      // } else if (existingFollower && toggleModel.isFollowed === false) {
+      //   await ListingFollower.destroy({
+      //     where: {
+      //       id: existingFollower.id,
+      //     },
+      //   });
+      // }
+      // result.success = true;
     } catch (error) {
       result.success = false;
       result.message = error;
@@ -481,13 +481,15 @@ export class ListingService {
   }
 
   public async getUserReviewedListingIds(
-    userId: string,
-    listingIds: string[],
-  ): Promise<Array<string>> {
-    const reviews = await ListingReview.findAll({
+    userId: number,
+    listingIds: number[],
+  ): Promise<Array<number>> {
+    const reviews = await this.db.listingReviews.findMany({
       where: {
         userId: userId,
-        listingId: listingIds,
+        listingId: {
+          in: listingIds,
+        },
       },
     });
 
@@ -495,13 +497,15 @@ export class ListingService {
   }
 
   public async getUserFollowedListingIds(
-    userId: string,
-    listingIds: string[],
-  ): Promise<Array<string>> {
-    const listings = await ListingFollower.findAll({
+    userId: number,
+    listingIds: number[],
+  ): Promise<Array<number>> {
+    const listings = await this.db.listingFollowers.findMany({
       where: {
         userId: userId,
-        listingId: listingIds,
+        listingId: {
+          in: listingIds,
+        },
       },
     });
 
@@ -511,8 +515,8 @@ export class ListingService {
   async mapListing(
     listing: any,
     lang: string,
-    userReviews: string[] = [],
-    userFollowedListings: string[] = [],
+    userReviews: number[] = [],
+    userFollowedListings: number[] = [],
   ): Promise<ListingDto> {
     const listingTypes = await this.lookupsService.getListingTypes(
       listing.pageType,
