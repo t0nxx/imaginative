@@ -18,11 +18,19 @@ import { AuthController } from './auth.controller';
 })
 export class UserModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .forRoutes(
-        { path: 'v1/users/me', method: RequestMethod.GET },
-        { path: 'v1/users/update', method: RequestMethod.PUT },
-      );
+    consumer.apply(AuthMiddleware).forRoutes(
+      { path: 'v1/users/me', method: RequestMethod.GET },
+
+      { path: 'v1/users/:userId/profile', method: RequestMethod.GET },
+      // { path: 'v1/users/:userId/followers', method: RequestMethod.GET },
+      // { path: 'v1/users/:userId/following', method: RequestMethod.GET },
+
+      {
+        path: 'v1/users/:userId/toggle-user-follow',
+        method: RequestMethod.POST,
+      },
+
+      { path: 'v1/users/update', method: RequestMethod.PUT },
+    );
   }
 }

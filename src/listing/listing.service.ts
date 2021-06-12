@@ -425,9 +425,10 @@ export class ListingService {
     result.count = 0;
     if (reviews.count > 0) {
       result.count = reviews.count;
-      const users = await this.userService.getUsers(
-        reviews.rows.map((review) => review.userId),
-      );
+      const users = [];
+      // await this.userService.getUsers(
+      //   reviews.rows.map((review) => review.userId),
+      // );
       result.data = reviews.rows.map((review) => {
         const reviewDto: ListingReviewDto = {
           id: review.id,
@@ -605,9 +606,10 @@ export class ListingService {
     const listingTypes = await this.lookupsService.getAllListingTypes(lang);
     const priceTypes = await this.lookupsService.getPriceTypes(lang);
     const currencies = await this.lookupsService.getCurrencies(lang);
-    const users = await this.userService.getUsers(
-      listings.map((listing) => listing.ownerId),
-    );
+    const users = [];
+    // await this.userService.getUsers(
+    //   listings.map((listing) => listing.ownerId),
+    // );
     const hiringTypes = await this.lookupsService.getHiringTypes(lang);
 
     return listings.map((listing) => {

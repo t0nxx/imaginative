@@ -53,42 +53,10 @@ export class UserService {
     private readonly mailsService: MailsService,
   ) {}
 
-  public async toggleUserFollow(
-    toggleModel: ToggleUserFollowDto,
-  ): Promise<OperationResult> {
-    const result = new OperationResult();
-    try {
-      const existingFollower = await UserFollower.findOne({
-        where: {
-          userId: toggleModel.userId,
-          followerId: toggleModel.followerId,
-        },
-      });
-
-      if (!existingFollower && toggleModel.isFollowed === true) {
-        await UserFollower.create({
-          id: v4(),
-          userId: toggleModel.userId,
-          followerId: toggleModel.followerId,
-        });
-      } else if (existingFollower && toggleModel.isFollowed === false) {
-        await UserFollower.destroy({
-          where: {
-            id: existingFollower.id,
-          },
-        });
-      }
-      result.success = true;
-    } catch (error) {
-      result.success = false;
-      result.message = error;
-    }
-    return result;
-  }
-
+  /// this fun will be deleted after refactor story / listing
   public async getUserFollowedUsers(
-    followerId: number,
-    userIds: number[],
+    _followerId: number,
+    _userIds: number[],
   ): Promise<Array<number>> {
     // const followings = await UserFollower.findAll({
     //   where: {
@@ -96,141 +64,16 @@ export class UserService {
     //     userId: userIds,
     //   },
     // });
-    const followings = await this.db.userFollowers.findMany({
-      where: {
-        followerId: followerId,
-        userId: {
-          in: userIds,
-        },
-      },
-    });
-    if (followings) return followings.map((f) => f.userId);
+    // const followings = await this.db.userFollowers.findMany({
+    //   where: {
+    //     followerId: followerId,
+    //     userId: {
+    //       in: userIds,
+    //     },
+    //   },
+    // });
+    // if (followings) return followings.map((f) => f.userId);
     return [];
-  }
-
-  async getUsers(ids: string[]): Promise<UserDto[] | null> {
-    const users = await User.findAll({
-      where: {
-        id: ids,
-      },
-    });
-    if (users)
-      return users.map((user) => ({
-        type: 'user',
-        id: user.id,
-        name: user.name,
-        photoUrl: user.photoUrl,
-        featuredProductName: user.featuredProductName,
-        featuredProductId: user.featuredProductId,
-        followersCount: 0,
-        productsCount: 0,
-        storiesCount: 0,
-      }));
-    return null;
-  }
-
-  public async getUserFollowers(
-    userId: string,
-    pageIndex = 1,
-    pageSize = 10,
-  ): Promise<{ count: number; data: UserSnippetDto[] }> {
-    const followers = await UserFollower.findAndCountAll({
-      where: {
-        userId: userId,
-      },
-      limit: pageSize,
-      offset: (pageIndex - 1) * pageSize,
-    });
-
-    const followerIds =
-      followers && followers.count > 0
-        ? followers.rows.map((f) => f.followerId)
-        : [];
-    if (followerIds.length > 0) {
-      const followeds = await UserFollower.findAll({
-        where: {
-          userId: followerIds,
-          followerId: userId,
-        },
-      });
-      const users = await this.getUsers(followerIds);
-      const result: UserSnippetDto[] = users.map((u) => {
-        return {
-          type: 'user',
-          id: u.id,
-          name: u.name,
-          photoUrl: u.photoUrl,
-          featuredProductId: u.featuredProductId,
-          featuredProductName: u.featuredProductName,
-          isFriend: false,
-          isFollower: true,
-          isFollowed:
-            followeds && followeds.find((f) => f.userId === u.id)
-              ? true
-              : false,
-        };
-      });
-      return {
-        count: followers.count,
-        data: result,
-      };
-    }
-    return {
-      count: 0,
-      data: [],
-    };
-  }
-
-  public async getFollowedUsers(
-    userId: string,
-    pageIndex = 1,
-    pageSize = 10,
-  ): Promise<{ count: number; data: UserSnippetDto[] }> {
-    const followeds = await UserFollower.findAndCountAll({
-      where: {
-        followerId: userId,
-      },
-      limit: pageSize,
-      offset: (pageIndex - 1) * pageSize,
-    });
-
-    const followedIds =
-      followeds && followeds.count > 0
-        ? followeds.rows.map((f) => f.userId)
-        : [];
-    if (followedIds.length > 0) {
-      const followers = await UserFollower.findAll({
-        where: {
-          followerId: followedIds,
-          userId: userId,
-        },
-      });
-      const users = await this.getUsers(followedIds);
-      const result: UserSnippetDto[] = users.map((u) => {
-        return {
-          type: 'user',
-          id: u.id,
-          name: u.name,
-          photoUrl: u.photoUrl,
-          featuredProductId: u.featuredProductId,
-          featuredProductName: u.featuredProductName,
-          isFriend: false,
-          isFollower:
-            followers && followers.find((f) => f.followerId === u.id)
-              ? true
-              : false,
-          isFollowed: true,
-        };
-      });
-      return {
-        count: followeds.count,
-        data: result,
-      };
-    }
-    return {
-      count: 0,
-      data: [],
-    };
   }
 
   public async getListingFollowers(
@@ -268,7 +111,8 @@ export class UserService {
             },
           })
         : null;
-      const users = await this.getUsers(followerIds);
+      // const users = await this.getUsers(followerIds);
+      const users = [];
       const result: UserSnippetDto[] = users.map((u) => {
         return {
           type: 'user',
@@ -297,25 +141,6 @@ export class UserService {
       count: 0,
       data: [],
     };
-  }
-
-  async getUsersFollowersCount(
-    userIds: string[],
-  ): Promise<{ userId: string; followersCount: number }[]> {
-    const result = await UserFollower.findAll({
-      attributes: [
-        'userId',
-        [sequelize.fn('COUNT', 'followerId'), 'followerId'],
-      ],
-      group: ['userId'],
-      where: {
-        userId: userIds,
-      },
-    });
-    return result.map((r: any) => ({
-      userId: r.userId,
-      followersCount: Number(r.followerId),
-    }));
   }
 
   ///////////////////////////////////// new - mahmoud done ///////////////////////////////
@@ -479,7 +304,7 @@ export class UserService {
     return { message: 'an email has been sent for reset password ' };
   }
 
-  async getUser(userId: number) {
+  async getUser(userId: number, myId?: number) {
     const user = await this.db.user.findUnique({
       where: { id: userId },
     });
@@ -487,12 +312,20 @@ export class UserService {
       throw new NotFoundException('user not found');
     }
     delete user.password;
-    return user;
+
+    const { followersIds, followedsIds } =
+      /// if myId sended here mean i want to show another user profile
+      // if not , then it mean i want to show my profile
+      await this.getFollowersAndFriendsidsHelper(myId ?? userId);
+
+    const isProfileOwner = myId && myId == userId ? true : false;
+    const isFriend = false;
+    const isFollower = followersIds.some((e) => e == userId);
+    const isFollowed = followedsIds.some((e) => e == userId);
+    return { ...user, isProfileOwner, isFriend, isFollower, isFollowed };
   }
 
   public async updateUserProfile(userId: number, body: UpdateUserDto) {
-
-    
     if (body.email) {
       const existingUser = await this.db.user.findUnique({
         where: { email: body.email },
@@ -505,7 +338,7 @@ export class UserService {
         );
       }
     }
-    if(body.password) {
+    if (body.password) {
       body.password = hashSync(body.password, 10);
     }
     const result = await this.db.user.update({
@@ -516,7 +349,7 @@ export class UserService {
     });
 
     delete result.password;
-    return { data : result };
+    return { data: result };
   }
   public generateJWT(user) {
     const today = new Date();
@@ -571,5 +404,148 @@ export class UserService {
 
     const result = { token, refreshToken };
     return { data: result };
+  }
+  ////////////////////////////////////// end auth section //////////////////////////////
+  public async getUsersByIds(ids: number[]) {
+    const users = await this.db.user.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        photoUrl: true,
+        type: true,
+        followersCount: true,
+        storiesCount: true,
+        productsCount: true,
+      },
+    });
+    return users;
+  }
+
+  public async getFollowersAndFriendsidsHelper(userId: number) {
+    const followers = await this.db.userFollowers.findMany({
+      where: {
+        userId: userId,
+      },
+      select: {
+        followerId: true,
+      },
+    });
+    const followeds = await this.db.userFollowers.findMany({
+      where: {
+        followerId: userId,
+      },
+      select: {
+        userId: true,
+      },
+    });
+    const followersIds = followers.map((e) => e.followerId);
+    const followedsIds = followeds.map((e) => e.userId);
+    //// add friendsIds later
+    return { followersIds, followedsIds };
+  }
+  public async getUserFollowers(
+    userId: number,
+    pageIndex: number,
+    pageSize: number,
+  ) {
+    const followers = await this.db.userFollowers.findMany({
+      where: {
+        userId: userId,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+    });
+    const followersCount = await this.db.userFollowers.count({
+      where: {
+        userId: userId,
+      },
+    });
+    const usersIds = followers.map((e) => e.followerId);
+    const users = await this.getUsersByIds(usersIds);
+    return {
+      count: followersCount,
+      data: users,
+    };
+  }
+
+  public async getFollowedUsers(
+    userId: number,
+    pageIndex: number,
+    pageSize: number,
+  ) {
+    const followeds = await this.db.userFollowers.findMany({
+      where: {
+        followerId: userId,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+    });
+    const followedsCount = await this.db.userFollowers.count({
+      where: {
+        followerId: userId,
+      },
+    });
+
+    const usersIds = followeds.map((e) => e.userId);
+    const users = await this.getUsersByIds(usersIds);
+    return {
+      count: followedsCount,
+      data: users,
+    };
+  }
+  public async toggleUserFollow(userId: number, followerId: number) {
+    const existingFollower = await this.db.userFollowers.findFirst({
+      where: {
+        userId: userId,
+        followerId: followerId,
+      },
+    });
+
+    if (existingFollower) {
+      /// remove follow
+      await this.db.userFollowers.delete({
+        where: {
+          id: existingFollower.id,
+        },
+      });
+      // decrease target user followers by one
+      await this.db.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          followersCount: {
+            decrement: 1,
+          },
+        },
+      });
+    } else {
+      /// add follow
+      await this.db.userFollowers.create({
+        data: {
+          userId: userId,
+          followerId: followerId,
+        },
+      });
+      // increase target user followers by one
+      await this.db.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          followersCount: {
+            increment: 1,
+          },
+        },
+      });
+      /// @ queue , add to notifications queue
+    }
+
+    return { success: true };
   }
 }

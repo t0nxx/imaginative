@@ -1,4 +1,13 @@
-import { Post, Controller, Get, Body, Param, Query, Put } from '@nestjs/common';
+import {
+  Post,
+  Controller,
+  Get,
+  Body,
+  Param,
+  Query,
+  Put,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import {
   ApiBearerAuth,
@@ -8,9 +17,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { User } from './user.decorator';
-import OperationResult from '@/shared/models/OperationResult';
-import ToggleUserFollowDto from './dto/ToggleUserFollowDto';
-import { UserSnippetDto } from './dto/UserSnippetDto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 
 @ApiBearerAuth()
@@ -19,47 +25,54 @@ import { UpdateUserDto } from './dto/UpdateUser.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('/me')
-  async getUser(@User('id') userId: number): Promise<any> {
-    return this.userService.getUser(userId);
-  }
+  // @Get('/me')
+  // async getUser(@User('id') userId: number) {
+  //   return this.userService.getUser(userId);
+  // }
 
   @Get('/:userId/profile')
-  async getUserProfile(@Param('userId') userId: number): Promise<any> {
-    return this.userService.getUser(userId);
+  async getUserProfile(
+    @Param('userId', ParseIntPipe) userId: number,
+    @User('id') myId: number,
+  ) {
+    return this.userService.getUser(userId, myId);
   }
 
-
   @ApiOperation({ summary: 'Gets list of followers for a given user' })
-  @ApiResponse({ status: 201, description: 'page of users' })
   @Get('/:userId/followers')
   async getUserFollowers(
-    @Param('userId') userId: string,
+    @Param('userId', ParseIntPipe) userId: number,
     @Query('pageIndex') pageIndex?: number,
     @Query('pageSize') pageSize?: number,
-  ): Promise<{ count: number; data: UserSnippetDto[] }> {
-    const result = await this.userService.getUserFollowers(
+  ) {
+    return this.userService.getUserFollowers(
       userId,
       pageIndex ?? 1,
       pageSize ?? 10,
     );
-    return result;
   }
 
   @ApiOperation({ summary: 'Gets list of users followed by a given user' })
-  @ApiResponse({ status: 201, description: 'page of users' })
   @Get('/:userId/following')
   async getFollowedUsers(
-    @Param('userId') userId: string,
+    @Param('userId', ParseIntPipe) userId: number,
     @Query('pageIndex') pageIndex?: number,
     @Query('pageSize') pageSize?: number,
-  ): Promise<{ count: number; data: UserSnippetDto[] }> {
-    const result = await this.userService.getFollowedUsers(
+  ) {
+    return this.userService.getFollowedUsers(
       userId,
       pageIndex ?? 1,
       pageSize ?? 10,
     );
-    return result;
+  }
+
+  @ApiOperation({ summary: 'Toggles the follow record of a given user' })
+  @Post('/:userId/toggle-user-follow')
+  async toggleUserFollow(
+    @Param('userId', ParseIntPipe) userId: number,
+    @User('id') followerId: number,
+  ) {
+    return this.userService.toggleUserFollow(userId, followerId);
   }
 
   @ApiOperation({ summary: 'Updates currently logged in user profile details' })
@@ -67,23 +80,9 @@ export class UserController {
   async updateUserProfile(
     @User('id') userId: number,
     @Body() body: UpdateUserDto,
-  ): Promise<any> {
-    return await this.userService.updateUserProfile(userId, body);
+  ) {
+    return this.userService.updateUserProfile(userId, body);
   }
-
-  @ApiOperation({ summary: 'Toggles the follow record of a given user' })
-  @ApiResponse({ status: 201, description: 'Operation result object' })
-  @ApiBody({ type: 'ToggleUserFollowDto' })
-  @Post('/toggle-user-follow')
-  async toggleUserFollow(
-    @User('id') followerId: string,
-    @Body() toggleModel: ToggleUserFollowDto,
-  ): Promise<OperationResult> {
-    toggleModel.followerId = followerId;
-    const result = await this.userService.toggleUserFollow(toggleModel);
-    return result;
-  }
-
   // @ApiOperation({ summary: 'Gets list of followers for a given listing' })
   // @ApiResponse({ status: 201, description: 'page of users' })
   // @Post('/listings/:listingId/followers')
