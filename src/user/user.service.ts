@@ -4,16 +4,9 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import Axios from 'axios';
-import { Op } from 'sequelize';
-import User from './../models/User';
-import { v4 } from 'uuid';
 import { addDays } from 'date-fns';
-import { sendWelcomeNotification } from '../shared/core/OneSignal';
-import { google } from 'googleapis';
 import crypto from 'crypto';
 import { hashSync, compareSync } from 'bcryptjs';
-import IGoogleProfile from './dto/GooglePofile';
 import {
   RegisterUserDto,
   langEnum,
@@ -21,17 +14,9 @@ import {
 } from './dto/RegisterUser.dto';
 import { AccountTypeProviderEnum } from './dto/SocialLogin.dto';
 import ResetPassword from './dto/ResetPassword.dto';
-import PasswordRecoveryToken from './../models/PasswordRecoveryToken';
-import FireBase from '../shared/core/FireBase.service';
-import UserDto from './dto/UserDto';
 import env from '@/shared/core/Environment';
 import * as jwt from 'jsonwebtoken';
-import OperationResult from '@/shared/models/OperationResult';
 import UserFollower from './../models/UserFollower';
-import ToggleUserFollowDto from './dto/ToggleUserFollowDto';
-import sequelize from 'sequelize';
-import Listing from './../models/Listing';
-import Story from './../models/Story';
 import { UserSnippetDto } from './dto/UserSnippetDto';
 import ListingFollower from './../models/ListingFollower';
 import { PrismaService } from '@/shared/core/prisma.service';
@@ -42,10 +27,6 @@ import { UpdateUserDto } from './dto/UpdateUser.dto';
 
 const JWT_SECRET = env.JWT_SECRET;
 const MASTER_PASS_FOR_SOCIAL_ACCOUNTS = env.MASTER_PASS_FOR_SOCIAL_ACCOUNTS;
-const OAuth2 = google.auth.OAuth2;
-const oauth2Client = new OAuth2();
-
-// test
 @Injectable()
 export class UserService {
   constructor(
