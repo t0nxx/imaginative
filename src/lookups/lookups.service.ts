@@ -243,7 +243,6 @@ export class LookupsService {
           }
           result.push(type);
         }
-        console.log(result);
         return result;
       },
     );

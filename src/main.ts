@@ -1,16 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { ApplicationModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-//import session from "express-session";
-import debug0 from 'debug';
 import logger from 'morgan';
 import { ValidationPipe } from '@nestjs/common';
-//import connect_pg_simple from "connect-pg-simple";
-//import passport from './shared/core/Passport';
-
-//import { pgPool } from "./shared/core/Database";
-const debug = debug0('imaginativenews-api:server');
-//const pgSession = connect_pg_simple(session);
 import * as firebaseAdmin from 'firebase-admin';
 import { serviceAccount } from './shared/core/FireBaseAdminKeys';
 
@@ -26,16 +18,6 @@ async function bootstrap() {
     }),
   );
   app.use(logger('dev'));
-  // app.use(
-  //   session({
-  //     store: new pgSession({ pool: pgPool }),
-  //     secret: process.env.COOKIE_SECRET || "",
-  //     resave: false,
-  //     cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
-  //   })
-  // );
-  // app.use(passport.initialize());
-  // app.use(passport.session());
   const options = new DocumentBuilder()
     .setTitle('Imaginative News API v1')
     .setDescription(
