@@ -22,6 +22,8 @@ export class AuthMiddleware implements NestMiddleware {
         },
         select: {
           id: true,
+          name: true,
+          lang: true,
         },
       });
 
