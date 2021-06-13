@@ -200,7 +200,7 @@ export class StoryService {
     userFollowings: number[] = [],
   ): Promise<StoryDto> {
     const disclaimers = await this.lookupsService.getDisclaimers(lang);
-    const user = await this.userService.getUser(story.ownerId);
+    const user = await this.userService.getUser(story.ownerId, story.ownerId);
     return {
       id: story.id,
       type: 'Story',

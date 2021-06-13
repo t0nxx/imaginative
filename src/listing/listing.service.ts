@@ -525,7 +525,10 @@ export class ListingService {
     );
     const priceTypes = await this.lookupsService.getPriceTypes(lang);
     const currencies = await this.lookupsService.getCurrencies(lang);
-    const user = await this.userService.getUser(listing.ownerId);
+    const user = await this.userService.getUser(
+      listing.ownerId,
+      listing.ownerId,
+    );
     const currency = currencies.find((c) => c.id === listing.currencyId);
     const hiringTypes = await this.lookupsService.getHiringTypes(lang);
 
