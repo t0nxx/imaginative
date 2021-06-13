@@ -285,7 +285,7 @@ export class UserService {
     return { message: 'an email has been sent for reset password ' };
   }
 
-  async getUser(userId: number, myId?: number) {
+  async getUser(userId: number, myId: number) {
     const user = await this.db.user.findUnique({
       where: { id: userId },
     });
@@ -300,10 +300,21 @@ export class UserService {
       await this.getFollowersAndFriendsidsHelper(myId ?? userId);
 
     const isProfileOwner = myId && myId == userId ? true : false;
-    const isFriend = false;
-    const isFollower = followersIds.some((e) => e == userId);
-    const isFollowed = followedsIds.some((e) => e == userId);
-    return { ...user, isProfileOwner, isFriend, isFollower, isFollowed };
+    const isFriend = this.isFriend();
+    const isFollower = this.isFollower(myId, followersIds);
+    const isFollowed = this.isFollowed(myId, followedsIds);
+    const isSentFriendRequest = this.isSentFriendRequest();
+    const isReceivedFriendRequest = this.isReceivedFriendRequest();
+
+    return {
+      ...user,
+      isProfileOwner,
+      isFriend,
+      isFollower,
+      isFollowed,
+      isSentFriendRequest,
+      isReceivedFriendRequest,
+    };
   }
 
   public async updateUserProfile(userId: number, body: UpdateUserDto) {
@@ -407,23 +418,51 @@ export class UserService {
     return users;
   }
 
+  //////////////////////////////////////// follow / friend section ////////////////////
+  //// single responsibility methods , return true or false
+  public isFollower(myId: number, followersIds: number[]) {
+    return followersIds.some((e) => e == myId);
+  }
+  public isFollowed(myId: number, followedsIds: number[]) {
+    return followedsIds.some((e) => e == myId);
+  }
+  public isFriend() {
+    // to be implemented later
+    // return frindsIds.some((e) => e == myId);
+    return false;
+  }
+  public isSentFriendRequest() {
+    // to be implemented later
+    // return frindsIds.some((e) => e == myId);
+    return false;
+  }
+  public isReceivedFriendRequest() {
+    // to be implemented later
+    // return frindsIds.some((e) => e == myId);
+    return false;
+  }
+
   public async getFollowersAndFriendsidsHelper(userId: number) {
-    const followers = await this.db.userFollowers.findMany({
-      where: {
-        userId: userId,
-      },
-      select: {
-        followerId: true,
-      },
-    });
-    const followeds = await this.db.userFollowers.findMany({
-      where: {
-        followerId: userId,
-      },
-      select: {
-        userId: true,
-      },
-    });
+    /// promise all for better performance in parallel
+    const [followers, followeds] = await Promise.all([
+      this.db.userFollowers.findMany({
+        where: {
+          userId: userId,
+        },
+        select: {
+          followerId: true,
+        },
+      }),
+      this.db.userFollowers.findMany({
+        where: {
+          followerId: userId,
+        },
+        select: {
+          userId: true,
+        },
+      }),
+    ]);
+
     const followersIds = followers.map((e) => e.followerId);
     const followedsIds = followeds.map((e) => e.userId);
     //// add friendsIds later
