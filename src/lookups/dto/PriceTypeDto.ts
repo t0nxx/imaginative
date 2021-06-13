@@ -1,5 +1,5 @@
 export default interface PriceTypeDto {
-  id: string;
+  id: number;
   code: string;
   name: string;
   format: string;

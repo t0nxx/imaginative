@@ -1,5 +1,5 @@
 export default interface CurrencyDto {
-  id: string;
+  id: number;
   name: string;
   standardCode: string;
   code: string;

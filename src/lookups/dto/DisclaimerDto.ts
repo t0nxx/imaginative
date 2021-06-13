@@ -1,5 +1,5 @@
 export default interface DisclaimerDto {
-  id: string;
+  id: number;
   code: string;
   name: string;
   createdAt: Date;

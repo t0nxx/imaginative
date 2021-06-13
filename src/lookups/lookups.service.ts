@@ -1,30 +1,21 @@
-import ListingType from '@/models/ListingType';
 import { Injectable } from '@nestjs/common';
 import ListingTypeDto from './dto/ListingTypeDto';
-import LocalizedListingType from '@/models/ListingType.Localized';
 import PriceTypeDto from './dto/PriceTypeDto';
-import PriceType from '@/models/PriceType';
-import LocalizedPriceType from '@/models/PriceType.Localized';
-import Currency from '@/models/Currency';
-import LocalizedCurrency from '@/models/Currency.Localized';
 import CurrencyDto from './dto/CurrencyDto';
 import { AppCache } from '@/shared/core/Cache';
 import HiringTypeDto from './dto/HiringTypeDto';
-import HiringType from '@/models/HiringType';
-import LocalizedHiringType from '@/models/HiringType.Localized';
 import DisclaimerDto from './dto/DisclaimerDto';
-import Disclaimer from '@/models/Disclaimer';
-import LocalizedDisclaimer from '@/models/Disclaimer.Localized';
 import { v4 } from 'uuid';
 import * as fs from 'fs';
 import * as path from 'path';
 import env from '@/shared/core/Environment';
+import { PrismaService } from '@/shared/core/prisma.service';
 
 const rootDir = env.UPLOAD_ROOT_DIR;
 
 @Injectable()
 export class LookupsService {
-  constructor() {}
+  constructor(private readonly db: PrismaService) {}
 
   public async getListingTypes(
     category: string,
@@ -35,18 +26,18 @@ export class LookupsService {
       60 * 120,
       async () => {
         const result = new Array<ListingTypeDto>();
-        const listingTypes = await ListingType.findAll({
+        const listingTypes = await this.db.listingTypes.findMany({
           where: {
             category: category,
           },
         });
 
-        const localizedListingTypes = await LocalizedListingType.findAll({
-          where: {
-            refId: listingTypes.map((lt) => lt.id),
-            language: lang,
-          },
-        });
+        const localizedListingTypes =
+          await this.db.localizedListingTypes.findMany({
+            where: {
+              language: lang,
+            },
+          });
 
         for (const listingType of listingTypes) {
           const type = {
@@ -76,14 +67,14 @@ export class LookupsService {
       60 * 120,
       async () => {
         const result = new Array<ListingTypeDto>();
-        const listingTypes = await ListingType.findAll();
+        const listingTypes = await this.db.listingTypes.findMany();
 
-        const localizedListingTypes = await LocalizedListingType.findAll({
-          where: {
-            refId: listingTypes.map((lt) => lt.id),
-            language: lang,
-          },
-        });
+        const localizedListingTypes =
+          await this.db.localizedListingTypes.findMany({
+            where: {
+              language: lang,
+            },
+          });
 
         for (const listingType of listingTypes) {
           const type = {
@@ -113,9 +104,9 @@ export class LookupsService {
       60 * 120,
       async () => {
         const result = new Array<PriceTypeDto>();
-        const priceTypes = await PriceType.findAll();
+        const priceTypes = await this.db.priceTypes.findMany();
 
-        const localizedPriceTypes = await LocalizedPriceType.findAll({
+        const localizedPriceTypes = await this.db.localizedPriceTypes.findMany({
           where: {
             language: lang,
           },
@@ -151,14 +142,12 @@ export class LookupsService {
       60 * 120,
       async () => {
         const result = new Array<CurrencyDto>();
-        const currencies = await Currency.findAll();
+        const currencies = await this.db.currencies.findMany();
 
-        const localizedCurrencies = await LocalizedCurrency.findAll({
+        const localizedCurrencies = await this.db.localizedCurrencies.findMany({
           where: {
-            refId: currencies.map((lt) => lt.id),
             language: lang,
           },
-          order: ['name'],
         });
 
         for (const localizedCurrency of localizedCurrencies) {
@@ -192,13 +181,14 @@ export class LookupsService {
       60 * 120,
       async () => {
         const result = new Array<HiringTypeDto>();
-        const hiringTypes = await HiringType.findAll();
+        const hiringTypes = await this.db.hiringTypes.findMany();
 
-        const localizedHiringTypes = await LocalizedHiringType.findAll({
-          where: {
-            language: lang,
-          },
-        });
+        const localizedHiringTypes =
+          await this.db.localizedHiringTypes.findMany({
+            where: {
+              language: lang,
+            },
+          });
 
         for (const hiringType of hiringTypes) {
           const type = {
@@ -228,13 +218,14 @@ export class LookupsService {
       60 * 120,
       async () => {
         const result = new Array<DisclaimerDto>();
-        const disclaimers = await Disclaimer.findAll();
+        const disclaimers = await this.db.disclaimers.findMany({});
 
-        const localizedDisclaimers = await LocalizedDisclaimer.findAll({
-          where: {
-            language: lang,
-          },
-        });
+        const localizedDisclaimers =
+          await this.db.localizedDisclaimers.findMany({
+            where: {
+              language: lang,
+            },
+          });
 
         for (const disclaimer of disclaimers) {
           const type = {
@@ -252,6 +243,7 @@ export class LookupsService {
           }
           result.push(type);
         }
+        console.log(result);
         return result;
       },
     );

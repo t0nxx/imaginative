@@ -1,5 +1,5 @@
 export default interface HiringTypeDto {
-  id: string;
+  id: number;
   code: string;
   name: string;
   createdAt: Date;
