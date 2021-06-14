@@ -8,15 +8,17 @@ import DisclaimerDto from './dto/DisclaimerDto';
 import { v4 } from 'uuid';
 import * as fs from 'fs';
 import * as path from 'path';
-import env from '@/shared/core/Environment';
 import { PrismaService } from '@/shared/core/prisma.service';
-
-const rootDir = env.UPLOAD_ROOT_DIR;
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class LookupsService {
-  constructor(private readonly db: PrismaService) {}
+  constructor(
+    private readonly db: PrismaService,
+    private configService: ConfigService,
+  ) {}
 
+  rootDir = this.configService.get('UPLOAD_ROOT_DIR');
   public async getListingTypes(
     category: string,
     lang: string,
@@ -255,11 +257,11 @@ export class LookupsService {
     fileName: string,
     fileContent: any,
   ): any {
-    const bucketDir = path.join(rootDir, bucket);
+    const bucketDir = path.join(this.rootDir, bucket);
     if (!fs.existsSync(bucketDir)) {
       fs.mkdirSync(bucketDir);
     }
-    const fileTypeDir = path.join(rootDir, bucket, type);
+    const fileTypeDir = path.join(this.rootDir, bucket, type);
     if (!fs.existsSync(fileTypeDir)) {
       fs.mkdirSync(fileTypeDir);
     }
@@ -274,25 +276,25 @@ export class LookupsService {
   }
 
   public getFile(bucket: string, type: string, fileName: string): any {
-    const filePath = path.join(rootDir, bucket, type, fileName);
+    const filePath = path.join(this.rootDir, bucket, type, fileName);
     if (!fs.existsSync(filePath)) return null;
     return filePath;
   }
 
   public duplicateFile(bucket: string, type: string, fileName: string): any {
-    const filePath = path.join(rootDir, bucket, type, fileName);
+    const filePath = path.join(this.rootDir, bucket, type, fileName);
     if (!fs.existsSync(filePath)) return null;
     const newFileName = `${v4()}${path.extname(filePath)}`;
     fs.copyFileSync(
       filePath,
-      `${path.join(rootDir, bucket, type, newFileName)}`,
+      `${path.join(this.rootDir, bucket, type, newFileName)}`,
     );
     return newFileName;
   }
 
   public deleteFile(bucket: string, type: string, fileName: string): boolean {
     try {
-      const filePath = path.join(rootDir, bucket, type, fileName);
+      const filePath = path.join(this.rootDir, bucket, type, fileName);
       if (!fs.existsSync(filePath)) return false;
       fs.unlinkSync(filePath);
       return true;

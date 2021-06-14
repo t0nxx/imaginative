@@ -15,16 +15,19 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response, Request } from 'express';
 import * as path from 'path';
 import { v4 } from 'uuid';
-import env from '@/shared/core/Environment';
 import { LookupsService } from './lookups.service';
-
-const domain = env.APP_DOMAIN;
+import { ConfigService } from '@nestjs/config';
 
 @ApiBearerAuth()
 @ApiTags('Files')
 @Controller()
 export class FilesController {
-  constructor(private lookupService: LookupsService) {}
+  constructor(
+    private lookupService: LookupsService,
+    private configService: ConfigService,
+  ) {}
+
+  domain = this.configService.get('APP_DOMAIN');
 
   @ApiOperation({ summary: 'Uploads a file to a given bucket' })
   @UseInterceptors(FileInterceptor('file'))
@@ -38,7 +41,7 @@ export class FilesController {
     const fileName = `${v4()}${path.extname(file.originalname)}`;
     this.lookupService.saveFile(bucket, type, fileName, file.buffer);
     return {
-      url: `${domain}/api/v1/files/${bucket}/${type}/${fileName}`,
+      url: `${this.domain}/api/v1/files/${bucket}/${type}/${fileName}`,
       bucket: bucket,
       type: type,
       fileName: fileName,

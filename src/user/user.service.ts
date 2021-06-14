@@ -4,6 +4,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { addDays } from 'date-fns';
 import crypto from 'crypto';
 import { hashSync, compareSync } from 'bcryptjs';
@@ -14,7 +15,6 @@ import {
 } from './dto/RegisterUser.dto';
 import { AccountTypeProviderEnum } from './dto/SocialLogin.dto';
 import ResetPassword from './dto/ResetPassword.dto';
-import env from '@/shared/core/Environment';
 import * as jwt from 'jsonwebtoken';
 import UserFollower from './../models/UserFollower';
 import { UserSnippetDto } from './dto/UserSnippetDto';
@@ -26,15 +26,19 @@ import * as firebaseAdmin from 'firebase-admin';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import OperationResult from '@/shared/models/OperationResult';
 
-const JWT_SECRET = env.JWT_SECRET;
-const MASTER_PASS_FOR_SOCIAL_ACCOUNTS = env.MASTER_PASS_FOR_SOCIAL_ACCOUNTS;
 @Injectable()
 export class UserService {
   constructor(
     private readonly db: PrismaService,
     private readonly mailsService: MailsService,
+    private configService: ConfigService,
   ) {}
 
+  JWT_SECRET = this.configService.get('JWT_SECRET');
+
+  MASTER_PASS_FOR_SOCIAL_ACCOUNTS = this.configService.get(
+    'MASTER_PASS_FOR_SOCIAL_ACCOUNTS',
+  );
   /// this fun will be deleted after refactor story / listing
   public async getUserFollowedUsers(
     _followerId: number,
@@ -178,7 +182,8 @@ export class UserService {
         photoUrl: firebaseResponse.picture || '',
 
         password:
-          MASTER_PASS_FOR_SOCIAL_ACCOUNTS || 'MASTER_PASS_FOR_SOCIAL_ACCOUNTS',
+          this.MASTER_PASS_FOR_SOCIAL_ACCOUNTS ||
+          'MASTER_PASS_FOR_SOCIAL_ACCOUNTS',
 
         notificationsEnabled: true,
 
@@ -378,7 +383,7 @@ export class UserService {
         ...user,
         exp: exp.getTime() / 1000,
       },
-      JWT_SECRET,
+      this.JWT_SECRET,
     );
   }
 
