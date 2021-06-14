@@ -171,6 +171,8 @@ export class UserService {
 
         email: firebaseResponse.email,
 
+        photoUrl: firebaseResponse.picture || '',
+
         password:
           MASTER_PASS_FOR_SOCIAL_ACCOUNTS || 'MASTER_PASS_FOR_SOCIAL_ACCOUNTS',
 
