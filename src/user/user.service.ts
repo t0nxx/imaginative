@@ -24,6 +24,7 @@ import LoginUserDto from './dto/LoginUser.dto';
 import { MailsService } from '@/shared/core/mail.service';
 import * as firebaseAdmin from 'firebase-admin';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
+import OperationResult from '@/shared/models/OperationResult';
 
 const JWT_SECRET = env.JWT_SECRET;
 const MASTER_PASS_FOR_SOCIAL_ACCOUNTS = env.MASTER_PASS_FOR_SOCIAL_ACCOUNTS;
@@ -146,7 +147,10 @@ export class UserService {
     const refreshToken = await this.generateRefreshToken(user);
 
     const result = { ...user, token, refreshToken };
-    return { data: result };
+    const res = new OperationResult();
+    res.message = 'successfully temp message';
+    res.data = result;
+    return res;
   }
 
   async socialLogin(idToken: string, socialProvider: AccountTypeProviderEnum) {
@@ -188,7 +192,10 @@ export class UserService {
     delete user.password;
     const token = this.generateJWT(user);
     const result = { ...user, token };
-    return { data: result };
+    const res = new OperationResult();
+    res.message = 'successfully temp message';
+    res.data = result;
+    return res;
   }
 
   async register(
@@ -223,7 +230,10 @@ export class UserService {
     delete user.password;
     const token = this.generateJWT(user);
     const result = { ...user, token };
-    return { data: result };
+    const res = new OperationResult();
+    res.message = 'successfully temp message';
+    res.data = result;
+    return res;
   }
 
   async resetPassword(body: ResetPassword) {
@@ -257,7 +267,9 @@ export class UserService {
       where: { id: isTokenExist.id },
     });
 
-    return { message: 'password changed successfully' };
+    const res = new OperationResult();
+    res.message = 'password changed successfully';
+    return res;
   }
 
   async forgotPassword(email: string): Promise<any> {
@@ -284,7 +296,10 @@ export class UserService {
     });
 
     this.mailsService.sendResetPasswordEmail(user.name, user.email, resetCode);
-    return { message: 'an email has been sent for reset password ' };
+
+    const res = new OperationResult();
+    res.message = 'an email has been sent for reset password ';
+    return res;
   }
 
   async getUser(userId: number, myId: number) {
@@ -308,7 +323,7 @@ export class UserService {
     const isSentFriendRequest = this.isSentFriendRequest();
     const isReceivedFriendRequest = this.isReceivedFriendRequest();
 
-    return {
+    const result = {
       ...user,
       isProfileOwner,
       isFriend,
@@ -317,6 +332,11 @@ export class UserService {
       isSentFriendRequest,
       isReceivedFriendRequest,
     };
+
+    const res = new OperationResult();
+    res.message = 'successfully temp message';
+    res.data = result;
+    return res;
   }
 
   public async updateUserProfile(userId: number, body: UpdateUserDto) {
@@ -343,7 +363,10 @@ export class UserService {
     });
 
     delete result.password;
-    return { data: result };
+    const res = new OperationResult();
+    res.message = 'successfully temp message';
+    res.data = result;
+    return res;
   }
   public generateJWT(user) {
     const today = new Date();
@@ -397,7 +420,10 @@ export class UserService {
     const refreshToken = await this.generateRefreshToken(user);
 
     const result = { token, refreshToken };
-    return { data: result };
+    const res = new OperationResult();
+    res.message = 'successfully temp message';
+    res.data = result;
+    return res;
   }
   ////////////////////////////////////// end auth section //////////////////////////////
   public async getUsersByIds(ids: number[]) {
@@ -488,11 +514,13 @@ export class UserService {
       },
     });
     const usersIds = followers.map((e) => e.followerId);
-    const users = await this.getUsersByIds(usersIds);
-    return {
-      count: followersCount,
-      data: users,
-    };
+    const result = await this.getUsersByIds(usersIds);
+
+    const res = new OperationResult();
+    res.message = 'successfully temp message';
+    res.data = result;
+    res.meta.count = followersCount;
+    return res;
   }
 
   public async getFollowedUsers(
@@ -514,11 +542,13 @@ export class UserService {
     });
 
     const usersIds = followeds.map((e) => e.userId);
-    const users = await this.getUsersByIds(usersIds);
-    return {
-      count: followedsCount,
-      data: users,
-    };
+    const result = await this.getUsersByIds(usersIds);
+
+    const res = new OperationResult();
+    res.message = 'successfully temp message';
+    res.data = result;
+    res.meta.count = followedsCount;
+    return res;
   }
   public async toggleUserFollow(userId: number, followerId: number) {
     const existingFollower = await this.db.userFollowers.findFirst({
@@ -568,6 +598,8 @@ export class UserService {
       /// @ queue , add to notifications queue
     }
 
-    return { success: true };
+    const res = new OperationResult();
+    res.message = 'successfully temp message';
+    return res;
   }
 }
