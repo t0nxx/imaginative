@@ -31,6 +31,7 @@ async function bootstrap() {
   SwaggerModule.setup('/docs', app, document);
   console.log(
     `******************** app started in ${process.env.NODE_ENV}  enviroment `,
+    `******************** loaded env file is ${process.env.NODE_ENV_FILE_LOADED_FLAG} `,
   );
 
   firebaseAdmin.initializeApp({
