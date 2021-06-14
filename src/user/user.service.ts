@@ -602,4 +602,27 @@ export class UserService {
     res.message = 'successfully temp message';
     return res;
   }
+
+  ///////////////////////////////////////// notification section //////////////
+  async notificationToken(userId: number, body: string) {
+    const res = new OperationResult();
+    res.message = 'successfully temp message';
+    const tokenToFound = await this.db.userNotificationTokens.findUnique({
+      where: {
+        token: body,
+      },
+    });
+    if (tokenToFound) {
+      return res;
+    }
+
+    /// add new token in db
+    await this.db.userNotificationTokens.create({
+      data: {
+        userId: userId,
+        token: body,
+      },
+    });
+    return res;
+  }
 }

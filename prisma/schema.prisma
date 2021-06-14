@@ -279,6 +279,14 @@ model UserRefreshTokens {
   @@map("user_refresh_tokens")
 }
 
+model UserNotificationTokens {
+  token     String   @id @default(uuid())
+  userId    Int
+  createdAt DateTime @default(now())
+
+  @@map("user_notifications_tokens")
+}
+
 model UserSettings {
   id     Int  @id @default(autoincrement())
   userId Int

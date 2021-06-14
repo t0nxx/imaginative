@@ -18,6 +18,7 @@ import {
 } from '@nestjs/swagger';
 import { User } from './user.decorator';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
+import { SocialLoginDto } from './dto/SocialLogin.dto';
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -73,6 +74,15 @@ export class UserController {
     @User('id') followerId: number,
   ) {
     return this.userService.toggleUserFollow(userId, followerId);
+  }
+
+  @ApiOperation({ summary: 'Toggles the follow record of a given user' })
+  @Post('/add-notifications-token')
+  async addUserNotificationToken(
+    @Body() body: SocialLoginDto,
+    @User('id') userId: number,
+  ) {
+    return this.userService.notificationToken(userId, body.token);
   }
 
   @ApiOperation({ summary: 'Updates currently logged in user profile details' })

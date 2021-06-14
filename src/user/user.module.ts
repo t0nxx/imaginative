@@ -24,11 +24,12 @@ export class UserModule implements NestModule {
       { path: 'v1/users/:userId/profile', method: RequestMethod.GET },
       // { path: 'v1/users/:userId/followers', method: RequestMethod.GET },
       // { path: 'v1/users/:userId/following', method: RequestMethod.GET },
-
       {
         path: 'v1/users/:userId/toggle-user-follow',
         method: RequestMethod.POST,
       },
+
+      { path: 'v1/users/add-notifications-token', method: RequestMethod.POST },
 
       { path: 'v1/users/update', method: RequestMethod.PUT },
     );
