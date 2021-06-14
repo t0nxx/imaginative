@@ -68,15 +68,6 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Toggles the follow record of a given user' })
-  @Post('/:userId/toggle-user-follow')
-  async toggleUserFollow(
-    @Param('userId', ParseIntPipe) userId: number,
-    @User('id') followerId: number,
-  ) {
-    return this.userService.toggleUserFollow(userId, followerId);
-  }
-
-  @ApiOperation({ summary: 'Toggles the follow record of a given user' })
   @Post('/add-notifications-token')
   async addUserNotificationToken(
     @Body() body: SocialLoginDto,
@@ -93,6 +84,16 @@ export class UserController {
   ) {
     return this.userService.updateUserProfile(userId, body);
   }
+
+  @ApiOperation({ summary: 'Toggles the follow record of a given user' })
+  @Post('/:userId/toggle-user-follow')
+  async toggleUserFollow(
+    @Param('userId', ParseIntPipe) userId: number,
+    @User('id') followerId: number,
+  ) {
+    return this.userService.toggleUserFollow(userId, followerId);
+  }
+
   // @ApiOperation({ summary: 'Gets list of followers for a given listing' })
   // @ApiResponse({ status: 201, description: 'page of users' })
   // @Post('/listings/:listingId/followers')
