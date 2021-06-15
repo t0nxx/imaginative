@@ -528,7 +528,7 @@ export class UserService {
     const res = new OperationResult();
     res.message = 'successfully temp message';
     res.data = result;
-    res.meta.count = followersCount;
+    res.meta = { count: followersCount };
     return res;
   }
 
@@ -556,7 +556,7 @@ export class UserService {
     const res = new OperationResult();
     res.message = 'successfully temp message';
     res.data = result;
-    res.meta.count = followedsCount;
+    res.meta = { count: followedsCount };
     return res;
   }
   public async toggleUserFollow(userId: number, followerId: number) {
