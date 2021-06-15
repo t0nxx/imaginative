@@ -196,7 +196,9 @@ export class UserService {
 
     delete user.password;
     const token = this.generateJWT(user);
-    const result = { ...user, token };
+    const refreshToken = await this.generateRefreshToken(user);
+
+    const result = { ...user, token, refreshToken };
     const res = new OperationResult();
     res.message = 'successfully temp message';
     res.data = result;
@@ -234,7 +236,9 @@ export class UserService {
 
     delete user.password;
     const token = this.generateJWT(user);
-    const result = { ...user, token };
+    const refreshToken = await this.generateRefreshToken(user);
+
+    const result = { ...user, token, refreshToken };
     const res = new OperationResult();
     res.message = 'successfully temp message';
     res.data = result;
