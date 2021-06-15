@@ -1,7 +1,9 @@
 export default class OperationResult {
   public success = true;
+  /// code will be deleted
   public code?: string;
-  public message?: string;
-  public data: any = {};
-  public meta: any = {};
+  public statusCode = 200;
+  public message?: string = null;
+  public data: any = null;
+  public meta: any = null;
 }

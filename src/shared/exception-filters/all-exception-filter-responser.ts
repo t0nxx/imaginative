@@ -8,10 +8,11 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
+import OperationResult from '@/shared/models/OperationResult';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor(@InjectSentry() private readonly sentryClient: SentryService) {}
+  constructor(@InjectSentry() private readonly sentryClient: SentryService) { }
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -37,11 +38,15 @@ export class AllExceptionsFilter implements ExceptionFilter {
       clientIp: request.ip || null,
     };
 
+    const respObject = new OperationResult();
+    const exceptionResponse: any = exception.getResponse();
+
+    respObject.success = false;
+    // this for unify all err message to be array of errors even it one
+    respObject.message = exceptionResponse.message ?? [exception.message];
+    respObject.statusCode = exception.getStatus();
+
     this.sentryClient.instance().captureException(errObject);
-    response.status(status).json({
-      success: false,
-      /// this is cheating method to flat , since spread op is only for objects
-      ...(exception.getResponse() as {}),
-    });
+    response.status(status).json(respObject);
   }
 }
