@@ -60,5 +60,6 @@ jobs:
             git pull
             npm install
             npm run db:migrate:prod 
+            npm run db:generate:prod
             pm2 stop new-imaginative-backend
             NODE_ENV=production pm2 start dist/src/main.js --name "new-imaginative-backend"

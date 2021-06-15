@@ -22,7 +22,8 @@
     "db:seed": "npx prisma db seed --preview-feature",
     "db:migrate:dev:createOnly": "prisma migrate dev --create-only",
     "db:migrate:dev": "npx prisma migrate dev",
-    "db:migrate:prod": "npx prisma migrate deploy"
+    "db:migrate:prod": "npx prisma migrate deploy",
+    "db:generate:prod": "npx prisma generate"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.0",
