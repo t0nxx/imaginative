@@ -23,17 +23,17 @@ const umzug = new Umzug({
 export class DevController {
   constructor(/*private readonly listingService: ListingService*/) {}
 
-  @Get('v1/database-migration')
-  async databaseMigration(
-    @Req() _req: Request,
-    @Res() _res: Response,
-  ): Promise<void> {
-    /*if (!req.isAuthenticated() || !req.user) {
-      res
-        .status(StatusCodes.NOT_FOUND)
-        .send(getStatusText(StatusCodes.NOT_FOUND));
-      return;
-    }*/
-    await umzug.up();
-  }
+  // @Get('v1/database-migration')
+  // async databaseMigration(
+  //   @Req() _req: Request,
+  //   @Res() _res: Response,
+  // ): Promise<void> {
+  //   /*if (!req.isAuthenticated() || !req.user) {
+  //     res
+  //       .status(StatusCodes.NOT_FOUND)
+  //       .send(getStatusText(StatusCodes.NOT_FOUND));
+  //     return;
+  //   }*/
+  //   await umzug.up();
+  // }
 }
