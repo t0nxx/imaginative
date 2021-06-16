@@ -19,7 +19,7 @@ import { AuthController } from './auth.controller';
 export class UserModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes(
-      { path: 'v1/users/me', method: RequestMethod.GET },
+      { path: 'v1/users/list', method: RequestMethod.GET },
 
       { path: 'v1/users/:userId/profile', method: RequestMethod.GET },
       { path: 'v1/users/:userId/followers', method: RequestMethod.GET },
