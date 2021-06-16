@@ -10,6 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { PrismaService } from '@/shared/core/prisma.service';
 import { ConfigService } from '@nestjs/config';
+import OperationResult from '@/shared/models/OperationResult';
 
 @Injectable()
 export class LookupsService {
@@ -19,10 +20,7 @@ export class LookupsService {
   ) {}
 
   rootDir = this.configService.get('UPLOAD_ROOT_DIR');
-  public async getListingTypes(
-    category: string,
-    lang: string,
-  ): Promise<ListingTypeDto[]> {
+  public async getListingTypes(category: string, lang: string) {
     const data = await AppCache.getAsync(
       `__listingTypes_${category}_${lang}__`,
       60 * 120,
@@ -60,10 +58,13 @@ export class LookupsService {
         return result;
       },
     );
-    return data;
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
   }
 
-  public async getAllListingTypes(lang: string): Promise<ListingTypeDto[]> {
+  public async getAllListingTypes(lang: string) {
     const data = await AppCache.getAsync(
       `__listingTypes_${lang}__`,
       60 * 120,
@@ -97,10 +98,13 @@ export class LookupsService {
         return result;
       },
     );
-    return data;
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
   }
 
-  public async getPriceTypes(lang: string): Promise<PriceTypeDto[]> {
+  public async getPriceTypes(lang: string) {
     const data = await AppCache.getAsync(
       `__priceTypes_${lang}__`,
       60 * 120,
@@ -135,10 +139,13 @@ export class LookupsService {
         return result;
       },
     );
-    return data;
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
   }
 
-  public async getCurrencies(lang: string): Promise<CurrencyDto[]> {
+  public async getCurrencies(lang: string) {
     const data = await AppCache.getAsync(
       `__currencies_${lang}__`,
       60 * 120,
@@ -174,10 +181,13 @@ export class LookupsService {
         return result;
       },
     );
-    return data;
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
   }
 
-  public async getHiringTypes(lang: string): Promise<HiringTypeDto[]> {
+  public async getHiringTypes(lang: string) {
     const data = await AppCache.getAsync(
       `__hiringTypes_${lang}__`,
       60 * 120,
@@ -211,10 +221,13 @@ export class LookupsService {
         return result;
       },
     );
-    return data;
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
   }
 
-  public async getDisclaimers(lang: string): Promise<DisclaimerDto[]> {
+  public async getDisclaimers(lang: string) {
     const data = await AppCache.getAsync(
       `__disclaimers_${lang}__`,
       60 * 120,
@@ -248,7 +261,10 @@ export class LookupsService {
         return result;
       },
     );
-    return data;
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
   }
 
   public saveFile(

@@ -25,35 +25,35 @@ export class LookupsController {
   async getListingTypes(
     @Param('type') type: string,
     @User('lang') lang: string,
-  ): Promise<ListingTypeDto[]> {
+  ) {
     return await this.lookupsService.getListingTypes(type, lang);
   }
 
   @ApiOperation({ summary: 'Gets price types' })
   @ApiResponse({ status: 200, description: 'Returns the price types' })
   @Get('v1/lookups/price-types')
-  async getPriceTypes(@User('lang') lang: string): Promise<PriceTypeDto[]> {
+  async getPriceTypes(@User('lang') lang: string) {
     return await this.lookupsService.getPriceTypes(lang);
   }
 
   @ApiOperation({ summary: 'Gets currencies' })
   @ApiResponse({ status: 200, description: 'Returns the currency list' })
   @Get('v1/lookups/currencies')
-  async getCurrencies(@User('lang') lang: string): Promise<CurrencyDto[]> {
+  async getCurrencies(@User('lang') lang: string) {
     return await this.lookupsService.getCurrencies(lang);
   }
 
   @ApiOperation({ summary: 'Gets hiring types' })
   @ApiResponse({ status: 200, description: 'Returns the hiring types' })
   @Get('v1/lookups/hiring-types')
-  async getHiringTypes(@User('lang') lang: string): Promise<HiringTypeDto[]> {
+  async getHiringTypes(@User('lang') lang: string) {
     return await this.lookupsService.getHiringTypes(lang);
   }
 
   @ApiOperation({ summary: 'Gets Disclaimer options' })
   @ApiResponse({ status: 200, description: 'Returns the disclaimer options' })
   @Get('v1/lookups/disclaimers')
-  async getDisclaimers(@User('lang') lang: string): Promise<DisclaimerDto[]> {
+  async getDisclaimers(@User('lang') lang: string) {
     return await this.lookupsService.getDisclaimers(lang);
   }
 }
