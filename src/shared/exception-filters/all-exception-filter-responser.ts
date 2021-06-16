@@ -49,7 +49,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     respObject.message = exceptionResponse.message ?? [exception.message];
     respObject.statusCode =
       exception instanceof HttpException
-        ? exception.getStatus()
+        ? 401
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     this.sentryClient.instance().captureException(errObject);
