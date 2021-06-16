@@ -362,14 +362,32 @@ export class UserService {
       }
     }
     if (body.password) {
+      if (!body.oldPassword) {
+        throw new BadRequestException('you must enter old password');
+      }
+      const user = await this.db.user.findUnique({
+        where: { id: userId },
+      });
+      const isOldPasswordCorrect = compareSync(body.oldPassword, user.password);
+
+      if (!isOldPasswordCorrect) {
+        throw new BadRequestException('invalid Old password');
+      }
       body.password = hashSync(body.password, 10);
+      /// since it's not db model it will cause a prisma error
+      delete body.oldPassword;
     }
-    const result = await this.db.user.update({
+    const user = await this.db.user.update({
       where: {
         id: userId,
       },
       data: body,
     });
+
+    const token = this.generateJWT(user);
+    const refreshToken = await this.generateRefreshToken(user);
+
+    const result = { ...user, token, refreshToken };
 
     delete result.password;
     const res = new OperationResult();
