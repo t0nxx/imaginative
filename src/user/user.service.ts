@@ -152,7 +152,7 @@ export class UserService {
 
     const result = { ...user, token, refreshToken };
     const res = new OperationResult();
-    res.message = 'successfully temp message';
+    res.message[0] = 'successfully temp message';
     res.data = result;
     return res;
   }
@@ -200,7 +200,7 @@ export class UserService {
 
     const result = { ...user, token, refreshToken };
     const res = new OperationResult();
-    res.message = 'successfully temp message';
+    res.message[0] = 'successfully temp message';
     res.data = result;
     return res;
   }
@@ -240,7 +240,7 @@ export class UserService {
 
     const result = { ...user, token, refreshToken };
     const res = new OperationResult();
-    res.message = 'successfully temp message';
+    res.message[0] = 'successfully temp message';
     res.data = result;
     return res;
   }
@@ -277,7 +277,7 @@ export class UserService {
     });
 
     const res = new OperationResult();
-    res.message = 'password changed successfully';
+    res.message[0] = 'password changed successfully';
     return res;
   }
 
@@ -307,7 +307,7 @@ export class UserService {
     this.mailsService.sendResetPasswordEmail(user.name, user.email, resetCode);
 
     const res = new OperationResult();
-    res.message = 'an email has been sent for reset password ';
+    res.message[0] = 'an email has been sent for reset password ';
     return res;
   }
 
@@ -343,7 +343,7 @@ export class UserService {
     };
 
     const res = new OperationResult();
-    res.message = 'successfully temp message';
+    res.message[0] = 'successfully temp message';
     res.data = result;
     return res;
   }
@@ -373,7 +373,7 @@ export class UserService {
 
     delete result.password;
     const res = new OperationResult();
-    res.message = 'successfully temp message';
+    res.message[0] = 'successfully temp message';
     res.data = result;
     return res;
   }
@@ -430,7 +430,7 @@ export class UserService {
 
     const result = { token, refreshToken };
     const res = new OperationResult();
-    res.message = 'successfully temp message';
+    res.message[0] = 'successfully temp message';
     res.data = result;
     return res;
   }
@@ -526,7 +526,7 @@ export class UserService {
     const result = await this.getUsersByIds(usersIds);
 
     const res = new OperationResult();
-    res.message = 'successfully temp message';
+    res.message[0] = 'successfully temp message';
     res.data = result;
     res.meta = { count: followersCount };
     return res;
@@ -554,7 +554,7 @@ export class UserService {
     const result = await this.getUsersByIds(usersIds);
 
     const res = new OperationResult();
-    res.message = 'successfully temp message';
+    res.message[0] = 'successfully temp message';
     res.data = result;
     res.meta = { count: followedsCount };
     return res;
@@ -608,14 +608,14 @@ export class UserService {
     }
 
     const res = new OperationResult();
-    res.message = 'successfully temp message';
+    res.message[0] = 'successfully temp message';
     return res;
   }
 
   ///////////////////////////////////////// notification section //////////////
   async notificationToken(userId: number, body: string) {
     const res = new OperationResult();
-    res.message = 'successfully temp message';
+    res.message[0] = 'successfully temp message';
     const tokenToFound = await this.db.userNotificationTokens.findUnique({
       where: {
         token: body,

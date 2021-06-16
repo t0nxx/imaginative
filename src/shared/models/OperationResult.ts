@@ -3,7 +3,7 @@ export default class OperationResult {
   /// code will be deleted
   public code?: string;
   public statusCode = 200;
-  public message?: string = null;
+  public message?: any[] = [];
   public data: any = null;
   public meta: any = null;
 }

@@ -12,7 +12,7 @@ import OperationResult from '@/shared/models/OperationResult';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor(@InjectSentry() private readonly sentryClient: SentryService) { }
+  constructor(@InjectSentry() private readonly sentryClient: SentryService) {}
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -29,8 +29,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       path: request.url,
       method: request.method,
       error:
-        JSON.stringify(exception.getResponse()) ||
-        'No error message set for this error',
+        exception instanceof HttpException
+          ? JSON.stringify(exception.getResponse())
+          : JSON.stringify(exception),
       stackTrace: exception.stack,
       body: JSON.stringify(request.body) || null,
       headers: request.headers || null,
@@ -39,12 +40,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
     };
 
     const respObject = new OperationResult();
-    const exceptionResponse: any = exception.getResponse();
+    const exceptionResponse: any =
+      exception instanceof HttpException
+        ? exception.getResponse()
+        : {
+            message: 'Internal server error',
+          };
 
     respObject.success = false;
     // this for unify all err message to be array of errors even it one
-    respObject.message = exceptionResponse.message ?? [exception.message];
-    respObject.statusCode = exception.getStatus();
+    respObject.message = [exceptionResponse.message] ?? [exception.message];
+    respObject.statusCode =
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
 
     this.sentryClient.instance().captureException(errObject);
     response.status(status).json(respObject);
