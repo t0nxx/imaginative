@@ -43,13 +43,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const exceptionResponse: any =
       exception instanceof HttpException
         ? exception.getResponse()
-        : {
-            message: 'Internal server error',
-          };
-
+        : ['Internal server error'];
     respObject.success = false;
     // this for unify all err message to be array of errors even it one
-    respObject.message = [exceptionResponse.message] ?? [exception.message];
+    respObject.message = exceptionResponse.message ?? [exception.message];
     respObject.statusCode =
       exception instanceof HttpException
         ? exception.getStatus()
