@@ -321,14 +321,15 @@ export class UserService {
     delete user.password;
 
     const { followersIds, followedsIds } =
-      /// if myId sended here mean i want to show another user profile
-      // if not , then it mean i want to show my profile
-      await this.getFollowersAndFriendsidsHelper(myId ?? userId);
+      // get followers / followed of the user
+      await this.getFollowersAndFriendsidsHelper(userId);
 
     const isProfileOwner = myId && myId == userId ? true : false;
     const isFriend = this.isFriend();
-    const isFollower = this.isFollower(myId, followersIds);
-    const isFollowed = this.isFollowed(myId, followedsIds);
+    /// here send the followds of the user to check if he follow me
+    const isFollower = this.isFollower(myId, followedsIds);
+    /// here send the followers of the user to check if i follow him
+    const isFollowed = this.isFollowed(myId, followersIds);
     const isSentFriendRequest = this.isSentFriendRequest();
     const isReceivedFriendRequest = this.isReceivedFriendRequest();
 
@@ -348,12 +349,36 @@ export class UserService {
     return res;
   }
 
+  public async getUsersList(myId: number, pageIndex: number, pageSize: number) {
+    const users = await this.db.user.findMany({
+      select: {
+        id: true,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: 'desc',
+      },
+    });
+    const usersCount = await this.db.user.count();
+
+    const usersIds = users.map((e) => e.id);
+    const result = await this.getUsersByIds(usersIds, myId);
+
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = result;
+    res.meta = { count: usersCount };
+    return res;
+  }
+
   public async updateUserProfile(userId: number, body: UpdateUserDto) {
     if (body.email) {
       const existingUser = await this.db.user.findUnique({
         where: { email: body.email },
       });
       if (existingUser.id != userId) {
+        /// here to check if the user want to update email with email already exist with another user
         console.log(existingUser.id);
         console.log(userId);
         throw new BadRequestException(
@@ -453,7 +478,12 @@ export class UserService {
     return res;
   }
   ////////////////////////////////////// end auth section //////////////////////////////
-  public async getUsersByIds(ids: number[]) {
+  public async getUsersByIds(ids: number[], myId: number) {
+    const { followersIds, followedsIds } =
+      /// if myId sended here mean i want to show another user profile
+      // if not , then it mean i want to show my profile
+      await this.getFollowersAndFriendsidsHelper(myId);
+
     const users = await this.db.user.findMany({
       where: {
         id: {
@@ -463,14 +493,43 @@ export class UserService {
       select: {
         id: true,
         name: true,
+        email: true,
         photoUrl: true,
+        featuredProductName: true,
+        featuredProductId: true,
+        lang: true,
+        provider: true,
         type: true,
+        role: true,
+        notificationsEnabled: true,
         followersCount: true,
         storiesCount: true,
         productsCount: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
-    return users;
+    const formatedUsersArr = users.map((user) => {
+      const isProfileOwner = myId && myId == user.id ? true : false;
+      const isFriend = this.isFriend();
+      /// here send the myfollowers check if he follow me
+      const isFollower = this.isFollower(user.id, followersIds);
+      /// here send the users I follow check if he follow me
+
+      const isFollowed = this.isFollowed(user.id, followedsIds);
+      const isSentFriendRequest = this.isSentFriendRequest();
+      const isReceivedFriendRequest = this.isReceivedFriendRequest();
+      return {
+        ...user,
+        isProfileOwner,
+        isFriend,
+        isFollower,
+        isFollowed,
+        isSentFriendRequest,
+        isReceivedFriendRequest,
+      };
+    });
+    return formatedUsersArr;
   }
 
   //////////////////////////////////////// follow / friend section ////////////////////
@@ -525,6 +584,7 @@ export class UserService {
   }
   public async getUserFollowers(
     userId: number,
+    myId: number,
     pageIndex: number,
     pageSize: number,
   ) {
@@ -541,7 +601,7 @@ export class UserService {
       },
     });
     const usersIds = followers.map((e) => e.followerId);
-    const result = await this.getUsersByIds(usersIds);
+    const result = await this.getUsersByIds(usersIds, myId);
 
     const res = new OperationResult();
     res.message[0] = 'successfully temp message';
@@ -552,6 +612,7 @@ export class UserService {
 
   public async getFollowedUsers(
     userId: number,
+    myId: number,
     pageIndex: number,
     pageSize: number,
   ) {
@@ -569,7 +630,7 @@ export class UserService {
     });
 
     const usersIds = followeds.map((e) => e.userId);
-    const result = await this.getUsersByIds(usersIds);
+    const result = await this.getUsersByIds(usersIds, myId);
 
     const res = new OperationResult();
     res.message[0] = 'successfully temp message';

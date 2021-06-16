@@ -6,6 +6,7 @@ import {
   Param,
   Query,
   Put,
+  Patch,
   ParseIntPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -31,6 +32,15 @@ export class UserController {
   //   return this.userService.getUser(userId);
   // }
 
+  @ApiOperation({ summary: 'Gets list of users of the app' })
+  @Get('/list')
+  async getUsersList(
+    @User('id') myId: number,
+    @Query('pageIndex') pageIndex?: number,
+    @Query('pageSize') pageSize?: number,
+  ) {
+    return this.userService.getUsersList(myId, pageIndex ?? 1, pageSize ?? 10);
+  }
   @Get('/:userId/profile')
   async getUserProfile(
     @Param('userId', ParseIntPipe) userId: number,
@@ -43,11 +53,13 @@ export class UserController {
   @Get('/:userId/followers')
   async getUserFollowers(
     @Param('userId', ParseIntPipe) userId: number,
+    @User('id') myId: number,
     @Query('pageIndex') pageIndex?: number,
     @Query('pageSize') pageSize?: number,
   ) {
     return this.userService.getUserFollowers(
       userId,
+      myId,
       pageIndex ?? 1,
       pageSize ?? 10,
     );
@@ -57,11 +69,13 @@ export class UserController {
   @Get('/:userId/following')
   async getFollowedUsers(
     @Param('userId', ParseIntPipe) userId: number,
+    @User('id') myId: number,
     @Query('pageIndex') pageIndex?: number,
     @Query('pageSize') pageSize?: number,
   ) {
     return this.userService.getFollowedUsers(
       userId,
+      myId,
       pageIndex ?? 1,
       pageSize ?? 10,
     );
@@ -77,7 +91,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Updates currently logged in user profile details' })
-  @Put('/update')
+  @Patch('/update')
   async updateUserProfile(
     @User('id') userId: number,
     @Body() body: UpdateUserDto,
