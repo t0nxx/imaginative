@@ -46,7 +46,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
         : ['Internal server error'];
     respObject.success = false;
     // this for unify all err message to be array of errors even it one
-    respObject.message = exceptionResponse.message ?? [exception.message];
+    /// retuen array of one message in response
+    if (exceptionResponse.message) {
+      //// execptions throws from app
+      if (typeof exceptionResponse.message == 'string') {
+        respObject.message = [exceptionResponse.message];
+      } else {
+        /// execptions throws from class validator
+        respObject.message = [exceptionResponse.message[0]];
+      }
+    } else {
+      /// 500 error not http
+      respObject.message = [exception.message] ?? ['Internal server error'];
+    }
     respObject.statusCode =
       exception instanceof HttpException
         ? 401
