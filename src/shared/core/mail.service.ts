@@ -17,4 +17,11 @@ export class MailsService {
       resetCode,
     });
   }
+
+  async afterResetPasswordEmail(username: string, email: string) {
+    await this.mailQueue.add('afterResetPasswordEmail', {
+      username,
+      email,
+    });
+  }
 }

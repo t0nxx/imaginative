@@ -32,4 +32,19 @@ export class MailProcessor {
       console.log(error);
     }
   }
+  @Process('afterResetPasswordEmail')
+  async afterResetPasswordEmail(job: Job<{ username: string; email: string }>) {
+    try {
+      await this.mailerService.sendMail({
+        template: './afterResetPassword',
+        context: {
+          username: job.data.username,
+        },
+        subject: 'ImaginativeNews - Password Changed Successfully',
+        to: job.data.email,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

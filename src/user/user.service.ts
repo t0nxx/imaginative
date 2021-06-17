@@ -275,6 +275,8 @@ export class UserService {
     await this.db.userPasswordRecoveryTokens.delete({
       where: { id: isTokenExist.id },
     });
+    /// send mail to user that his password has been changed
+    this.mailsService.afterResetPasswordEmail(user.name, user.email);
 
     const res = new OperationResult();
     res.message[0] = 'password changed successfully';
