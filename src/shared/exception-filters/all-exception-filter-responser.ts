@@ -65,6 +65,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     this.sentryClient.instance().captureException(errObject);
-    response.status(status).json(respObject);
+    response.status(401).json(respObject);
   }
 }
