@@ -300,7 +300,7 @@ export default `
                           If you don't remember that you asked for password
                           recovery, you can safely ignore this email.
                         </p>
-                        <p>The ImaginativeNews Team.</p>
+                        <p>the imaginative news team.</p>
                       </td>
                     </tr>
                   </table>
