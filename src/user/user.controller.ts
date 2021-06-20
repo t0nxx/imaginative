@@ -20,6 +20,7 @@ import {
 import { User } from './user.decorator';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { SocialLoginDto } from './dto/SocialLogin.dto';
+import { NotificationTokenDto } from './dto/NotificationToken.dto';
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -81,13 +82,11 @@ export class UserController {
     );
   }
 
-  @ApiOperation({ summary: 'Toggles the follow record of a given user' })
+  @ApiOperation({ summary: 'Add fcm token for specific user or guest' })
   @Post('/add-notifications-token')
-  async addUserNotificationToken(
-    @Body() body: SocialLoginDto,
-    @User('id') userId: number,
-  ) {
-    return this.userService.notificationToken(userId, body.token);
+  async addUserNotificationToken(@Body() body: NotificationTokenDto) {
+    /// 0 here mean the token for visitor , not regist user
+    return this.userService.notificationToken(body.userId ?? 0, body.token);
   }
 
   @ApiOperation({ summary: 'Updates currently logged in user profile details' })

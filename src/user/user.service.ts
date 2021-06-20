@@ -708,7 +708,7 @@ export class UserService {
     /// add new token in db
     await this.db.userNotificationTokens.create({
       data: {
-        userId: userId,
+        userId: userId || 0,
         token: body,
       },
     });

@@ -29,8 +29,6 @@ export class UserModule implements NestModule {
         method: RequestMethod.POST,
       },
 
-      { path: 'v1/users/add-notifications-token', method: RequestMethod.POST },
-
       { path: 'v1/users/update', method: RequestMethod.PUT },
     );
   }
