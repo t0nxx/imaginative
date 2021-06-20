@@ -166,10 +166,9 @@ export class UserService {
       throw new NotFoundException('invalid  token');
     }
 
-    const user = await this.db.user.findFirst({
+    const user = await this.db.user.findUnique({
       where: {
         email: firebaseResponse.email,
-        provider: socialProvider,
       },
     });
 
