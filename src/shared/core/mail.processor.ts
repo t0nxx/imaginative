@@ -9,7 +9,24 @@ export class MailProcessor {
     private readonly mailerService: MailerService,
     private readonly fireBaseService: FireBaseService,
   ) {}
-
+  @Process('sendVerificationEmail')
+  async sendVerificationEmail(
+    job: Job<{ username: string; email: string; code: string }>,
+  ) {
+    try {
+      await this.mailerService.sendMail({
+        template: './verificationCode',
+        context: {
+          username: job.data.username,
+          code: job.data.code,
+        },
+        subject: 'ImaginativeNews - Verification Code',
+        to: job.data.email,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
   @Process('sendResetPasswordEmail')
   async sendResetPasswordEmail(
     job: Job<{ username: string; email: string; resetCode: string }>,

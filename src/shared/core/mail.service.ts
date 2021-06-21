@@ -6,6 +6,18 @@ import { Queue } from 'bull';
 export class MailsService {
   constructor(@InjectQueue('mails') private mailQueue: Queue) {}
 
+  async sendVerificationEmail(
+    username: string,
+    email: string,
+    verificationCode: string,
+  ) {
+    await this.mailQueue.add('sendVerificationEmail', {
+      username,
+      email,
+      verificationCode,
+    });
+  }
+
   async sendResetPasswordEmail(
     username: string,
     email: string,

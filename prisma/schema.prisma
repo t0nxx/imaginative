@@ -257,6 +257,8 @@ model User {
   followersCount       Int                     @default(0)
   productsCount        Int                     @default(0)
   storiesCount         Int                     @default(0)
+  isVerified           Boolean                 @default(false)
+
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
@@ -267,6 +269,16 @@ model User {
   // map is the name of model in database
 
   @@map("users")
+}
+
+model UserVerificationCode {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  code      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_verification_code")
 }
 
 model UserPasswordRecoveryTokens {

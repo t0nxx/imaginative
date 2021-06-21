@@ -7,6 +7,7 @@ import RefreshTokenDto from './dto/RefreshToken.dto';
 import ForgetPasswordDto from './dto/ForgetPassword.dto';
 import ResetPasswordDto from './dto/ResetPassword.dto';
 import { AccountTypeProviderEnum, SocialLoginDto } from './dto/SocialLogin.dto';
+import VerifyEmailDto from './dto/verifyEmail.dto';
 
 @ApiTags('Authentication')
 @Controller('v1/auth')
@@ -26,6 +27,16 @@ export class AuthController {
   @Post('/refresh-token')
   async refreshToken(@Body() body: RefreshTokenDto): Promise<any> {
     return this.userService.refreshToken(body.refreshToken);
+  }
+
+  @Post('/verification-code')
+  async sendVerificationEmail(@Body() body: ForgetPasswordDto): Promise<any> {
+    return this.userService.sendVerificationEmail(body.email);
+  }
+
+  @Post('/verify-account')
+  async verifyEmail(@Body() body: VerifyEmailDto): Promise<any> {
+    return this.userService.verifyEmail(body.email, body.code);
   }
 
   @Post('/forgot-password')

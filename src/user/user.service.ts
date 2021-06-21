@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { addDays } from 'date-fns';
 import crypto from 'crypto';
 import { hashSync, compareSync } from 'bcryptjs';
+import * as randomstring from 'randomstring';
 import {
   RegisterUserDto,
   langEnum,
@@ -146,6 +147,10 @@ export class UserService {
       throw new BadRequestException('invalid password');
     }
 
+    if (user.isVerified != true) {
+      throw new BadRequestException('email is not verified');
+    }
+
     delete user.password;
     const token = this.generateJWT(user);
     const refreshToken = await this.generateRefreshToken(user);
@@ -189,6 +194,8 @@ export class UserService {
         lang: langEnum.en,
 
         type: AccountTypeEnum.individual,
+
+        isVerified: true,
       };
       return this.register(newUser, socialProvider);
     }
@@ -208,6 +215,9 @@ export class UserService {
     body: RegisterUserDto,
     socialProvider?: AccountTypeProviderEnum,
   ): Promise<any> {
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+
     const existingUser = await this.db.user.findUnique({
       where: { email: body.email },
     });
@@ -228,6 +238,9 @@ export class UserService {
       },
     });
 
+    if (user.provider == AccountTypeProviderEnum.local) {
+      return this.sendVerificationEmail(user.email);
+    }
     // @ mail queueAccountTyprProviderEnum
     // if (_user.notificationsEnabled) {
     //   await sendWelcomeNotification(_user.email);
@@ -238,8 +251,6 @@ export class UserService {
     const refreshToken = await this.generateRefreshToken(user);
 
     const result = { ...user, token, refreshToken };
-    const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
     res.data = result;
     return res;
   }
@@ -309,6 +320,83 @@ export class UserService {
 
     const res = new OperationResult();
     res.message[0] = 'an email has been sent for reset password ';
+    return res;
+  }
+
+  async sendVerificationEmail(email: string) {
+    const user = await this.db.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    // delete old codes for not reuse it again
+    await this.db.userVerificationCode.deleteMany({
+      where: {
+        userId: user.id,
+      },
+    });
+    const verificationCode = randomstring.generate({
+      length: 6,
+      charset: 'numeric',
+    });
+    await this.db.userVerificationCode.create({
+      data: {
+        userId: user.id,
+        code: verificationCode,
+      },
+    });
+
+    this.mailsService.sendVerificationEmail(
+      user.name,
+      user.email,
+      verificationCode,
+    );
+
+    const res = new OperationResult();
+    res.message[0] = 'an email has been sent with verification code';
+    return res;
+  }
+  async verifyEmail(email: string, code: string) {
+    const user = await this.db.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    const isCodeExist = await this.db.userVerificationCode.findFirst({
+      where: {
+        userId: user.id,
+        code: code,
+      },
+    });
+
+    if (!isCodeExist) {
+      throw new NotFoundException('invalid verification code');
+    }
+
+    await this.db.userVerificationCode.deleteMany({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    await this.db.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        isVerified: true,
+      },
+    });
+
+    /// logic to add after disc with mobile , if return user obj in response or login from his side
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
     return res;
   }
 
@@ -506,6 +594,7 @@ export class UserService {
         followersCount: true,
         storiesCount: true,
         productsCount: true,
+        isVerified: true,
         createdAt: true,
         updatedAt: true,
       },
