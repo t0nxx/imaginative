@@ -8,7 +8,7 @@ import { UserService } from '@/user/user.service';
 import MailManager from '@/shared/core/MailManager';
 import FireBase from '@/shared/core/FireBase.service';
 import { ListingService } from '../listing/listing.service';
-import CreateStoryDto from './dto/CreateStoryDto';
+import CreateStoryDto from './dto/CreateStory.dto';
 
 let storyService: StoryService;
 

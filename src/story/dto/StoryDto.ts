@@ -15,7 +15,11 @@ export default interface StoryDto {
   conclusion?: string;
   imaginativeYear: number;
   status: number;
-  isUserFollowed: boolean;
+  viewCount: number;
+  likeCount: number;
+  commentCount: number;
+  shareCount: number;
+  isRepublished: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

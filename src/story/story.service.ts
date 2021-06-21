@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import Story from '../models/Story';
-import CreateStoryDto from './dto/CreateStoryDto';
+import CreateStoryDto from './dto/CreateStory.dto';
 import StoryDto from './dto/StoryDto';
 import { LookupsService } from '../lookups/lookups.service';
 import { UserService } from '@/user/user.service';
@@ -21,12 +21,29 @@ export class StoryService {
     private readonly db: PrismaService,
   ) {}
 
-  // public async addStory(lang: string, storyData: CreateStoryDto) {
-  //   const story = await this.db.story.create({
-  //     data: storyData,
-  //   });
-  //   return this.mapStory(story, lang);
-  // }
+  public async addStory(lang: string, storyData: CreateStoryDto, myId: number) {
+    //// check the sended listing id is valid
+    if (storyData.listingId) {
+      const listing = await this.db.listings.findUnique({
+        where: {
+          id: storyData.listingId,
+        },
+      });
+
+      if (!listing) {
+        throw new NotFoundException('listing not found');
+      }
+    }
+    // story status
+    //0-draft|1- published,2-user_template|3-example_template
+    const story = await this.db.story.create({
+      data: {
+        ...storyData,
+        ownerId: myId,
+      },
+    });
+    return this.mapStory(story, lang, myId);
+  }
 
   // public async updateStory(
   //   id: string,
@@ -57,37 +74,41 @@ export class StoryService {
   //   return storyDtos;
   // }
 
-  // public async getStory(
-  //   id: number,
-  //   lang: string,
-  //   userId?: number,
-  // ): Promise<StoryDto | null> {
-  //   const dbStory = await this.db.story.findUnique({
-  //     where: {
-  //       id: id,
-  //     },
-  //   });
-  //   if (dbStory) {
-  //     let userFollowings: number[] = [];
-  //     if (dbStory && userId) {
-  //       userFollowings = await this.userService.getUserFollowedUsers(userId, [
-  //         dbStory.ownerId,
-  //       ]);
-  //     }
-  //     const story = await this.mapStory(dbStory, lang, userFollowings);
-  //     if (dbStory?.listingId) {
-  //       const listing = await this.listingService.getListing(
-  //         dbStory.listingId,
-  //         lang,
-  //       );
-  //       if (listing) {
-  //         story.listing = this.getListingSnippet(listing);
-  //       }
-  //     }
-  //     return story;
-  //   }
-  //   return null;
-  // }
+  public async getStory(id: number, lang: string, myId?: number) {
+    const dbStory = await this.db.story.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!dbStory) {
+      throw new NotFoundException('story not found');
+    }
+    const result = await this.mapStory(dbStory, lang, myId);
+    await this.db.story.update({
+      where: {
+        id: dbStory.id,
+      },
+      data: {
+        viewCount: {
+          increment: 1,
+        },
+      },
+    });
+    // if (dbStory?.listingId) {
+    //   const listing = await this.listingService.getListing(
+    //     dbStory.listingId,
+    //     lang,
+    //   );
+    //   if (listing) {
+    //     story.listing = this.getListingSnippet(listing);
+    //   }
+    // }
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = result;
+    return res;
+  }
 
   // public async deleteStory(
   //   _ownerId: number,
@@ -194,37 +215,39 @@ export class StoryService {
   //   return result;
   // }
 
-  // async mapStory(
-  //   story: any,
-  //   lang: string,
-  //   userFollowings: number[] = [],
-  // ): Promise<StoryDto> {
-  //   const disclaimers = await this.lookupsService.getDisclaimers(lang);
-  //   const user = await this.userService.getUser(story.ownerId, story.ownerId);
-  //   return {
-  //     id: story.id,
-  //     type: 'Story',
-  //     owner: user,
-  //     listingId: story.listingId,
-  //     disclaimerId: story.disclaimerId,
-  //     disclaimerName:
-  //       disclaimers.find((lt) => lt.id === story.disclaimerId)?.name || '',
-  //     privacy: story.privacy,
-  //     media: story.media,
-  //     headerLine: story.headerLine,
-  //     body: story.body,
-  //     intro: story.intro,
-  //     tagline: story.tagline,
-  //     conclusion: story.conclusion,
-  //     imaginativeYear: story.imaginativeYear,
-  //     status: story.status,
-  //     isUserFollowed: userFollowings.find((f) => f === story.ownerId)
-  //       ? true
-  //       : false,
-  //     createdAt: story.createdAt,
-  //     updatedAt: story.updatedAt,
-  //   };
-  // }
+  async mapStory(story: any, lang: string, myId: number): Promise<StoryDto> {
+    const { data: disclaimers } = await this.lookupsService.getDisclaimers(
+      lang,
+    );
+
+    const { data: user } = await this.userService.getUser(story.ownerId, myId);
+    return {
+      id: story.id,
+      type: 'Story',
+      owner: user,
+      listingId: story.listingId,
+      disclaimerId: story.disclaimerId,
+      disclaimerName:
+        disclaimers.find((lt) => lt.id === story.disclaimerId)?.name || '',
+      privacy: story.privacy,
+      media: story.media,
+      headerLine: story.headerLine,
+      body: story.body,
+      intro: story.intro,
+      tagline: story.tagline,
+      conclusion: story.conclusion,
+      imaginativeYear: story.imaginativeYear,
+      status: story.status,
+      viewCount: story.viewCount,
+      likeCount: story.likeCount,
+      commentCount: story.commentCount,
+      shareCount: story.shareCount,
+      isRepublished: story.isRepublished,
+
+      createdAt: story.createdAt,
+      updatedAt: story.updatedAt,
+    };
+  }
 
   // getListingSnippet(listing?: ListingDto): any {
   //   if (listing) {

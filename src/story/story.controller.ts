@@ -16,7 +16,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { StoryService } from './story.service';
-import CreateStoryDto from './dto/CreateStoryDto';
+import CreateStoryDto from './dto/CreateStory.dto';
 import { User } from '@/user/user.decorator';
 import StoryDto from './dto/StoryDto';
 import { v4 } from 'uuid';
@@ -29,18 +29,15 @@ import SearchStoryDto from './dto/SearchStoryDto';
 export class StoryController {
   constructor(private readonly storyService: StoryService) {}
 
-  // @Post('v1/stories')
-  // async createStory(
-  //   @Headers('lang') lang = 'en',
-  //   @User('id') userid: number,
-  //   @Body() storyData: CreateStoryDto,
-  // ): Promise<StoryDto> {
-  //   return await execOperation(async () => {
-  //     storyData.ownerId = userid;
-  //     const story = await this.storyService.addStory(lang, storyData);
-  //     return story;
-  //   });
-  // }
+  @ApiOperation({ summary: 'Create new story' })
+  @Post('v1/stories')
+  async createStory(
+    @Headers('lang') lang = 'en',
+    @User('id') myId: number,
+    @Body() storyData: CreateStoryDto,
+  ) {
+    return this.storyService.addStory(lang, storyData, myId);
+  }
 
   // @Put('v1/stories/:id')
   // async updateStory(
@@ -73,15 +70,16 @@ export class StoryController {
   //   return stories;
   // }
 
-  // @Get('v1/stories/:id')
-  // async getStory(
-  //   @User('id') userId: number,
-  //   @Headers('lang') lang = 'en',
-  //   @Param('id') id: number,
-  // ): Promise<any> {
-  //   const story = await this.storyService.getStory(id, lang, userId);
-  //   return story;
-  // }
+  @ApiOperation({ summary: 'Gets single story' })
+  @Get('v1/stories/:id')
+  async getStory(
+    @User('id') myId: number,
+    @Headers('lang') lang = 'en',
+    @Param('id') id: number,
+  ) {
+    /// zero as myid here for vistitors only
+    return this.storyService.getStory(id, lang, myId ?? 0);
+  }
 
   // @Delete('v1/stories/:id')
   // async deleteStory(

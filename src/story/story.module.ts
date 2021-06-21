@@ -12,6 +12,7 @@ import { LookupsModule } from '@/lookups/lookups.module';
 import { AppLoggerModule } from '@/shared/appLogger/appLogger.module';
 import { ListingModule } from '@/listing/listing.module';
 import { AuthMiddleware } from '@/user/auth.middleware';
+import { OptionalAuthMiddleware } from '@/user/optional.auth.middleware';
 
 @Module({
   imports: [
@@ -27,13 +28,19 @@ import { AuthMiddleware } from '@/user/auth.middleware';
 })
 export class StoryModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes(
-      { path: 'v1/stories', method: RequestMethod.POST },
-      { path: 'v1/stories/:id', method: RequestMethod.PUT },
-      { path: 'v1/stories', method: RequestMethod.GET },
-      //{path: 'v1/stories/search', method: RequestMethod.POST},
-      { path: 'v1/stories/:id', method: RequestMethod.DELETE },
-      { path: 'v1/stories/:id', method: RequestMethod.GET },
-    );
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes(
+        { path: 'v1/stories', method: RequestMethod.POST },
+        { path: 'v1/stories/:id', method: RequestMethod.PUT },
+        { path: 'v1/stories/:id', method: RequestMethod.DELETE },
+      )
+      .apply(OptionalAuthMiddleware)
+      .forRoutes(
+        { path: 'v1/stories', method: RequestMethod.GET },
+        { path: 'v1/stories/search', method: RequestMethod.POST },
+
+        { path: 'v1/stories/:id', method: RequestMethod.GET },
+      );
   }
 }
