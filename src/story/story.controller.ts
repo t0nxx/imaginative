@@ -7,6 +7,7 @@ import {
   Put,
   Headers,
   Delete,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -49,11 +50,21 @@ export class StoryController {
   //   return story;
   // }
 
-  // @Get('v1/stories')
-  // async getAllStories(@Headers('lang') lang = 'en'): Promise<any> {
-  //   const stories = await this.storyService.getAllStories(lang);
-  //   return stories;
-  // }
+  @ApiOperation({ summary: 'Gets multiple stories' })
+  @Get('v1/stories')
+  async getAllStories(
+    @Headers('lang') lang = 'en',
+    @User('id') myId: number,
+    @Query('pageIndex') pageIndex?: number,
+    @Query('pageSize') pageSize?: number,
+  ) {
+    return this.storyService.getAllStories(
+      lang,
+      pageIndex ?? 1,
+      pageSize ?? 10,
+      myId ?? 0,
+    );
+  }
 
   // @Post('v1/stories/search')
   // async searchStories(

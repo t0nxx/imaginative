@@ -63,16 +63,31 @@ export class StoryService {
   //   return this.mapStory(story, lang);
   // }
 
-  // public async getAllStories(lang: string): Promise<StoryDto[]> {
-  //   const stories = await Story.findAll({
-  //     order: [['createdAt', 'DESC']],
-  //   });
-  //   const storyDtos: StoryDto[] = [];
-  //   for (const story of stories) {
-  //     storyDtos.push(await this.mapStory(story, lang));
-  //   }
-  //   return storyDtos;
-  // }
+  public async getAllStories(
+    lang: string,
+    pageIndex: number,
+    pageSize: number,
+    myId: number,
+  ) {
+    const stories = await this.db.story.findMany({
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: 'desc',
+      },
+    });
+    let result: StoryDto[] = [];
+    // to to it in async way for performance
+    const promisesArr = [];
+    for (const story of stories) {
+      promisesArr.push(this.mapStory(story, lang, myId));
+    }
+    result = await Promise.all(promisesArr);
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = result;
+    return res;
+  }
 
   public async getStory(id: number, lang: string, myId?: number) {
     const dbStory = await this.db.story.findUnique({
