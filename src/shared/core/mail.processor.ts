@@ -11,14 +11,14 @@ export class MailProcessor {
   ) {}
   @Process('sendVerificationEmail')
   async sendVerificationEmail(
-    job: Job<{ username: string; email: string; code: string }>,
+    job: Job<{ username: string; email: string; verificationCode: string }>,
   ) {
     try {
       await this.mailerService.sendMail({
         template: './verificationCode',
         context: {
           username: job.data.username,
-          code: job.data.code,
+          code: job.data.verificationCode,
         },
         subject: 'ImaginativeNews - Verification Code',
         to: job.data.email,
