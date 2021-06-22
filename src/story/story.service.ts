@@ -11,6 +11,7 @@ import SearchStoryDto from './dto/SearchStoryDto';
 import { ListingService } from '@/listing/listing.service';
 import ListingDto from '@/listing/dto/ListingDto';
 import { PrismaService } from '@/shared/core/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class StoryService {
@@ -34,11 +35,14 @@ export class StoryService {
         throw new NotFoundException('listing not found');
       }
     }
+    /// note here , to stor arr of object as a json in prisma , it must be transformed to prisma.jsonarray like above
+    const jsonArr = storyData.media as Prisma.JsonArray;
     // story status
     //0-draft|1- published,2-user_template|3-example_template
     const story = await this.db.story.create({
       data: {
         ...storyData,
+        media: jsonArr,
         ownerId: myId,
       },
     });
