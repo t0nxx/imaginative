@@ -239,7 +239,7 @@ export class UserService {
     });
 
     if (user.provider == AccountTypeProviderEnum.local) {
-      return this.sendVerificationEmail(user.email);
+      this.sendVerificationEmail(user.email);
     }
     // @ mail queueAccountTyprProviderEnum
     // if (_user.notificationsEnabled) {
