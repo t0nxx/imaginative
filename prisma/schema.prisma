@@ -16,7 +16,7 @@ enum AccountRuleEnum {
 enum AccountTypeEnum {
   individual
   company
-  institute
+  institution
 }
 
 enum AccountTypeProviderEnum {

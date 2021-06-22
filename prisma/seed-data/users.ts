@@ -6,7 +6,7 @@ enum AccountRuleEnum {
 enum AccountTypeEnum {
   individual = 'individual',
   company = 'company',
-  institute = 'institute',
+  institution = 'institution',
 }
 
 enum AccountTypeProviderEnum {
@@ -50,7 +50,7 @@ export const users = [
   },
   {
     id: 3,
-    name: 'institute account',
+    name: 'institution account',
     email: 'c@c.com',
     photoUrl:
       'https://gravatar.com/avatar/14978c9024af3c17cf195dff095d79e8?s=400&d=robohash&r=x',
@@ -62,7 +62,7 @@ export const users = [
     lang: 'en',
     notificationsEnabled: true,
     provider: AccountTypeProviderEnum.local,
-    type: AccountTypeEnum.institute,
+    type: AccountTypeEnum.institution,
     role: AccountRuleEnum.user,
   },
 ];

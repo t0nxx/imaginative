@@ -15,7 +15,7 @@ export enum langEnum {
 export enum AccountTypeEnum {
   individual = 'individual',
   company = 'company',
-  institute = 'institute',
+  institution = 'institution',
 }
 export class RegisterUserDto {
   @IsNotEmpty() name: string;
