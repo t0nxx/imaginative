@@ -17,7 +17,6 @@ enum AccountTypeProviderEnum {
 }
 export const users = [
   {
-    id: 1,
     name: 'admin account',
     email: 'a@a.com',
     photoUrl:
@@ -33,7 +32,6 @@ export const users = [
     role: AccountRuleEnum.admin,
   },
   {
-    id: 2,
     name: 'company account',
     email: 'b@b.com',
     photoUrl:
@@ -49,7 +47,6 @@ export const users = [
     role: AccountRuleEnum.user,
   },
   {
-    id: 3,
     name: 'institution account',
     email: 'c@c.com',
     photoUrl:

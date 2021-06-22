@@ -1,6 +1,5 @@
 export const stories = [
   {
-    id: 1,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -16,7 +15,6 @@ export const stories = [
     status: 1,
   },
   {
-    id: 2,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -32,7 +30,6 @@ export const stories = [
     status: 1,
   },
   {
-    id: 3,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -48,7 +45,6 @@ export const stories = [
     status: 2,
   },
   {
-    id: 4,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -64,7 +60,6 @@ export const stories = [
     status: 2,
   },
   {
-    id: 5,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -80,7 +75,6 @@ export const stories = [
     status: 2,
   },
   {
-    id: 6,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -96,7 +90,6 @@ export const stories = [
     status: 0,
   },
   {
-    id: 7,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -112,7 +105,6 @@ export const stories = [
     status: 2,
   },
   {
-    id: 8,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -132,7 +124,6 @@ export const stories = [
     status: 0,
   },
   {
-    id: 9,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -148,7 +139,6 @@ export const stories = [
     status: 2,
   },
   {
-    id: 10,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -164,7 +154,6 @@ export const stories = [
     status: 2,
   },
   {
-    id: 11,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -184,7 +173,6 @@ export const stories = [
     status: 2,
   },
   {
-    id: 12,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -200,7 +188,6 @@ export const stories = [
     status: 1,
   },
   {
-    id: 13,
     ownerId: 1,
     listingId: 1,
     privacy: 'Friends only',
@@ -216,7 +203,6 @@ export const stories = [
     status: 0,
   },
   {
-    id: 14,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -232,7 +218,6 @@ export const stories = [
     status: 2,
   },
   {
-    id: 15,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
@@ -248,7 +233,6 @@ export const stories = [
     status: 2,
   },
   {
-    id: 16,
     ownerId: 1,
     listingId: 1,
     privacy: 'Public',
