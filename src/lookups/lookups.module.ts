@@ -7,14 +7,13 @@ import {
 import { LookupsController } from './lookups.controller';
 import { LookupsService } from './lookups.service';
 import { CoreModule } from './../shared/core/core.module';
-import { FilesController } from './file.controller';
 import { AuthMiddleware } from '@/user/auth.middleware';
 import { UserModule } from '@/user/user.module';
 
 @Module({
   imports: [CoreModule, UserModule],
   providers: [LookupsService],
-  controllers: [LookupsController, FilesController],
+  controllers: [LookupsController],
   exports: [LookupsService],
 })
 export class LookupsModule implements NestModule {

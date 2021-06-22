@@ -3,11 +3,14 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import * as path from 'path';
 import { BullModule } from '@nestjs/bull';
+// import { MulterExtendedModule } from 'nestjs-multer-extended';
 
 import FireBaseService from './FireBase.service';
 import { PrismaService } from './prisma.service';
 import { MailsService } from './mail.service';
 import { MailProcessor } from './mail.processor';
+import { FilesController } from './file.controller';
+import { FileService } from './file.service';
 
 @Module({
   imports: [
@@ -44,9 +47,27 @@ import { MailProcessor } from './mail.processor';
         port: 6379,
       },
     }),
+
+    //   /// files - aws s3 uploader module
+    //   MulterExtendedModule.register({
+    //     awsConfig: {
+    //       accessKeyId: 'AKIAQQGXQW5BF63COFY5',
+    //       secretAccessKey: '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',
+    //       region: 'eu-west-3',
+    //     },
+    //     bucket: 'imaginative-news-files',
+    //     basePath: 'uploads',
+    //     fileSize: 1 * 1024 * 1024,
+    //   }),
   ],
-  providers: [FireBaseService, PrismaService, MailsService, MailProcessor],
-  controllers: [],
+  providers: [
+    FireBaseService,
+    PrismaService,
+    MailsService,
+    MailProcessor,
+    FileService,
+  ],
+  controllers: [FilesController],
   exports: [MailsService, FireBaseService, PrismaService],
 })
 export class CoreModule implements NestModule {
