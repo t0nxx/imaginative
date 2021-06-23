@@ -147,10 +147,6 @@ export class UserService {
       throw new BadRequestException('invalid password');
     }
 
-    if (user.isVerified != true) {
-      throw new BadRequestException('email is not verified');
-    }
-
     delete user.password;
     const token = this.generateJWT(user);
     const refreshToken = await this.generateRefreshToken(user);
