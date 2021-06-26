@@ -153,7 +153,7 @@ export class UserService {
 
     const result = { ...user, token, refreshToken };
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = 'an email has been sent with verification code';
     res.data = result;
     return res;
   }
@@ -217,12 +217,24 @@ export class UserService {
     const existingUser = await this.db.user.findUnique({
       where: { email: body.email },
     });
-    if (existingUser) {
+    /// after client modification , if the user not verify his account he could regist again with
+    /// same email without any server errors .
+    /// the only way to vlaidate if email exist iff the email already verified isVerifyed = true
+    if (existingUser && existingUser.isVerified == true) {
       throw new BadRequestException(
         'A user with this email address already exists!',
       );
+    } else if (existingUser && existingUser.isVerified == false) {
+      //// as client request , if user is not verified server should not save it's data ,
+      /// and could regist again with same email witout isssue
+      /// for non conflict if the regist with same email and the old not verifiy
+      // i will delete the old one to ignore conflict unique in database
+      // and continue the regist cycle as normal
+      await this.db.user.delete({
+        where: { id: existingUser.id },
+      });
     }
-
+    /// continue normal cycle
     body.password = hashSync(body.password, 10);
     const user = await this.db.user.create({
       data: {
@@ -355,7 +367,7 @@ export class UserService {
     res.message[0] = 'an email has been sent with verification code';
     return res;
   }
-  async verifyEmail(email: string, code: string) {
+  async verifyEmail(email: string, code: string, password: string) {
     const user = await this.db.user.findUnique({
       where: {
         email: email,
@@ -390,10 +402,9 @@ export class UserService {
       },
     });
 
-    /// logic to add after disc with mobile , if return user obj in response or login from his side
-    const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
-    return res;
+    /// old - logic to add after disc with mobile , if return user obj in response or login from his side
+    //// after client request , the whole user object like login should be returned after verification
+    return this.localLogin({ email: email, password: password });
   }
 
   async getUser(userId: number, myId: number) {

@@ -36,7 +36,7 @@ export class AuthController {
 
   @Post('/verify-account')
   async verifyEmail(@Body() body: VerifyEmailDto): Promise<any> {
-    return this.userService.verifyEmail(body.email, body.code);
+    return this.userService.verifyEmail(body.email, body.code, body.password);
   }
 
   @Post('/forgot-password')
