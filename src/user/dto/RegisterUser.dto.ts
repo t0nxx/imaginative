@@ -22,7 +22,11 @@ export enum AccountTypeEnum {
 export class RegisterUserDto {
   @IsNotEmpty() name: string;
 
-  @Transform(({ value }) => normalizeEmail(value))
+  @IsNotEmpty()
+  @Transform((e) => {
+    console.log(e);
+    return normalizeEmail(e.value)
+  })
   @IsEmail()
   email: string;
 
