@@ -26,6 +26,7 @@ import { MailsService } from '@/shared/core/mail.service';
 import * as firebaseAdmin from 'firebase-admin';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import OperationResult from '@/shared/models/OperationResult';
+import normalizeEmail from '@/utils/Normalize-email';
 
 @Injectable()
 export class UserService {
@@ -169,7 +170,7 @@ export class UserService {
 
     const user = await this.db.user.findUnique({
       where: {
-        email: firebaseResponse.email,
+        email: normalizeEmail(firebaseResponse.email),
       },
     });
 
@@ -177,7 +178,7 @@ export class UserService {
       const newUser = {
         name: firebaseResponse.name,
 
-        email: firebaseResponse.email,
+        email: normalizeEmail(firebaseResponse.email),
 
         photoUrl: firebaseResponse.picture || '',
 

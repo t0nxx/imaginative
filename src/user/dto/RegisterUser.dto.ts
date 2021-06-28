@@ -1,3 +1,4 @@
+import normalizeEmail from '@/utils/Normalize-email';
 import { Transform } from 'class-transformer';
 import {
   IsBoolean,
@@ -21,7 +22,7 @@ export enum AccountTypeEnum {
 export class RegisterUserDto {
   @IsNotEmpty() name: string;
 
-  @Transform(({ value }) => value.trimStart().trimEnd())
+  @Transform(({ value }) => normalizeEmail(value))
   @IsEmail()
   email: string;
 

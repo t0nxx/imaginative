@@ -1,8 +1,9 @@
+import normalizeEmail from '@/utils/Normalize-email';
 import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export default class VerifyEmailDto {
-  @Transform(({ value }) => value.trimStart().trimEnd())
+  @Transform(({ value }) => normalizeEmail(value))
   @IsEmail()
   email: string;
 
