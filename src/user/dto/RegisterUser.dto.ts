@@ -21,7 +21,7 @@ export enum AccountTypeEnum {
 export class RegisterUserDto {
   @IsNotEmpty() name: string;
 
-  @Transform(({ value }) => value.trimEnd())
+  @Transform(({ value }) => value.trimStart().trimEnd())
   @IsEmail()
   email: string;
 

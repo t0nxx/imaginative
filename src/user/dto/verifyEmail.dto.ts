@@ -2,7 +2,7 @@ import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export default class VerifyEmailDto {
-  @Transform(({ value }) => value.trimEnd())
+  @Transform(({ value }) => value.trimStart().trimEnd())
   @IsEmail()
   email: string;
 

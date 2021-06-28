@@ -2,7 +2,7 @@ import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export default class LoginUserDto {
-  @Transform(({ value }) => value.trimEnd())
+  @Transform(({ value }) => value.trimStart().trimEnd())
   @IsEmail()
   email: string;
 

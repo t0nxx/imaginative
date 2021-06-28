@@ -2,7 +2,7 @@ import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export default class ResetPasswordDto {
-  @Transform(({ value }) => value.trimEnd())
+  @Transform(({ value }) => value.trimStart().trimEnd())
   @IsEmail()
   email: string;
 
