@@ -280,7 +280,8 @@ export class UserService {
       },
     });
     if (!isTokenExist) {
-      throw new NotFoundException('invalid reset token');
+      /// link msg here cause email dynamic link
+      throw new NotFoundException('invalid/expired link');
     }
     const newPass = hashSync(body.newPassword, 10);
 
