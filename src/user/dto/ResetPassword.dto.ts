@@ -3,7 +3,9 @@ import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export default class ResetPasswordDto {
-  @Transform(({ value }) => normalizeEmail(value))
+  @IsNotEmpty()
+  // in production . its parse (e) as the value itself not e.value
+  @Transform((e) => normalizeEmail(typeof e != 'string' ? e.value : e))
   @IsEmail()
   email: string;
 
