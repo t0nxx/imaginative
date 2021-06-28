@@ -21,10 +21,6 @@ const normalizeableProviders = {
 };
 
 export default function normalizeEmail(eMail) {
-  if (typeof eMail != 'string') {
-    throw new Error('normalize-email expects a string');
-  }
-
   /// remove space from beg and end "this issu cause mobile autoconplete"
   const email = eMail.trimStart().trimEnd().toLowerCase();
   const emailParts = email.split(/@/);
