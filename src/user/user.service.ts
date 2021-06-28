@@ -153,7 +153,7 @@ export class UserService {
 
     const result = { ...user, token, refreshToken };
     const res = new OperationResult();
-    res.message[0] = 'an email has been sent with verification code';
+    res.message[0] = 'successfully temp message';
     res.data = result;
     return res;
   }
@@ -212,7 +212,7 @@ export class UserService {
     socialProvider?: AccountTypeProviderEnum,
   ): Promise<any> {
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = 'an email has been sent with verification code';
 
     const existingUser = await this.db.user.findUnique({
       where: { email: body.email },

@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsBoolean,
   IsEmail,
@@ -20,7 +21,9 @@ export enum AccountTypeEnum {
 export class RegisterUserDto {
   @IsNotEmpty() name: string;
 
-  @IsEmail() email: string;
+  @Transform(({ value }) => value.trimEnd())
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty() @MinLength(8) password: string;
 
