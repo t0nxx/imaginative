@@ -6,7 +6,7 @@ export default class ResetPasswordDto {
   @IsNotEmpty()
   // in production . its parse (e) as the value itself not e.value
   @Transform((e) => normalizeEmail(typeof e != 'string' ? e.value : e))
-  @IsEmail()
+  @IsEmail({}, { message: 'please enter valid email ' })
   email: string;
 
   @IsNotEmpty() token: string;
