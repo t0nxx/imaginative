@@ -1,0 +1,11 @@
+{
+    "USER_NOT_FOUND" : "user not found" , 
+    "INVALID_PASSWORD" : "invalid password" , 
+    "INVALID_TOKEN" : "invalid  token" , 
+    "A_USER_WITH_THIS_EMAIL_ADDRESS_ALREADY_EXISTS!" : "A user with this email address already exists!" , 
+    "INVALID_OR_EXPIRED_LINK" : "invalid/expired link" , 
+    "INVALID_VERIFICATION_CODE" : "invalid verification code" , 
+    "YOU_MUST_ENTER_OLD_PASSWORD" : "you must enter old password" , 
+    "INVALID_OLD_PASSWORD" : "invalid Old password" , 
+    "INVALID_OR_EXPIRED_TOKEN" : "invalid or expired token" 
+}

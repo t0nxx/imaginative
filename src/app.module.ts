@@ -10,7 +10,8 @@ import { AllExceptionsFilter } from './shared/exception-filters/all-exception-fi
 import { APP_FILTER } from '@nestjs/core';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { LogLevel } from '@sentry/types';
-
+import * as path from 'path';
+import { I18nModule, I18nJsonParser, HeaderResolver, AcceptLanguageResolver } from 'nestjs-i18n';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,6 +26,17 @@ import { LogLevel } from '@sentry/types';
       environment: 'production',
       release: null,
       logLevel: LogLevel.Error,
+    }),
+    /// localization module
+    I18nModule.forRoot({
+      fallbackLanguage: 'ar',
+      parser: I18nJsonParser,
+      parserOptions: {
+        path: path.join(__dirname, '..', '/i18n/'),
+        watch: true,
+      },
+      /// Accept-Language header
+      resolvers: [AcceptLanguageResolver],
     }),
 
     UserModule,

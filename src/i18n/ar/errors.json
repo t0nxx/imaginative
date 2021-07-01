@@ -1,0 +1,11 @@
+{
+    "USER_NOT_FOUND" : "المستخدم غير موجود" , 
+    "INVALID_PASSWORD" : "كلمة السر خاطئة" , 
+    "INVALID_TOKEN" : "رمز خاطئ" , 
+    "A_USER_WITH_THIS_EMAIL_ADDRESS_ALREADY_EXISTS!" : "يوجد مستخدم بهذا الايميل بالفعل" , 
+    "INVALID_OR_EXPIRED_LINK" : "رابط خاطئ او منتهي الصلاحيه" , 
+    "INVALID_VERIFICATION_CODE" : "كود تغيل خاطئ" , 
+    "YOU_MUST_ENTER_OLD_PASSWORD" : "يجب عليك ادخال الباسورد القديم" , 
+    "INVALID_OLD_PASSWORD" : "باسورد قديم خاطئ" , 
+    "INVALID_OR_EXPIRED_TOKEN" : "كود خاطئ او منتهي الصلاحية" 
+}

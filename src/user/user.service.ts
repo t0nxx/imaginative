@@ -27,6 +27,7 @@ import * as firebaseAdmin from 'firebase-admin';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import OperationResult from '@/shared/models/OperationResult';
 import normalizeEmail from '@/utils/Normalize-email';
+import { ErrorCodes } from '@/shared/constants';
 
 @Injectable()
 export class UserService {
@@ -140,12 +141,12 @@ export class UserService {
       },
     });
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
     }
     const isPasswordCorrect = compareSync(body.password, user.password);
 
     if (!isPasswordCorrect) {
-      throw new BadRequestException('invalid password');
+      throw new BadRequestException(ErrorCodes.INVALID_PASSWORD);
     }
 
     delete user.password;
@@ -165,7 +166,7 @@ export class UserService {
     console.log(firebaseResponse);
     if (!firebaseResponse.email) {
       // mean invalid idToken
-      throw new NotFoundException('invalid  token');
+      throw new NotFoundException(ErrorCodes.INVALID_TOKEN);
     }
 
     const user = await this.db.user.findUnique({
@@ -223,7 +224,7 @@ export class UserService {
     /// the only way to vlaidate if email exist iff the email already verified isVerifyed = true
     if (existingUser && existingUser.isVerified == true) {
       throw new BadRequestException(
-        'A user with this email address already exists!',
+        ErrorCodes.A_USER_WITH_THIS_EMAIL_ADDRESS_ALREADY_EXISTS,
       );
     } else if (existingUser && existingUser.isVerified == false) {
       //// as client request , if user is not verified server should not save it's data ,
@@ -271,7 +272,7 @@ export class UserService {
       },
     });
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
     }
     const isTokenExist = await this.db.userPasswordRecoveryTokens.findFirst({
       where: {
@@ -281,7 +282,7 @@ export class UserService {
     });
     if (!isTokenExist) {
       /// link msg here cause email dynamic link
-      throw new NotFoundException('invalid/expired link');
+      throw new NotFoundException(ErrorCodes.INVALID_OR_EXPIRED_LINK);
     }
     const newPass = hashSync(body.newPassword, 10);
 
@@ -310,7 +311,7 @@ export class UserService {
       },
     });
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
     }
     // delete old tokens for not reuse it again
     await this.db.userPasswordRecoveryTokens.deleteMany({
@@ -340,7 +341,7 @@ export class UserService {
       },
     });
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
     }
     // delete old codes for not reuse it again
     await this.db.userVerificationCode.deleteMany({
@@ -376,7 +377,7 @@ export class UserService {
       },
     });
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
     }
     const isCodeExist = await this.db.userVerificationCode.findFirst({
       where: {
@@ -386,7 +387,7 @@ export class UserService {
     });
 
     if (!isCodeExist) {
-      throw new NotFoundException('invalid verification code');
+      throw new NotFoundException(ErrorCodes.INVALID_VERIFICATION_CODE);
     }
 
     await this.db.userVerificationCode.deleteMany({
@@ -414,7 +415,7 @@ export class UserService {
       where: { id: userId },
     });
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
     }
     delete user.password;
 
@@ -480,13 +481,13 @@ export class UserService {
         console.log(existingUser.id);
         console.log(userId);
         throw new BadRequestException(
-          'A user with this email address already exists!',
+          ErrorCodes.A_USER_WITH_THIS_EMAIL_ADDRESS_ALREADY_EXISTS,
         );
       }
     }
     if (body.password) {
       if (!body.oldPassword) {
-        throw new BadRequestException('you must enter old password');
+        throw new BadRequestException(ErrorCodes.YOU_MUST_ENTER_OLD_PASSWORD);
       }
       const user = await this.db.user.findUnique({
         where: { id: userId },
@@ -494,7 +495,7 @@ export class UserService {
       const isOldPasswordCorrect = compareSync(body.oldPassword, user.password);
 
       if (!isOldPasswordCorrect) {
-        throw new BadRequestException('invalid Old password');
+        throw new BadRequestException(ErrorCodes.INVALID_OLD_PASSWORD);
       }
       body.password = hashSync(body.password, 10);
       /// since it's not db model it will cause a prisma error
@@ -547,7 +548,7 @@ export class UserService {
       },
     });
     if (!tokenToFound) {
-      throw new UnauthorizedException('invalid or expired token');
+      throw new UnauthorizedException(ErrorCodes.INVALID_OR_EXPIRED_TOKEN);
     }
 
     const user = await this.db.user.findUnique({
@@ -557,7 +558,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
     }
 
     /// remove refresh token once it will be used

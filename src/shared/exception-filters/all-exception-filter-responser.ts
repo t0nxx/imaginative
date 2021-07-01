@@ -8,12 +8,16 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
+import { I18nService } from 'nestjs-i18n';
 import OperationResult from '@/shared/models/OperationResult';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor(@InjectSentry() private readonly sentryClient: SentryService) {}
-  catch(exception: HttpException, host: ArgumentsHost) {
+  constructor(
+    @InjectSentry() private readonly sentryClient: SentryService,
+    private readonly i18n: I18nService,
+  ) {}
+  async catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
@@ -50,7 +54,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exceptionResponse.message) {
       //// execptions throws from app
       if (typeof exceptionResponse.message == 'string') {
-        respObject.message = [exceptionResponse.message];
+        const translatedMsg = await this.i18n.translate(
+          `errors.${exceptionResponse.message}`,{
+            lang: ctx.getRequest().i18nLang,
+          }
+        );
+        respObject.message = [translatedMsg];
       } else {
         /// execptions throws from class validator
         respObject.message = [exceptionResponse.message[0]];
