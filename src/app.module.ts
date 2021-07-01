@@ -11,7 +11,11 @@ import { APP_FILTER } from '@nestjs/core';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { LogLevel } from '@sentry/types';
 import * as path from 'path';
-import { I18nModule, I18nJsonParser, HeaderResolver, AcceptLanguageResolver } from 'nestjs-i18n';
+import {
+  I18nModule,
+  I18nJsonParser,
+  AcceptLanguageResolver,
+} from 'nestjs-i18n';
 @Module({
   imports: [
     ConfigModule.forRoot({
