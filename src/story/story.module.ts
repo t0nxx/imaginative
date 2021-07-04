@@ -32,15 +32,33 @@ export class StoryModule implements NestModule {
       .apply(AuthMiddleware)
       .forRoutes(
         { path: 'v1/stories', method: RequestMethod.POST },
-        { path: 'v1/stories/:id', method: RequestMethod.PUT },
-        { path: 'v1/stories/:id', method: RequestMethod.DELETE },
+        { path: 'v1/stories/:storyId', method: RequestMethod.PUT },
+        { path: 'v1/stories/:storyId', method: RequestMethod.DELETE },
+
+        /// story actions like, comment ..etc
+        { path: 'v1/stories/:storyId/toggle-like', method: RequestMethod.POST },
+        { path: 'v1/stories/:storyId/add-comment', method: RequestMethod.POST },
+        {
+          path: 'v1/stories/:commentId/update-comment',
+          method: RequestMethod.PUT,
+        },
+        {
+          path: 'v1/stories/:commentId/delete-comment',
+          method: RequestMethod.DELETE,
+        },
       )
       .apply(OptionalAuthMiddleware)
       .forRoutes(
         { path: 'v1/stories', method: RequestMethod.GET },
         { path: 'v1/stories/search', method: RequestMethod.POST },
 
-        { path: 'v1/stories/:id', method: RequestMethod.GET },
+        {
+          path: 'v1/stories/:storyId/list-comments',
+          method: RequestMethod.GET,
+        },
+        /// share is optional not like (like)
+        { path: 'v1/stories/:storyId/share', method: RequestMethod.POST },
+        { path: 'v1/stories/:storyId', method: RequestMethod.GET },
       );
   }
 }

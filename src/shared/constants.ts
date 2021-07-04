@@ -15,3 +15,9 @@ export enum ErrorCodes {
   INVALID_OLD_PASSWORD = 'INVALID_OLD_PASSWORD',
   INVALID_OR_EXPIRED_TOKEN = 'INVALID_OR_EXPIRED_TOKEN',
 }
+//// this is the mobile app routes for creating dynamic links for sharing any thing
+export enum DeepLinkShareRoutes {
+  user = 'user',
+  story = 'story',
+  product = 'product',
+}

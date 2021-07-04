@@ -241,6 +241,27 @@ model Story {
   @@map("stories")
 }
 
+model StoryLikes {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  storyId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("stories_likes")
+}
+
+model StoryComments {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  storyId   Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("stories_comments")
+}
+
 model User {
   id                   Int                     @id @default(autoincrement())
   name                 String                  @db.VarChar(500)

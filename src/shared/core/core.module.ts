@@ -68,7 +68,7 @@ import { FileService } from './file.service';
     FileService,
   ],
   controllers: [FilesController],
-  exports: [MailsService, FireBaseService, PrismaService],
+  exports: [MailsService, FireBaseService, PrismaService, FileService],
 })
 export class CoreModule implements NestModule {
   public configure() {}
