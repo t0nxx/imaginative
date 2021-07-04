@@ -3,21 +3,14 @@ import {
   Post,
   UseInterceptors,
   Param,
-  Get,
-  Res,
-  Req,
   UploadedFile,
   Delete,
-  Body,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import * as path from 'path';
-import { v4 } from 'uuid';
+import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FileService } from './file.service';
 
-@ApiBearerAuth()
 @ApiTags('Files')
 @Controller()
 export class FilesController {

@@ -2,6 +2,13 @@ export enum ListingStatus {
   Draft,
   Published,
 }
+/// in lookups listing type
+export enum ListingTypesEnum {
+  Product = 'Product',
+  Content = 'Content',
+  Skill = 'Skill',
+  Service = 'Service',
+}
 
 /// this for type safe. after add any error to i18n files , you should add it here also 
 export enum ErrorCodes {

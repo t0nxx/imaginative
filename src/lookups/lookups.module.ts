@@ -17,16 +17,5 @@ import { UserModule } from '@/user/user.module';
   exports: [LookupsService],
 })
 export class LookupsModule implements NestModule {
-  public configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes(
-      { path: 'v1/lookups/listing-types/:type', method: RequestMethod.GET },
-      { path: 'v1/lookups/price-types', method: RequestMethod.GET },
-      { path: 'v1/lookups/currencies', method: RequestMethod.GET },
-      { path: 'v1/lookups/hiring-types', method: RequestMethod.GET },
-      { path: 'v1/lookups/disclaimers', method: RequestMethod.GET },
-
-      { path: 'v1/files/:bucket/:type/upload', method: RequestMethod.POST },
-      { path: 'v1/files/:bucket/:type/:name', method: RequestMethod.DELETE },
-    );
-  }
+  public configure() {}
 }
