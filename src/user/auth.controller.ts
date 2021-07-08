@@ -1,6 +1,6 @@
 import { Post, Controller, Body } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import LoginUserDto from './dto/LoginUser.dto';
 import { RegisterUserDto } from './dto/RegisterUser.dto';
 import RefreshTokenDto from './dto/RefreshToken.dto';
@@ -15,42 +15,42 @@ export class AuthController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/register')
-  async register(@Body() body: RegisterUserDto): Promise<any> {
+  async register(@Body() body: RegisterUserDto) {
     return this.userService.register(body);
   }
 
   @Post('/login')
-  async login(@Body() body: LoginUserDto): Promise<any> {
+  async login(@Body() body: LoginUserDto) {
     return this.userService.localLogin(body);
   }
 
   @Post('/refresh-token')
-  async refreshToken(@Body() body: RefreshTokenDto): Promise<any> {
+  async refreshToken(@Body() body: RefreshTokenDto) {
     return this.userService.refreshToken(body.refreshToken);
   }
 
   @Post('/verification-code')
-  async sendVerificationEmail(@Body() body: ForgetPasswordDto): Promise<any> {
+  async sendVerificationEmail(@Body() body: ForgetPasswordDto) {
     return this.userService.sendVerificationEmail(body.email);
   }
 
   @Post('/verify-account')
-  async verifyEmail(@Body() body: VerifyEmailDto): Promise<any> {
+  async verifyEmail(@Body() body: VerifyEmailDto) {
     return this.userService.verifyEmail(body.email, body.code, body.password);
   }
 
   @Post('/forgot-password')
-  async forgotPassword(@Body() body: ForgetPasswordDto): Promise<any> {
+  async forgotPassword(@Body() body: ForgetPasswordDto) {
     return this.userService.forgotPassword(body.email);
   }
 
   @Post('/reset-password')
-  async resetPassword(@Body() body: ResetPasswordDto): Promise<any> {
+  async resetPassword(@Body() body: ResetPasswordDto) {
     return this.userService.resetPassword(body);
   }
 
   @Post('/facebook')
-  async facebookLogin(@Body() body: SocialLoginDto): Promise<any> {
+  async facebookLogin(@Body() body: SocialLoginDto) {
     return this.userService.socialLogin(
       body.token,
       AccountTypeProviderEnum.facebook,
@@ -58,7 +58,7 @@ export class AuthController {
   }
 
   @Post('/google')
-  async googleLogin(@Body() body: SocialLoginDto): Promise<any> {
+  async googleLogin(@Body() body: SocialLoginDto) {
     return this.userService.socialLogin(
       body.token,
       AccountTypeProviderEnum.google,
@@ -66,7 +66,7 @@ export class AuthController {
   }
 
   @Post('/apple')
-  async appleLogin(@Body() body: SocialLoginDto): Promise<any> {
+  async appleLogin(@Body() body: SocialLoginDto) {
     return this.userService.socialLogin(
       body.token,
       AccountTypeProviderEnum.apple,

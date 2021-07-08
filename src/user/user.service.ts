@@ -134,7 +134,7 @@ export class UserService {
 
   ///////////////////////////////////// new - mahmoud done ///////////////////////////////
 
-  async localLogin(body: LoginUserDto): Promise<any> {
+  async localLogin(body: LoginUserDto) {
     const user = await this.db.user.findUnique({
       where: {
         email: body.email,
@@ -212,7 +212,7 @@ export class UserService {
   async register(
     body: RegisterUserDto,
     socialProvider?: AccountTypeProviderEnum,
-  ): Promise<any> {
+  ) {
     const res = new OperationResult();
     res.message[0] = 'an email has been sent with verification code';
 
@@ -304,7 +304,7 @@ export class UserService {
     return res;
   }
 
-  async forgotPassword(email: string): Promise<any> {
+  async forgotPassword(email: string) {
     const user = await this.db.user.findUnique({
       where: {
         email: email,
