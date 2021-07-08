@@ -1,0 +1,7 @@
+{
+    "DONE" : "تم",
+    "PASSWORD_CHANGED_SUCCESSFULLY" : "تم تغيير كلمة السر بنجاح",
+    "PROFILE_UPDATED_SUCCESSFULLY" : "تم تحديث الملف الشخصي بنجاح",
+    "EMAIL_RESET_PASSWORD_SENT" : "تم ارسال رابط تغيير كلمة السر على الايميل",
+    "EMAIL_VERIFICATION_CODE_SENT" : "تم ارسال كود التفعيل على الايميل"
+}

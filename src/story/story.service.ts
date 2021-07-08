@@ -9,7 +9,7 @@ import StoryDto from './dto/StoryDto';
 import { LookupsService } from '../lookups/lookups.service';
 import { UserService } from '@/user/user.service';
 import OperationResult from '../shared/models/OperationResult';
-import { DeepLinkShareRoutes, ErrorCodes } from '@/shared/constants';
+import { DeepLinkShareRoutes, ErrorCodes, MessageCodes } from '@/shared/constants';
 import SearchResultDto from '@/shared/models/SearchResultDto';
 import SearchStoryDto from './dto/SearchStoryDto';
 import { ListingService } from '@/listing/listing.service';
@@ -18,6 +18,7 @@ import { PrismaService } from '@/shared/core/prisma.service';
 import { Prisma } from '@prisma/client';
 import FireBaseService from '@/shared/core/FireBase.service';
 import { FileService } from '@/shared/core/file.service';
+import { LocalizationService } from '@/shared/core/localization.service';
 
 @Injectable()
 export class StoryService {
@@ -28,6 +29,8 @@ export class StoryService {
     private readonly db: PrismaService,
     private readonly firebaseService: FireBaseService,
     private readonly fileService: FileService,
+    private readonly i18n: LocalizationService,
+
   ) {}
 
   // public async updateStory(
@@ -182,7 +185,7 @@ export class StoryService {
       });
 
       if (!listing) {
-        throw new NotFoundException('listing not found');
+        throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
       }
     }
     /// note here , to stor arr of object as a json in prisma , it must be transformed to prisma.jsonarray like above
@@ -198,7 +201,7 @@ export class StoryService {
     });
     const result = await this.mapStory(story, lang, myId);
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     return res;
   }
@@ -224,7 +227,7 @@ export class StoryService {
     }
     result = await Promise.all(promisesArr);
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     return res;
   }
@@ -237,7 +240,7 @@ export class StoryService {
     });
 
     if (!dbStory) {
-      throw new NotFoundException('story not found');
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
     }
     const result = await this.mapStory(dbStory, lang, myId);
     await this.db.story.update({
@@ -260,7 +263,7 @@ export class StoryService {
     //   }
     // }
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     return res;
   }
@@ -273,11 +276,13 @@ export class StoryService {
     });
 
     if (!dbStory) {
-      throw new NotFoundException('story not found');
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
     }
 
     if (dbStory.ownerId != myId) {
-      throw new ForbiddenException('you are not allowed to edit this resource');
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
     }
     // delete story media
     const mediaFiles = dbStory.media as Prisma.JsonArray;
@@ -291,7 +296,7 @@ export class StoryService {
     });
 
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     return res;
   }
   async shareStory(id: number) {
@@ -302,7 +307,7 @@ export class StoryService {
     });
 
     if (!dbStory) {
-      throw new NotFoundException('story not found');
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
     }
     const result = await this.firebaseService.getFirebaseDynamicLink(
       DeepLinkShareRoutes.story,
@@ -320,7 +325,7 @@ export class StoryService {
       },
     });
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     return res;
   }
@@ -372,7 +377,7 @@ export class StoryService {
       /// @ queue , add to notifications queue
     }
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     return res;
   }
 
@@ -385,7 +390,7 @@ export class StoryService {
     });
 
     if (!dbStory) {
-      throw new NotFoundException('story not found');
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
     }
     await this.db.storyComments.create({
       data: {
@@ -409,7 +414,7 @@ export class StoryService {
     /// @ queue , add to notifications queue
 
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     return res;
   }
   async updateCommentStory(commentId: number, myId: number, comment: string) {
@@ -420,11 +425,13 @@ export class StoryService {
     });
 
     if (!existComment) {
-      throw new NotFoundException('comment not found');
+      throw new NotFoundException(ErrorCodes.COMMENT_NOT_FOUND);
     }
 
     if (existComment.userId != myId) {
-      throw new ForbiddenException('you are not allowed to edit this resource');
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
     }
     await this.db.storyComments.update({
       where: {
@@ -435,7 +442,7 @@ export class StoryService {
       },
     });
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     return res;
   }
   async deleteCommentStory(commentId: number, myId: number) {
@@ -446,11 +453,13 @@ export class StoryService {
     });
 
     if (!existComment) {
-      throw new NotFoundException('comment not found');
+      throw new NotFoundException(ErrorCodes.COMMENT_NOT_FOUND);
     }
 
     if (existComment.userId != myId) {
-      throw new ForbiddenException('you are not allowed to edit this resource');
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
     }
     await this.db.storyComments.delete({
       where: {
@@ -458,7 +467,7 @@ export class StoryService {
       },
     });
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     return res;
   }
   async getCommentsOfStory(
@@ -488,7 +497,7 @@ export class StoryService {
       };
     });
 
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     return res;
   }
 }

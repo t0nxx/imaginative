@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -27,14 +28,15 @@ import * as firebaseAdmin from 'firebase-admin';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import OperationResult from '@/shared/models/OperationResult';
 import normalizeEmail from '@/utils/Normalize-email';
-import { ErrorCodes } from '@/shared/constants';
-
+import { ErrorCodes, MessageCodes } from '@/shared/constants';
+import { LocalizationService } from '@/shared/core/localization.service';
 @Injectable()
 export class UserService {
   constructor(
     private readonly db: PrismaService,
     private readonly mailsService: MailsService,
     private configService: ConfigService,
+    private readonly i18n: LocalizationService,
   ) {}
 
   JWT_SECRET = this.configService.get('JWT_SECRET');
@@ -155,7 +157,7 @@ export class UserService {
 
     const result = { ...user, token, refreshToken };
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     return res;
   }
@@ -204,7 +206,7 @@ export class UserService {
 
     const result = { ...user, token, refreshToken };
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     return res;
   }
@@ -212,9 +214,11 @@ export class UserService {
   async register(
     body: RegisterUserDto,
     socialProvider?: AccountTypeProviderEnum,
-  ) {
+  ): Promise<any> {
     const res = new OperationResult();
-    res.message[0] = 'an email has been sent with verification code';
+    res.message[0] = await this.i18n.translateMsg(
+      MessageCodes.EMAIL_VERIFICATION_CODE_SENT,
+    );
 
     const existingUser = await this.db.user.findUnique({
       where: { email: body.email },
@@ -300,11 +304,13 @@ export class UserService {
     this.mailsService.afterResetPasswordEmail(user.name, user.email);
 
     const res = new OperationResult();
-    res.message[0] = 'password changed successfully';
+    res.message[0] = await this.i18n.translateMsg(
+      MessageCodes.PASSWORD_CHANGED_SUCCESSFULLY,
+    );
     return res;
   }
 
-  async forgotPassword(email: string) {
+  async forgotPassword(email: string): Promise<any> {
     const user = await this.db.user.findUnique({
       where: {
         email: email,
@@ -330,7 +336,9 @@ export class UserService {
     this.mailsService.sendResetPasswordEmail(user.name, user.email, resetCode);
 
     const res = new OperationResult();
-    res.message[0] = 'an email has been sent for reset password ';
+    res.message[0] = await this.i18n.translateMsg(
+      MessageCodes.EMAIL_RESET_PASSWORD_SENT,
+    );
     return res;
   }
 
@@ -367,7 +375,9 @@ export class UserService {
     );
 
     const res = new OperationResult();
-    res.message[0] = 'an email has been sent with verification code';
+    res.message[0] = await this.i18n.translateMsg(
+      MessageCodes.EMAIL_VERIFICATION_CODE_SENT,
+    );
     return res;
   }
   async verifyEmail(email: string, code: string, password: string) {
@@ -443,7 +453,7 @@ export class UserService {
     };
 
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     return res;
   }
@@ -465,7 +475,7 @@ export class UserService {
     const result = await this.getUsersByIds(usersIds, myId);
 
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     res.meta = { count: usersCount };
     return res;
@@ -515,7 +525,7 @@ export class UserService {
 
     delete result.password;
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     return res;
   }
@@ -572,7 +582,7 @@ export class UserService {
 
     const result = { token, refreshToken };
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     return res;
   }
@@ -704,7 +714,7 @@ export class UserService {
     const result = await this.getUsersByIds(usersIds, myId);
 
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     res.meta = { count: followersCount };
     return res;
@@ -733,7 +743,7 @@ export class UserService {
     const result = await this.getUsersByIds(usersIds, myId);
 
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     res.meta = { count: followedsCount };
     return res;
@@ -787,14 +797,14 @@ export class UserService {
     }
 
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     return res;
   }
 
   ///////////////////////////////////////// notification section //////////////
   async notificationToken(userId: number, body: string) {
     const res = new OperationResult();
-    res.message[0] = 'successfully temp message';
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     const tokenToFound = await this.db.userNotificationTokens.findUnique({
       where: {
         token: body,

@@ -1,4 +1,6 @@
 {
+    "YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE" : "you are not allowed to edit this resource",
+
     "USER_NOT_FOUND" : "user not found" , 
     "INVALID_PASSWORD" : "invalid password" , 
     "INVALID_TOKEN" : "invalid  token" , 
@@ -7,5 +9,10 @@
     "INVALID_VERIFICATION_CODE" : "invalid verification code" , 
     "YOU_MUST_ENTER_OLD_PASSWORD" : "you must enter old password" , 
     "INVALID_OLD_PASSWORD" : "invalid Old password" , 
-    "INVALID_OR_EXPIRED_TOKEN" : "invalid or expired token" 
+    "INVALID_OR_EXPIRED_TOKEN" : "invalid or expired token" ,
+
+    "LISTING_NOT_FOUND" : "listing not found",
+    "STORY_NOT_FOUND" : "story not found",
+  
+    "COMMENT_NOT_FOUND" : "comment not found"
 }

@@ -1,0 +1,7 @@
+{
+    "DONE" : "done",
+    "PASSWORD_CHANGED_SUCCESSFULLY" : "password changed successfully",
+    "PROFILE_UPDATED_SUCCESSFULLY" : "profile updated successfully",
+    "EMAIL_RESET_PASSWORD_SENT" : "an email has been sent for reset password ",
+    "EMAIL_VERIFICATION_CODE_SENT" : "an email has been sent with verification code"
+}

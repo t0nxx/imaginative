@@ -17,7 +17,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  app.use(logger('dev'));
+  // app.use(logger('dev'));
   const options = new DocumentBuilder()
     .setTitle('Imaginative News API v1')
     .setDescription(

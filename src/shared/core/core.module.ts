@@ -11,6 +11,7 @@ import { MailsService } from './mail.service';
 import { MailProcessor } from './mail.processor';
 import { FilesController } from './file.controller';
 import { FileService } from './file.service';
+import { LocalizationService } from './localization.service';
 
 @Module({
   imports: [
@@ -66,9 +67,16 @@ import { FileService } from './file.service';
     MailsService,
     MailProcessor,
     FileService,
+    LocalizationService,
   ],
   controllers: [FilesController],
-  exports: [MailsService, FireBaseService, PrismaService, FileService],
+  exports: [
+    MailsService,
+    FireBaseService,
+    PrismaService,
+    FileService,
+    LocalizationService,
+  ],
 })
 export class CoreModule implements NestModule {
   public configure() {}
