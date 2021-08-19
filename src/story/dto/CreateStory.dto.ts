@@ -1,6 +1,4 @@
-import { MediaDto } from '@/shared/dto/Media.dto';
 import { PrivacyDto } from '@/shared/dto/Privacy.dto';
-import { Type } from 'class-transformer';
 import {
   IsArray,
   IsEnum,
@@ -8,25 +6,27 @@ import {
   IsNumber,
   IsOptional,
   Min,
-  ValidateNested,
 } from 'class-validator';
 
 export default class CreateStoryDto {
-  @IsOptional() @IsNumber() @Min(1) listingId?: number;
-  @IsNotEmpty() @IsNumber() @Min(1) disclaimerId: number;
-  @IsNotEmpty() @IsNumber() imaginativeYear: number;
-  @IsNotEmpty() @IsNumber() status: number;
+  @IsNotEmpty() @IsEnum(PrivacyDto) privacy: PrivacyDto;
+  @IsNotEmpty() @IsNumber() @Min(1) headerImage: number; /// id of uploaded file
   @IsNotEmpty() headerLine: string;
+  @IsNotEmpty() @IsNumber() @Min(1) disclaimerId: number;
+  @IsNotEmpty() @IsNumber() @Min(1) imaginativeYear: number;
+  @IsOptional() @IsNumber() @Min(1) listingId?: number;
+
   @IsNotEmpty() intro: string;
   @IsNotEmpty() body: string;
-  @IsNotEmpty() tagline: string;
   @IsNotEmpty() conclusion: string;
 
-  @IsNotEmpty() @IsEnum(PrivacyDto) privacy: PrivacyDto;
+  /// optional if user choose other manully typed in the imaginativeYear drop list
+  @IsOptional() otherImaginativeYear: string;
 
-  @ValidateNested({ each: true })
+  /// this is optional since it will be sent only if story of type product based on (disclaimerId) is promote product
+  @IsOptional() tagline: string;
+  @IsOptional() info: string;
+
   @IsArray()
-  @IsNotEmpty()
-  @Type(() => MediaDto)
-  media: MediaDto[];
+  media: number[];
 }

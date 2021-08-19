@@ -9,7 +9,11 @@ import StoryDto from './dto/StoryDto';
 import { LookupsService } from '../lookups/lookups.service';
 import { UserService } from '@/user/user.service';
 import OperationResult from '../shared/models/OperationResult';
-import { DeepLinkShareRoutes, ErrorCodes, MessageCodes } from '@/shared/constants';
+import {
+  DeepLinkShareRoutes,
+  ErrorCodes,
+  MessageCodes,
+} from '@/shared/constants';
 import SearchResultDto from '@/shared/models/SearchResultDto';
 import SearchStoryDto from './dto/SearchStoryDto';
 import { ListingService } from '@/listing/listing.service';
@@ -19,6 +23,7 @@ import { Prisma } from '@prisma/client';
 import FireBaseService from '@/shared/core/FireBase.service';
 import { FileService } from '@/shared/core/file.service';
 import { LocalizationService } from '@/shared/core/localization.service';
+import { UpdateStoryDto } from './dto/UpdateStory.dto';
 
 @Injectable()
 export class StoryService {
@@ -30,7 +35,6 @@ export class StoryService {
     private readonly firebaseService: FireBaseService,
     private readonly fileService: FileService,
     private readonly i18n: LocalizationService,
-
   ) {}
 
   // public async updateStory(
@@ -116,28 +120,42 @@ export class StoryService {
   // }
 
   async mapStory(story: any, lang: string, myId: number): Promise<StoryDto> {
-    const { data: disclaimers } = await this.lookupsService.getDisclaimers(
-      lang,
-    );
+    /// listing should added also when it done
+    /// excute all in parallel for better performance
+    const [
+      { data: disclaimers },
+      { data: user },
+      { data: headerImageObj },
+      { data: mediaArr },
+    ] = await Promise.all([
+      this.lookupsService.getDisclaimers(lang),
+      this.userService.getUser(story.ownerId, myId),
+      this.fileService.getFile(story.headerImage),
+      this.fileService.getMultipleFiles(story.media),
+    ]);
 
-    const { data: user } = await this.userService.getUser(story.ownerId, myId);
     return {
       id: story.id,
       type: 'Story',
       owner: user,
       listingId: story.listingId,
+      /// this should getted from listing service when implemented
+      listing: null,
       disclaimerId: story.disclaimerId,
       disclaimerName:
-        disclaimers.find((lt) => lt.id === story.disclaimerId)?.name || '',
+        disclaimers.find((lt) => lt.id === story.disclaimerId)?.name || null,
       privacy: story.privacy,
-      media: story.media,
+      media: mediaArr,
       headerLine: story.headerLine,
+      headerImage: headerImageObj,
       body: story.body,
       intro: story.intro,
       tagline: story.tagline,
+      info: story.info,
       conclusion: story.conclusion,
       imaginativeYear: story.imaginativeYear,
-      status: story.status,
+      otherImaginativeYear: story.otherImaginativeYear,
+      updatedFields : story.updatedFields,
       viewCount: story.viewCount,
       likeCount: story.likeCount,
       commentCount: story.commentCount,
@@ -175,37 +193,6 @@ export class StoryService {
   //   return null;
   // }
   ///////////////////////////////////// new - mahmoud done ///////////////////////////////
-  public async addStory(lang: string, storyData: CreateStoryDto, myId: number) {
-    //// check the sended listing id is valid
-    if (storyData.listingId) {
-      const listing = await this.db.listings.findUnique({
-        where: {
-          id: storyData.listingId,
-        },
-      });
-
-      if (!listing) {
-        throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
-      }
-    }
-    /// note here , to stor arr of object as a json in prisma , it must be transformed to prisma.jsonarray like above
-    const jsonArr = storyData.media as Prisma.JsonArray;
-    // story status
-    //0-draft|1- published,2-user_template|3-example_template
-    const story = await this.db.story.create({
-      data: {
-        ...storyData,
-        media: jsonArr,
-        ownerId: myId,
-      },
-    });
-    const result = await this.mapStory(story, lang, myId);
-    const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
-    res.data = result;
-    return res;
-  }
-
   public async getAllStories(
     lang: string,
     pageIndex: number,
@@ -226,6 +213,81 @@ export class StoryService {
       promisesArr.push(this.mapStory(story, lang, myId));
     }
     result = await Promise.all(promisesArr);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async addStory(lang: string, storyData: CreateStoryDto, myId: number) {
+    //// check the sended listing id is valid
+    if (storyData.listingId) {
+      const listing = await this.db.listings.findUnique({
+        where: {
+          id: storyData.listingId,
+        },
+      });
+
+      if (!listing) {
+        throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+      }
+    }
+    const story = await this.db.story.create({
+      data: {
+        ...storyData,
+        ownerId: myId,
+      },
+    });
+    const result = await this.mapStory(story, lang, myId);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async updateStory(
+    lang: string,
+    storyData: UpdateStoryDto,
+    storyId: number,
+    myId: number,
+  ) {
+    const dbStory = await this.db.story.findUnique({
+      where: {
+        id: storyId,
+      },
+    });
+
+    if (!dbStory) {
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+    }
+
+    if (dbStory.ownerId != myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+    //// check the sended listing id is valid
+    if (storyData.listingId) {
+      const listing = await this.db.listings.findUnique({
+        where: {
+          id: storyData.listingId,
+        },
+      });
+
+      if (!listing) {
+        throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+      }
+    }
+    const story = await this.db.story.update({
+      where: {
+        id: storyId,
+      },
+      data: {
+        ...storyData,
+        updatedFields: Object.keys(storyData),
+      },
+    });
+    const result = await this.mapStory(story, lang, myId);
     const res = new OperationResult();
     res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
@@ -285,9 +347,11 @@ export class StoryService {
       );
     }
     // delete story media
-    const mediaFiles = dbStory.media as Prisma.JsonArray;
-    for await (const media of mediaFiles) {
-      this.fileService.removeFile(media['key']);
+    /// after client modification , media could be related to another example story or template
+    // so if media deleted it would affect on all of them , so till now i'll not deleted any media
+    // even if te story is deleted
+    for await (const mediaId of dbStory.media) {
+      this.fileService.removeFile(mediaId);
     }
     await this.db.story.delete({
       where: {

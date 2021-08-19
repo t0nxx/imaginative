@@ -7,6 +7,7 @@ import {
   Put,
   Delete,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { StoryService } from './story.service';
@@ -14,6 +15,7 @@ import CreateStoryDto from './dto/CreateStory.dto';
 import { User } from '@/user/user.decorator';
 import { I18nLang } from 'nestjs-i18n';
 import { CommentDto } from '@/shared/dto/Comment.dto';
+import { UpdateStoryDto } from './dto/UpdateStory.dto';
 
 @ApiBearerAuth()
 @ApiTags('Stories')
@@ -30,16 +32,6 @@ export class StoryController {
   ) {
     return this.storyService.addStory(lang, storyData, myId);
   }
-
-  // @Put('/:id')
-  // async updateStory(
-  //   @Headers('lang') lang = 'en',
-  //   @Param('id') id: string,
-  //   @Body() listingData: CreateStoryDto,
-  // ): Promise<StoryDto> {
-  //   const story = await this.storyService.updateStory(id, lang, listingData);
-  //   return story;
-  // }
 
   @ApiOperation({ summary: 'Gets multiple stories' })
   @Get()
@@ -81,6 +73,17 @@ export class StoryController {
   ) {
     /// zero as myid here for vistitors only
     return this.storyService.getStory(storyId, lang, myId ?? 0);
+  }
+
+  @ApiOperation({ summary: 'Update A story' })
+  @Patch('/:storyId')
+  async updateStory(
+    @I18nLang() lang: string,
+    @User('id') myId: number,
+    @Param('storyId') storyId: number,
+    @Body() storyData: UpdateStoryDto,
+  ) {
+    return this.storyService.updateStory(lang, storyData, storyId, myId);
   }
 
   @ApiOperation({ summary: 'Delete A story' })

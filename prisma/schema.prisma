@@ -210,25 +210,30 @@ model ListingReviews {
 }
 
 model Story {
-  id              Int     @id @default(autoincrement())
-  privacy         String  @db.VarChar(50)
-  media           Json    @db.Json
-  headerLine      String  @db.VarChar(3000)
-  intro           String? @db.VarChar(3000)
-  body            String? @db.VarChar(3000)
-  tagline         String? @db.VarChar(3000)
-  conclusion      String? @db.VarChar(3000)
-  imaginativeYear Int
+  id                   Int      @id @default(autoincrement())
+  privacy              String   @db.VarChar(50)
+  headerImage          Int?
+  headerLine           String   @db.VarChar(3000)
+  intro                String?  @db.VarChar(3000)
+  body                 String?  @db.VarChar(3000)
+  conclusion           String?  @db.VarChar(3000)
+  imaginativeYear      Int?
+  otherImaginativeYear String?  @db.VarChar(3000)
+  tagline              String?  @db.VarChar(3000)
+  info                 String?  @db.VarChar(3000)
+  media                Int[]
+  /// this for track updated fields to show it in the mobile view with red color
+  updatedFields        String[]
+
   //0-draft|1- published,2-user_template|3-example_template
-  status          Int
-  ownerId         Int?
-  listingId       Int?
-  disclaimerId    Int?
-  viewCount       Int     @default(0)
-  likeCount       Int     @default(0)
-  commentCount    Int     @default(0)
-  shareCount      Int     @default(0)
-  isRepublished   Boolean @default(false)
+  ownerId       Int?
+  listingId     Int?
+  disclaimerId  Int?
+  viewCount     Int     @default(0)
+  likeCount     Int     @default(0)
+  commentCount  Int     @default(0)
+  shareCount    Int     @default(0)
+  isRepublished Boolean @default(false)
 
 
 
@@ -359,4 +364,16 @@ model UserFriendShip {
   updatedAt DateTime @updatedAt
 
   @@map("user_friendship")
+}
+
+model Files {
+  id   Int    @id @default(autoincrement())
+  key  String @db.VarChar(255)
+  url  String @db.VarChar(255)
+  type String @db.VarChar(255)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("files")
 }

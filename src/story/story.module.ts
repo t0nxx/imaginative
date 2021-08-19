@@ -32,7 +32,7 @@ export class StoryModule implements NestModule {
       .apply(AuthMiddleware)
       .forRoutes(
         { path: 'v1/stories', method: RequestMethod.POST },
-        { path: 'v1/stories/:storyId', method: RequestMethod.PUT },
+        { path: 'v1/stories/:storyId', method: RequestMethod.PATCH },
         { path: 'v1/stories/:storyId', method: RequestMethod.DELETE },
 
         /// story actions like, comment ..etc

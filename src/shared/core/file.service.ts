@@ -4,10 +4,14 @@ import * as AWS from 'aws-sdk';
 import * as path from 'path';
 import { v4 } from 'uuid';
 import OperationResult from '../models/OperationResult';
+import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class FileService {
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private readonly db: PrismaService,
+  ) {}
 
   async uploadFile(file: Express.Multer.File) {
     AWS.config.update({
@@ -28,19 +32,25 @@ export class FileService {
         ContentType: file.mimetype,
       })
       .promise();
-
-    const result = {
-      key: uploadResult.Key,
-      url: uploadResult.Location,
-      type: file.mimetype.split('/')[0],
-    };
+    const newfile = await this.db.files.create({
+      data: {
+        key: uploadResult.Key,
+        url: uploadResult.Location,
+        type: file.mimetype.split('/')[0],
+      },
+    });
     const res = new OperationResult();
     res.message[0] = 'successfully uploaded';
-    res.data = result;
+    res.data = newfile;
     return res;
   }
 
-  async removeFile(key: string) {
+  async removeFile(id: number) {
+    const file = await this.db.files.findUnique({
+      where: {
+        id: id,
+      },
+    });
     AWS.config.update({
       accessKeyId: this.configService.get('accessKeyId'),
       secretAccessKey: this.configService.get('secretAccessKey'),
@@ -51,13 +61,43 @@ export class FileService {
     const result = await s3
       .deleteObject({
         Bucket: this.configService.get('bucket'),
-        Key: key,
+        Key: file.key,
       })
       .promise();
 
-      console.log(result);
+    await this.db.files.delete({
+      where: {
+        id: id,
+      },
+    });
     const res = new OperationResult();
     res.message[0] = 'successfully deleted';
+    return res;
+  }
+
+  async getFile(id: number) {
+    const file = await this.db.files.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    const res = new OperationResult();
+    res.message[0] = 'done';
+    res.data = file;
+    return res;
+  }
+
+  async getMultipleFiles(ids: number[]) {
+    const files = await this.db.files.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+    const res = new OperationResult();
+    res.message[0] = 'done';
+    res.data = files;
     return res;
   }
 }
