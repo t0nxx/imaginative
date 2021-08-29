@@ -146,6 +146,38 @@ model LocalizedListingTypes {
   @@map("localized_listing_types")
 }
 
+model ImaginativeYears {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(128)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("imaginative_years")
+}
+
+model Privacy {
+  id        Int      @id @default(autoincrement())
+  code      String   @db.VarChar(128)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  LocalizedPrivacy LocalizedPrivacy[]
+  @@map("privacy")
+}
+
+model LocalizedPrivacy{
+  id          Int         @id @default(autoincrement())
+  name        String      @db.VarChar(100)
+  language    String      @db.VarChar(10)
+  refId       Int
+  Privacy Privacy @relation(fields: [refId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("localized_privacy")
+}
+
 model ListingFollowers {
   id        Int      @id @default(autoincrement())
   userId    Int
@@ -211,29 +243,30 @@ model ListingReviews {
 
 model Story {
   id                   Int      @id @default(autoincrement())
-  privacy              String   @db.VarChar(50)
-  headerImage          Int?
-  headerLine           String   @db.VarChar(3000)
+  headerImage          String?  @db.VarChar(3000)
+  headerLine           String?  @db.VarChar(3000)
   intro                String?  @db.VarChar(3000)
   body                 String?  @db.VarChar(3000)
   conclusion           String?  @db.VarChar(3000)
-  imaginativeYear      Int?
+  introImage           String?  @db.VarChar(3000)
+  bodyImage            String?  @db.VarChar(3000)
+  conclusionImage      String?  @db.VarChar(3000)
   otherImaginativeYear String?  @db.VarChar(3000)
   tagline              String?  @db.VarChar(3000)
   info                 String?  @db.VarChar(3000)
-  media                Int[]
   /// this for track updated fields to show it in the mobile view with red color
   updatedFields        String[]
 
-  //0-draft|1- published,2-user_template|3-example_template
-  ownerId       Int?
-  listingId     Int?
-  disclaimerId  Int?
-  viewCount     Int     @default(0)
-  likeCount     Int     @default(0)
-  commentCount  Int     @default(0)
-  shareCount    Int     @default(0)
-  isRepublished Boolean @default(false)
+  ownerId           Int?
+  listingId         Int?
+  disclaimerId      Int?
+  privacyId         Int?
+  imaginativeYearId Int?
+  viewCount         Int     @default(0)
+  likeCount         Int     @default(0)
+  commentCount      Int     @default(0)
+  shareCount        Int     @default(0)
+  isRepublished     Boolean @default(false)
 
 
 

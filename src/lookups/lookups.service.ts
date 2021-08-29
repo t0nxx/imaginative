@@ -5,21 +5,15 @@ import CurrencyDto from './dto/CurrencyDto';
 import { AppCache } from '@/shared/core/Cache';
 import HiringTypeDto from './dto/HiringTypeDto';
 import DisclaimerDto from './dto/DisclaimerDto';
-import { v4 } from 'uuid';
-import * as fs from 'fs';
-import * as path from 'path';
 import { PrismaService } from '@/shared/core/prisma.service';
-import { ConfigService } from '@nestjs/config';
 import OperationResult from '@/shared/models/OperationResult';
+import ImaginativeYearsDto from './dto/ImaginativeYearsDto';
+import PrivacyDto from './dto/PrivacyDto';
 
 @Injectable()
 export class LookupsService {
-  constructor(
-    private readonly db: PrismaService,
-    private configService: ConfigService,
-  ) {}
+  constructor(private readonly db: PrismaService) {}
 
-  rootDir = this.configService.get('UPLOAD_ROOT_DIR');
   public async getListingTypes(category: string, lang: string) {
     const data = await AppCache.getAsync(
       `__listingTypes_${category}_${lang}__`,
@@ -255,6 +249,58 @@ export class LookupsService {
           );
           if (localizedDisclaimer) {
             type.name = localizedDisclaimer.name;
+          }
+          result.push(type);
+        }
+        return result;
+      },
+    );
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
+  }
+  public async getImaginativeYears() {
+    const data = await AppCache.getAsync(
+      `__ImaginativeYears`,
+      60 * 120,
+      async () => {
+        const result = await this.db.imaginativeYears.findMany({});
+        return result;
+      },
+    );
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
+  }
+  public async getPrivacy(lang: string) {
+    const data = await AppCache.getAsync(
+      `__Privacy_${lang}__`,
+      60 * 120,
+      async () => {
+        const result = new Array<PrivacyDto>();
+        const privacy = await this.db.privacy.findMany({});
+
+        const localizedPrivacy = await this.db.localizedPrivacy.findMany({
+          where: {
+            language: lang,
+          },
+        });
+
+        for (const p of privacy) {
+          const type = {
+            id: p.id,
+            code: p.code,
+            createdAt: p.createdAt,
+            updatedAt: p.updatedAt,
+            name: '',
+          };
+          const localizedpriv = localizedPrivacy.find(
+            (lpt) => lpt.refId === p.id,
+          );
+          if (localizedpriv) {
+            type.name = localizedpriv.name;
           }
           result.push(type);
         }

@@ -3,14 +3,19 @@ const prisma = new PrismaClient();
 import { currencies, localizedCurrencies } from './seed-data/currencies';
 import { disclaimers, localizedDisclaimers } from './seed-data/disclaimers';
 import { hiringTypes, localizedHiringTypes } from './seed-data/hiring-types';
+import { imaginativeYears } from './seed-data/imaginative-years';
 import { listingTypes, localizedListingTypes } from './seed-data/listing-types';
-import { listings } from './seed-data/listings';
 import { priceTypes, localizedPriceTypes } from './seed-data/price-types';
+import { localizedPrivacy, privacy } from './seed-data/privacy';
 import { stories } from './seed-data/stories';
 import { users } from './seed-data/users';
+import { listings } from './seed-data/listings';
 
 async function main() {
   /// seed currencies
+  await prisma.localizedCurrencies.deleteMany({});
+  await prisma.currencies.deleteMany({});
+
   await prisma.currencies.createMany({
     data: currencies,
   });
@@ -21,6 +26,8 @@ async function main() {
   });
   ///////////////////////////////////////////////////////////
   /// seed disclaimers
+  await prisma.localizedDisclaimers.deleteMany({});
+  await prisma.disclaimers.deleteMany({});
 
   await prisma.disclaimers.createMany({
     data: disclaimers,
@@ -31,6 +38,8 @@ async function main() {
   });
 
   ///////////////////////////////////////////////////////////////
+  await prisma.localizedPriceTypes.deleteMany({});
+  await prisma.priceTypes.deleteMany({});
 
   await prisma.priceTypes.createMany({
     data: priceTypes,
@@ -41,6 +50,8 @@ async function main() {
   });
 
   ///////////////////////////////////////////////////////////////
+  await prisma.localizedHiringTypes.deleteMany({});
+  await prisma.hiringTypes.deleteMany({});
 
   await prisma.hiringTypes.createMany({
     data: hiringTypes,
@@ -51,6 +62,8 @@ async function main() {
   });
 
   ///////////////////////////////////////////////////////////////
+  await prisma.localizedListingTypes.deleteMany({});
+  await prisma.listingTypes.deleteMany({});
 
   await prisma.listingTypes.createMany({
     data: listingTypes,
@@ -61,22 +74,41 @@ async function main() {
   });
 
   ///////////////////////////////////////////////////////////////
+  await prisma.imaginativeYears.deleteMany({});
 
-  await prisma.user.createMany({
-    data: users,
+  await prisma.imaginativeYears.createMany({
+    data: imaginativeYears,
+  });
+
+  ///////////////////////////////////////////////////////////////
+  await prisma.localizedPrivacy.deleteMany({});
+  await prisma.privacy.deleteMany({});
+
+  await prisma.privacy.createMany({
+    data: privacy,
+  });
+
+  await prisma.localizedPrivacy.createMany({
+    data: localizedPrivacy,
   });
 
   ///////////////////////////////////////////////////////////////
 
-  await prisma.story.createMany({
-    data: stories,
-  });
+  // await prisma.user.createMany({
+  //   data: users,
+  // });
 
   ///////////////////////////////////////////////////////////////
 
-  await prisma.listings.createMany({
-    data: listings,
-  });
+  // await prisma.story.createMany({
+  //   data: stories,
+  // });
+
+  ///////////////////////////////////////////////////////////////
+
+  // await prisma.listings.createMany({
+  //   data: listings,
+  // });
 }
 
 main()

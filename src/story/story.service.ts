@@ -122,16 +122,17 @@ export class StoryService {
   async mapStory(story: any, lang: string, myId: number): Promise<StoryDto> {
     /// listing should added also when it done
     /// excute all in parallel for better performance
+    // most of this arrays are cached in redis , don't worry about it
     const [
       { data: disclaimers },
+      { data: privacy },
+      { data: imaginativeYears },
       { data: user },
-      { data: headerImageObj },
-      { data: mediaArr },
     ] = await Promise.all([
       this.lookupsService.getDisclaimers(lang),
+      this.lookupsService.getPrivacy(lang),
+      this.lookupsService.getImaginativeYears(),
       this.userService.getUser(story.ownerId, myId),
-      this.fileService.getFile(story.headerImage),
-      this.fileService.getMultipleFiles(story.media),
     ]);
 
     return {
@@ -144,18 +145,25 @@ export class StoryService {
       disclaimerId: story.disclaimerId,
       disclaimerName:
         disclaimers.find((lt) => lt.id === story.disclaimerId)?.name || null,
-      privacy: story.privacy,
-      media: mediaArr,
+      privacyId: story.privacyId,
+      privacyName:
+        privacy.find((lt) => lt.id === story.privacyId)?.name || null,
       headerLine: story.headerLine,
-      headerImage: headerImageObj,
+      headerImage: story.headerImage,
       body: story.body,
       intro: story.intro,
       tagline: story.tagline,
       info: story.info,
       conclusion: story.conclusion,
-      imaginativeYear: story.imaginativeYear,
+      introImage: story.introImage,
+      bodyImage: story.bodyImage,
+      conclusionImage: story.conclusionImage,
+      imaginativeYearId: story.imaginativeYearId,
+      imaginativeYearName:
+        imaginativeYears.find((lt) => lt.id === story.imaginativeYearId)
+          ?.name || null,
       otherImaginativeYear: story.otherImaginativeYear,
-      updatedFields : story.updatedFields,
+      updatedFields: story.updatedFields,
       viewCount: story.viewCount,
       likeCount: story.likeCount,
       commentCount: story.commentCount,
@@ -350,9 +358,12 @@ export class StoryService {
     /// after client modification , media could be related to another example story or template
     // so if media deleted it would affect on all of them , so till now i'll not deleted any media
     // even if te story is deleted
-    for await (const mediaId of dbStory.media) {
-      this.fileService.removeFile(mediaId);
-    }
+
+    // await this.fileService.removeFile(dbStory.headerImage);
+    // await this.fileService.removeFile(dbStory.introImage);
+    // await this.fileService.removeFile(dbStory.bodyImage);
+    // await this.fileService.removeFile(dbStory.conclusionImage);
+
     await this.db.story.delete({
       where: {
         id: id,
