@@ -165,12 +165,12 @@ model Privacy {
   @@map("privacy")
 }
 
-model LocalizedPrivacy{
-  id          Int         @id @default(autoincrement())
-  name        String      @db.VarChar(100)
-  language    String      @db.VarChar(10)
-  refId       Int
-  Privacy Privacy @relation(fields: [refId], references: [id])
+model LocalizedPrivacy {
+  id       Int     @id @default(autoincrement())
+  name     String  @db.VarChar(100)
+  language String  @db.VarChar(10)
+  refId    Int
+  Privacy  Privacy @relation(fields: [refId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -242,33 +242,32 @@ model ListingReviews {
 }
 
 model Story {
-  id                   Int      @id @default(autoincrement())
-  headerImage          String?  @db.VarChar(3000)
-  headerLine           String?  @db.VarChar(3000)
-  intro                String?  @db.VarChar(3000)
-  body                 String?  @db.VarChar(3000)
-  conclusion           String?  @db.VarChar(3000)
-  introImage           String?  @db.VarChar(3000)
-  bodyImage            String?  @db.VarChar(3000)
-  conclusionImage      String?  @db.VarChar(3000)
-  otherImaginativeYear String?  @db.VarChar(3000)
-  tagline              String?  @db.VarChar(3000)
-  info                 String?  @db.VarChar(3000)
-  /// this for track updated fields to show it in the mobile view with red color
-  updatedFields        String[]
+  id                   Int     @id @default(autoincrement())
+  headerImage          String? @db.VarChar(3000)
+  headerLine           String? @db.VarChar(3000)
+  intro                String? @db.VarChar(3000)
+  body                 String? @db.VarChar(3000)
+  conclusion           String? @db.VarChar(3000)
+  introImage           String? @db.VarChar(3000)
+  bodyImage            String? @db.VarChar(3000)
+  conclusionImage      String? @db.VarChar(3000)
+  otherImaginativeYear String? @db.VarChar(3000)
+  tagline              String? @db.VarChar(3000)
+  info                 String? @db.VarChar(3000)
+  // /// this for track updated fields to show it in the mobile view with red color
+  /// update , it should view in product only
+  // updatedFields        String[]
 
   ownerId           Int?
   listingId         Int?
   disclaimerId      Int?
   privacyId         Int?
   imaginativeYearId Int?
+  productViewCount  Int     @default(0)
   viewCount         Int     @default(0)
   likeCount         Int     @default(0)
   commentCount      Int     @default(0)
   shareCount        Int     @default(0)
-  isRepublished     Boolean @default(false)
-
-
 
   // relations
   owner User? @relation(fields: [ownerId], references: [id])

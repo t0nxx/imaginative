@@ -24,9 +24,9 @@ export class FilesController {
     return this.fileService.uploadFile(file);
   }
 
-  @ApiOperation({ summary: 'Deletes a file given fileId' })
-  @Delete('v1/files/:fileId')
-  async deleteFile(@Param('fileId') fileId: number) {
-    return this.fileService.removeFile(fileId);
+  @ApiOperation({ summary: 'Deletes a file given url' })
+  @Delete('v1/files/:fileUrl')
+  async deleteFile(@Param('fileUrl') fileUrl: string) {
+    return this.fileService.removeFile(fileUrl);
   }
 }

@@ -45,10 +45,10 @@ export class FileService {
     return res;
   }
 
-  async removeFile(id: number) {
-    const file = await this.db.files.findUnique({
+  async removeFile(url: string) {
+    const file = await this.db.files.findFirst({
       where: {
-        id: id,
+        url: url,
       },
     });
     AWS.config.update({
@@ -67,7 +67,7 @@ export class FileService {
 
     await this.db.files.delete({
       where: {
-        id: id,
+        id: file.id,
       },
     });
     const res = new OperationResult();
