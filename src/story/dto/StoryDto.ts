@@ -12,12 +12,11 @@ export default interface StoryDto {
   otherImaginativeYear: string;
   tagline: string;
   info: string;
-  updatedFields: any;
   viewCount: number;
   likeCount: number;
   commentCount: number;
   shareCount: number;
-  isRepublished: boolean;
+  productViewCount: number;
   ///// fields related to with relation ids i.e need to get its names in response
   privacyId: number;
   privacyName: string;

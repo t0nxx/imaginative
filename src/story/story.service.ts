@@ -163,13 +163,11 @@ export class StoryService {
         imaginativeYears.find((lt) => lt.id === story.imaginativeYearId)
           ?.name || null,
       otherImaginativeYear: story.otherImaginativeYear,
-      updatedFields: story.updatedFields,
       viewCount: story.viewCount,
       likeCount: story.likeCount,
       commentCount: story.commentCount,
       shareCount: story.shareCount,
-      isRepublished: story.isRepublished,
-
+      productViewCount: story.productViewCount,
       createdAt: story.createdAt,
       updatedAt: story.updatedAt,
     };
@@ -292,7 +290,6 @@ export class StoryService {
       },
       data: {
         ...storyData,
-        updatedFields: Object.keys(storyData),
       },
     });
     const result = await this.mapStory(story, lang, myId);
