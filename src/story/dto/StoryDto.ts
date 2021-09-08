@@ -6,9 +6,9 @@ export default interface StoryDto {
   intro: string;
   body: string;
   conclusion: string;
-  introImage: string;
-  bodyImage: string;
-  conclusionImage: string;
+  introImages: string;
+  bodyImages: string;
+  conclusionImages: string;
   otherImaginativeYear: string;
   tagline: string;
   info: string;

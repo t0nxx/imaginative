@@ -155,9 +155,9 @@ export class StoryService {
       tagline: story.tagline,
       info: story.info,
       conclusion: story.conclusion,
-      introImage: story.introImage,
-      bodyImage: story.bodyImage,
-      conclusionImage: story.conclusionImage,
+      introImages: story.introImages,
+      bodyImages: story.bodyImages,
+      conclusionImages: story.conclusionImages,
       imaginativeYearId: story.imaginativeYearId,
       imaginativeYearName:
         imaginativeYears.find((lt) => lt.id === story.imaginativeYearId)

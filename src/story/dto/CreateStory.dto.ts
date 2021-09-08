@@ -23,9 +23,9 @@ export default class CreateStoryDto {
   @IsOptional() otherImaginativeYear: string;
 
   /// optional if user want to upload image with each section
-  @IsOptional() introImage: string;
-  @IsOptional() bodyImage: string;
-  @IsOptional() conclusionImage: string;
+  @IsOptional() @IsArray() introImages: string[];
+  @IsOptional() @IsArray() bodyImages: string[];
+  @IsOptional() @IsArray() conclusionImages: string[];
 
   /// this is optional since it will be sent only if story of type product based on (disclaimerId) is promote product
   @IsOptional() tagline: string;

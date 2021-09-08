@@ -242,18 +242,18 @@ model ListingReviews {
 }
 
 model Story {
-  id                   Int     @id @default(autoincrement())
-  headerImage          String? @db.VarChar(3000)
-  headerLine           String? @db.VarChar(3000)
-  intro                String? @db.VarChar(3000)
-  body                 String? @db.VarChar(3000)
-  conclusion           String? @db.VarChar(3000)
-  introImage           String? @db.VarChar(3000)
-  bodyImage            String? @db.VarChar(3000)
-  conclusionImage      String? @db.VarChar(3000)
-  otherImaginativeYear String? @db.VarChar(3000)
-  tagline              String? @db.VarChar(3000)
-  info                 String? @db.VarChar(3000)
+  id                   Int      @id @default(autoincrement())
+  headerImage          String?  @db.VarChar(3000)
+  headerLine           String?  @db.VarChar(3000)
+  intro                String?  @db.VarChar(3000)
+  body                 String?  @db.VarChar(3000)
+  conclusion           String?  @db.VarChar(3000)
+  otherImaginativeYear String?  @db.VarChar(3000)
+  tagline              String?  @db.VarChar(3000)
+  info                 String?  @db.VarChar(3000)
+  introImages          String[]
+  bodyImages           String[]
+  conclusionImages     String[]
   // /// this for track updated fields to show it in the mobile view with red color
   /// update , it should view in product only
   // updatedFields        String[]
@@ -263,11 +263,11 @@ model Story {
   disclaimerId      Int?
   privacyId         Int?
   imaginativeYearId Int?
-  productViewCount  Int     @default(0)
-  viewCount         Int     @default(0)
-  likeCount         Int     @default(0)
-  commentCount      Int     @default(0)
-  shareCount        Int     @default(0)
+  productViewCount  Int  @default(0)
+  viewCount         Int  @default(0)
+  likeCount         Int  @default(0)
+  commentCount      Int  @default(0)
+  shareCount        Int  @default(0)
 
   // relations
   owner User? @relation(fields: [ownerId], references: [id])
