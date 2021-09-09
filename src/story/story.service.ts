@@ -247,7 +247,9 @@ export class StoryService {
     });
     const result = await this.mapStory(story, lang, myId);
     const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.message[0] = await this.i18n.translateMsg(
+      MessageCodes.STORY_PUBLISHED_SUCCESSFULLY,
+    );
     res.data = result;
     return res;
   }
