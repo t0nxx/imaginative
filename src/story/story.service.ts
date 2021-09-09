@@ -24,6 +24,7 @@ import FireBaseService from '@/shared/core/FireBase.service';
 import { FileService } from '@/shared/core/file.service';
 import { LocalizationService } from '@/shared/core/localization.service';
 import { UpdateStoryDto } from './dto/UpdateStory.dto';
+import { CreateStoryDraftDto } from './dto/CreateStoryDraft.dto';
 
 @Injectable()
 export class StoryService {
@@ -569,6 +570,310 @@ export class StoryService {
       };
     });
 
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+
+  ///// story draft section
+  public async getMyStoriesDrafts(
+    lang: string,
+    _pageIndex: number,
+    _pageSize: number,
+    myId: number,
+  ) {
+    const stories = [];
+    // await this.db.storyDraft.findMany({
+    //   skip: (pageIndex - 1) * pageSize,
+    //   take: pageSize,
+    //   orderBy: {
+    //     id: 'desc',
+    //   },
+    // });
+    let result: StoryDto[] = [];
+    // to to it in async way for performance
+    const promisesArr = [];
+    for (const story of stories) {
+      promisesArr.push(this.mapStory(story, lang, myId));
+    }
+    result = await Promise.all(promisesArr);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async addStoryDraft(
+    lang: string,
+    storyData: CreateStoryDraftDto,
+    myId: number,
+  ) {
+    //// check the sended listing id is valid
+    if (storyData.listingId) {
+      const listing = await this.db.listings.findUnique({
+        where: {
+          id: storyData.listingId,
+        },
+      });
+
+      if (!listing) {
+        throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+      }
+    }
+    const story = {};
+    // await this.db.storyDraft.create({
+    //   data: {
+    //     ...storyData,
+    //     ownerId: myId,
+    //   },
+    // });
+    const result = await this.mapStory(story, lang, myId);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async updateStoryDraft(
+    lang: string,
+    _storyDraftData: UpdateStoryDto,
+    _storyDraftId: number,
+    myId: number,
+  ) {
+    let dbStory;
+    //  await this.db.storyDraft.findUnique({
+    //   where: {
+    //     id: storyId,
+    //   },
+    // });
+
+    if (!dbStory) {
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+    }
+
+    if (dbStory.ownerId != myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+    const story = {};
+    // await this.db.storyDraft.update({
+    //   where: {
+    //     id: storyId,
+    //   },
+    //   data: {
+    //     ...storyData,
+    //   },
+    // });
+    const result = await this.mapStory(story, lang, myId);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async getStoryDraft(_id: number, lang: string, myId?: number) {
+    let dbStory;
+    // await this.db.storyDraft.findUnique({
+    //   where: {
+    //     id: id,
+    //   },
+    // });
+
+    if (!dbStory) {
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+    }
+    const result = await this.mapStory(dbStory, lang, myId);
+    // if (dbStory?.listingId) {
+    //   const listing = await this.listingService.getListing(
+    //     dbStory.listingId,
+    //     lang,
+    //   );
+    //   if (listing) {
+    //     story.listing = this.getListingSnippet(listing);
+    //   }
+    // }
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async deleteStoryDraft(_id: number, myId: number) {
+    let dbStory;
+    // await this.db.storyDraft.findUnique({
+    //   where: {
+    //     id: id,
+    //   },
+    // });
+
+    if (!dbStory) {
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+    }
+
+    if (dbStory.ownerId != myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+    // await this.db.storyDraft.delete({
+    //   where: {
+    //     id: id,
+    //   },
+    // });
+
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+
+  ///// story draft section
+  public async getMyStoriesTemplates(
+    lang: string,
+    _pageIndex: number,
+    _pageSize: number,
+    myId: number,
+  ) {
+    const stories = [];
+    // await this.db.storyTemplate.findMany({
+    //   skip: (pageIndex - 1) * pageSize,
+    //   take: pageSize,
+    //   orderBy: {
+    //     id: 'desc',
+    //   },
+    // });
+    let result: StoryDto[] = [];
+    // to to it in async way for performance
+    const promisesArr = [];
+    for (const story of stories) {
+      promisesArr.push(this.mapStory(story, lang, myId));
+    }
+    result = await Promise.all(promisesArr);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async addStoryTemplate(lang: string, storyId: number, myId: number) {
+    const storyToCopy = await this.db.story.findUnique({
+      where: {
+        id: storyId,
+      },
+    });
+    const story = {};
+    // await this.db.storyTemplate.create({
+    //   data: {
+    //     ...storyToCopy,
+    //   },
+    // });
+    const result = await this.mapStory(story, lang, myId);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async updateStoryTemplate(
+    lang: string,
+    storyTemplateData: UpdateStoryDto,
+    _storyTemplateId: number,
+    myId: number,
+  ) {
+    let dbStory;
+    //  await this.db.storyTemplate.findUnique({
+    //   where: {
+    //     id: storyTemplateId,
+    //   },
+    // });
+
+    if (!dbStory) {
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+    }
+
+    if (dbStory.ownerId != myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+    //// check the sended listing id is valid
+    if (storyTemplateData.listingId) {
+      const listing = await this.db.listings.findUnique({
+        where: {
+          id: storyTemplateData.listingId,
+        },
+      });
+
+      if (!listing) {
+        throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+      }
+    }
+    const story = {};
+    // await this.db.storyTemplate.update({
+    //   where: {
+    //     id: storyTemplateId,
+    //   },
+    //   data: {
+    //     ...storyTemplateData,
+    //   },
+    // });
+    const result = await this.mapStory(story, lang, myId);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async getStoryTemplate(_id: number, lang: string, myId?: number) {
+    let dbStory;
+    // await this.db.storyTemplate.findUnique({
+    //   where: {
+    //     id: id,
+    //   },
+    // });
+
+    if (!dbStory) {
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+    }
+    const result = await this.mapStory(dbStory, lang, myId);
+    // if (dbStory?.listingId) {
+    //   const listing = await this.listingService.getListing(
+    //     dbStory.listingId,
+    //     lang,
+    //   );
+    //   if (listing) {
+    //     story.listing = this.getListingSnippet(listing);
+    //   }
+    // }
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async deleteStoryTemplate(_id: number, myId: number) {
+    let dbStory;
+    // await this.db.storyTemplate.findUnique({
+    //   where: {
+    //     id: id,
+    //   },
+    // });
+
+    if (!dbStory) {
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+    }
+
+    if (dbStory.ownerId != myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+    // await this.db.storyTemplate.delete({
+    //   where: {
+    //     id: id,
+    //   },
+    // });
+
+    const res = new OperationResult();
     res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     return res;
   }

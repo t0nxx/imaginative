@@ -13,6 +13,8 @@ import { AppLoggerModule } from '@/shared/appLogger/appLogger.module';
 import { ListingModule } from '@/listing/listing.module';
 import { AuthMiddleware } from '@/user/auth.middleware';
 import { OptionalAuthMiddleware } from '@/user/optional.auth.middleware';
+import { StoryDraftController } from './storyDraft.controller';
+import { StoryTemplateController } from './storyTemplate.controller';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { OptionalAuthMiddleware } from '@/user/optional.auth.middleware';
     AppLoggerModule,
   ],
   providers: [StoryService],
-  controllers: [StoryController],
+  controllers: [StoryController, StoryDraftController, StoryTemplateController],
   exports: [StoryService],
 })
 export class StoryModule implements NestModule {
@@ -44,6 +46,36 @@ export class StoryModule implements NestModule {
         },
         {
           path: 'v1/stories/:commentId/delete-comment',
+          method: RequestMethod.DELETE,
+        },
+
+        //// story draft
+        { path: 'v1/stories-draft', method: RequestMethod.POST },
+        { path: 'v1/stories-draft', method: RequestMethod.GET },
+        { path: 'v1/stories-draft/:storyDraftId', method: RequestMethod.GET },
+        { path: 'v1/stories-draft/:storyDraftId', method: RequestMethod.PATCH },
+        {
+          path: 'v1/stories-draft/:storyDraftId',
+          method: RequestMethod.DELETE,
+        },
+
+        //// story template
+        { path: 'v1/stories-template', method: RequestMethod.GET },
+
+        {
+          path: 'v1/stories-template/:storyId',
+          method: RequestMethod.POST,
+        },
+        {
+          path: 'v1/stories-template/:storyTemplateId',
+          method: RequestMethod.GET,
+        },
+        {
+          path: 'v1/stories-template/:storyTemplateId',
+          method: RequestMethod.PATCH,
+        },
+        {
+          path: 'v1/stories-template/:storyTemplateId',
           method: RequestMethod.DELETE,
         },
       )
