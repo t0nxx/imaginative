@@ -36,7 +36,7 @@ export class StoryService {
     private readonly firebaseService: FireBaseService,
     private readonly fileService: FileService,
     private readonly i18n: LocalizationService,
-  ) {}
+  ) { }
 
   // public async updateStory(
   //   id: string,
@@ -164,6 +164,7 @@ export class StoryService {
         imaginativeYears.find((lt) => lt.id === story.imaginativeYearId)
           ?.name || null,
       otherImaginativeYear: story.otherImaginativeYear,
+      status: story.status,
       viewCount: story.viewCount,
       likeCount: story.likeCount,
       commentCount: story.commentCount,
@@ -207,6 +208,9 @@ export class StoryService {
     myId: number,
   ) {
     const stories = await this.db.story.findMany({
+      where: {
+        status: 0,
+      },
       skip: (pageIndex - 1) * pageSize,
       take: pageSize,
       orderBy: {
@@ -576,21 +580,25 @@ export class StoryService {
     return res;
   }
 
-  ///// story draft section
+  ///// story draft section , getOne,delete,update will use same story functions
   public async getMyStoriesDrafts(
     lang: string,
-    _pageIndex: number,
-    _pageSize: number,
+    pageIndex: number,
+    pageSize: number,
     myId: number,
   ) {
-    const stories = [];
-    // await this.db.storyDraft.findMany({
-    //   skip: (pageIndex - 1) * pageSize,
-    //   take: pageSize,
-    //   orderBy: {
-    //     id: 'desc',
-    //   },
-    // });
+    const stories = await this.db.story.findMany({
+      where: {
+        ownerId: myId,
+        status: 1,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: 'desc',
+      },
+    });
+
     let result: StoryDto[] = [];
     // to to it in async way for performance
     const promisesArr = [];
@@ -621,13 +629,14 @@ export class StoryService {
         throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
       }
     }
-    const story = {};
-    // await this.db.storyDraft.create({
-    //   data: {
-    //     ...storyData,
-    //     ownerId: myId,
-    //   },
-    // });
+    const story = await this.db.story.create({
+      data: {
+        ...storyData,
+        ownerId: myId,
+        status: 1,
+      },
+    });
+
     const result = await this.mapStory(story, lang, myId);
     const res = new OperationResult();
     res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
@@ -635,114 +644,24 @@ export class StoryService {
     return res;
   }
 
-  public async updateStoryDraft(
-    lang: string,
-    _storyDraftData: UpdateStoryDto,
-    _storyDraftId: number,
-    myId: number,
-  ) {
-    let dbStory;
-    //  await this.db.storyDraft.findUnique({
-    //   where: {
-    //     id: storyId,
-    //   },
-    // });
-
-    if (!dbStory) {
-      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
-    }
-
-    if (dbStory.ownerId != myId) {
-      throw new ForbiddenException(
-        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
-      );
-    }
-    const story = {};
-    // await this.db.storyDraft.update({
-    //   where: {
-    //     id: storyId,
-    //   },
-    //   data: {
-    //     ...storyData,
-    //   },
-    // });
-    const result = await this.mapStory(story, lang, myId);
-    const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
-    res.data = result;
-    return res;
-  }
-
-  public async getStoryDraft(_id: number, lang: string, myId?: number) {
-    let dbStory;
-    // await this.db.storyDraft.findUnique({
-    //   where: {
-    //     id: id,
-    //   },
-    // });
-
-    if (!dbStory) {
-      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
-    }
-    const result = await this.mapStory(dbStory, lang, myId);
-    // if (dbStory?.listingId) {
-    //   const listing = await this.listingService.getListing(
-    //     dbStory.listingId,
-    //     lang,
-    //   );
-    //   if (listing) {
-    //     story.listing = this.getListingSnippet(listing);
-    //   }
-    // }
-    const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
-    res.data = result;
-    return res;
-  }
-
-  public async deleteStoryDraft(_id: number, myId: number) {
-    let dbStory;
-    // await this.db.storyDraft.findUnique({
-    //   where: {
-    //     id: id,
-    //   },
-    // });
-
-    if (!dbStory) {
-      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
-    }
-
-    if (dbStory.ownerId != myId) {
-      throw new ForbiddenException(
-        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
-      );
-    }
-    // await this.db.storyDraft.delete({
-    //   where: {
-    //     id: id,
-    //   },
-    // });
-
-    const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
-    return res;
-  }
-
-  ///// story draft section
+  ///// story template section , getOne,delete,update will use same story functions
   public async getMyStoriesTemplates(
     lang: string,
-    _pageIndex: number,
-    _pageSize: number,
+    pageIndex: number,
+    pageSize: number,
     myId: number,
   ) {
-    const stories = [];
-    // await this.db.storyTemplate.findMany({
-    //   skip: (pageIndex - 1) * pageSize,
-    //   take: pageSize,
-    //   orderBy: {
-    //     id: 'desc',
-    //   },
-    // });
+    const stories = await this.db.story.findMany({
+      where: {
+        ownerId: myId,
+        status: 2,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: 'desc',
+      },
+    });
     let result: StoryDto[] = [];
     // to to it in async way for performance
     const promisesArr = [];
@@ -762,121 +681,17 @@ export class StoryService {
         id: storyId,
       },
     });
-    const story = {};
-    // await this.db.storyTemplate.create({
-    //   data: {
-    //     ...storyToCopy,
-    //   },
-    // });
+    const story = await this.db.story.create({
+      data: {
+        ...storyToCopy,
+        status: 2,
+      },
+    });
+
     const result = await this.mapStory(story, lang, myId);
     const res = new OperationResult();
     res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
-    return res;
-  }
-
-  public async updateStoryTemplate(
-    lang: string,
-    storyTemplateData: UpdateStoryDto,
-    _storyTemplateId: number,
-    myId: number,
-  ) {
-    let dbStory;
-    //  await this.db.storyTemplate.findUnique({
-    //   where: {
-    //     id: storyTemplateId,
-    //   },
-    // });
-
-    if (!dbStory) {
-      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
-    }
-
-    if (dbStory.ownerId != myId) {
-      throw new ForbiddenException(
-        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
-      );
-    }
-    //// check the sended listing id is valid
-    if (storyTemplateData.listingId) {
-      const listing = await this.db.listings.findUnique({
-        where: {
-          id: storyTemplateData.listingId,
-        },
-      });
-
-      if (!listing) {
-        throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
-      }
-    }
-    const story = {};
-    // await this.db.storyTemplate.update({
-    //   where: {
-    //     id: storyTemplateId,
-    //   },
-    //   data: {
-    //     ...storyTemplateData,
-    //   },
-    // });
-    const result = await this.mapStory(story, lang, myId);
-    const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
-    res.data = result;
-    return res;
-  }
-
-  public async getStoryTemplate(_id: number, lang: string, myId?: number) {
-    let dbStory;
-    // await this.db.storyTemplate.findUnique({
-    //   where: {
-    //     id: id,
-    //   },
-    // });
-
-    if (!dbStory) {
-      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
-    }
-    const result = await this.mapStory(dbStory, lang, myId);
-    // if (dbStory?.listingId) {
-    //   const listing = await this.listingService.getListing(
-    //     dbStory.listingId,
-    //     lang,
-    //   );
-    //   if (listing) {
-    //     story.listing = this.getListingSnippet(listing);
-    //   }
-    // }
-    const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
-    res.data = result;
-    return res;
-  }
-
-  public async deleteStoryTemplate(_id: number, myId: number) {
-    let dbStory;
-    // await this.db.storyTemplate.findUnique({
-    //   where: {
-    //     id: id,
-    //   },
-    // });
-
-    if (!dbStory) {
-      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
-    }
-
-    if (dbStory.ownerId != myId) {
-      throw new ForbiddenException(
-        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
-      );
-    }
-    // await this.db.storyTemplate.delete({
-    //   where: {
-    //     id: id,
-    //   },
-    // });
-
-    const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     return res;
   }
 }

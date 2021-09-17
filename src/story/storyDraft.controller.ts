@@ -47,40 +47,4 @@ export class StoryDraftController {
       myId ?? 0,
     );
   }
-
-  @ApiOperation({ summary: 'Gets single storyDraft' })
-  @Get('/:storyDraftId')
-  async getstoryDraft(
-    @I18nLang() lang: string,
-    @User('id') myId: number,
-    @Param('storyDraftId') storyDraftId: number,
-  ) {
-    /// zero as myid here for vistitors only
-    return this.storyService.getStoryDraft(storyDraftId, lang, myId ?? 0);
-  }
-
-  @ApiOperation({ summary: 'Update A storyDraft' })
-  @Patch('/:storyDraftId')
-  async updatestoryDraft(
-    @I18nLang() lang: string,
-    @User('id') myId: number,
-    @Param('storyDraftId') storyDraftId: number,
-    @Body() storyDraftData: UpdateStoryDto,
-  ) {
-    return this.storyService.updateStoryDraft(
-      lang,
-      storyDraftData,
-      storyDraftId,
-      myId,
-    );
-  }
-
-  @ApiOperation({ summary: 'Delete A storyDraft' })
-  @Delete('/:storyDraftId')
-  async deletestoryDraft(
-    @User('id') myId: number,
-    @Param('storyDraftId') storyDraftId: number,
-  ) {
-    return this.storyService.deleteStoryDraft(storyDraftId, myId);
-  }
 }

@@ -12,6 +12,7 @@ export default interface StoryDto {
   otherImaginativeYear: string;
   tagline: string;
   info: string;
+  status: number;
   viewCount: number;
   likeCount: number;
   commentCount: number;

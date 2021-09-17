@@ -52,12 +52,6 @@ export class StoryModule implements NestModule {
         //// story draft
         { path: 'v1/stories-draft', method: RequestMethod.POST },
         { path: 'v1/stories-draft', method: RequestMethod.GET },
-        { path: 'v1/stories-draft/:storyDraftId', method: RequestMethod.GET },
-        { path: 'v1/stories-draft/:storyDraftId', method: RequestMethod.PATCH },
-        {
-          path: 'v1/stories-draft/:storyDraftId',
-          method: RequestMethod.DELETE,
-        },
 
         //// story template
         { path: 'v1/stories-template', method: RequestMethod.GET },
@@ -65,18 +59,6 @@ export class StoryModule implements NestModule {
         {
           path: 'v1/stories-template/:storyId',
           method: RequestMethod.POST,
-        },
-        {
-          path: 'v1/stories-template/:storyTemplateId',
-          method: RequestMethod.GET,
-        },
-        {
-          path: 'v1/stories-template/:storyTemplateId',
-          method: RequestMethod.PATCH,
-        },
-        {
-          path: 'v1/stories-template/:storyTemplateId',
-          method: RequestMethod.DELETE,
         },
       )
       .apply(OptionalAuthMiddleware)

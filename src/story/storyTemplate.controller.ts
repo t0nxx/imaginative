@@ -46,40 +46,4 @@ export class StoryTemplateController {
       myId ?? 0,
     );
   }
-
-  @ApiOperation({ summary: 'Gets single storytemplate' })
-  @Get('/:storyTemplateId')
-  async getstorytemplate(
-    @I18nLang() lang: string,
-    @User('id') myId: number,
-    @Param('storyTemplateId') storytemplateId: number,
-  ) {
-    /// zero as myid here for vistitors only
-    return this.storyService.getStoryTemplate(storytemplateId, lang, myId ?? 0);
-  }
-
-  @ApiOperation({ summary: 'Update A storytemplate' })
-  @Patch('/:storyTemplateId')
-  async updatestorytemplate(
-    @I18nLang() lang: string,
-    @User('id') myId: number,
-    @Param('storyTemplateId') storytemplateId: number,
-    @Body() storytemplateData: UpdateStoryDto,
-  ) {
-    return this.storyService.updateStoryTemplate(
-      lang,
-      storytemplateData,
-      storytemplateId,
-      myId,
-    );
-  }
-
-  @ApiOperation({ summary: 'Delete A storytemplate' })
-  @Delete('/:storyTemplateId')
-  async deletestorytemplate(
-    @User('id') myId: number,
-    @Param('storyTemplateId') storytemplateId: number,
-  ) {
-    return this.storyService.deleteStoryTemplate(storytemplateId, myId);
-  }
 }
