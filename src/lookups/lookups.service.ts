@@ -40,6 +40,7 @@ export class LookupsService {
             createdAt: listingType.createdAt,
             updatedAt: listingType.updatedAt,
             name: '',
+            withConditions: listingType.withConditions,
           };
           const localizedListingType = localizedListingTypes.find(
             (llt) => llt.refId === listingType.id,
@@ -80,6 +81,7 @@ export class LookupsService {
             createdAt: listingType.createdAt,
             updatedAt: listingType.updatedAt,
             name: '',
+            withConditions: listingType.withConditions,
           };
           const localizedListingType = localizedListingTypes.find(
             (llt) => llt.refId === listingType.id,
@@ -120,6 +122,7 @@ export class LookupsService {
             updatedAt: priceType.updatedAt,
             name: '',
             format: '',
+            withConditions: priceType.withConditions,
           };
           const localizedPriceType = localizedPriceTypes.find(
             (lpt) => lpt.refId === priceType.id,
@@ -166,6 +169,7 @@ export class LookupsService {
               symbol: currency.symbol,
               name: localizedCurrency.name,
               standardCode: localizedCurrency.standardCode,
+              withConditions: currency.withConditions,
             };
             type.name = localizedCurrency.name;
             type.standardCode = localizedCurrency.standardCode;
@@ -203,6 +207,7 @@ export class LookupsService {
             createdAt: hiringType.createdAt,
             updatedAt: hiringType.updatedAt,
             name: '',
+            withConditions: hiringType.withConditions,
           };
           const localizedHiringType = localizedHiringTypes.find(
             (lpt) => lpt.refId === hiringType.id,
@@ -243,6 +248,7 @@ export class LookupsService {
             createdAt: disclaimer.createdAt,
             updatedAt: disclaimer.updatedAt,
             name: '',
+            withConditions: disclaimer.withConditions,
           };
           const localizedDisclaimer = localizedDisclaimers.find(
             (lpt) => lpt.refId === disclaimer.id,
@@ -295,6 +301,7 @@ export class LookupsService {
             createdAt: p.createdAt,
             updatedAt: p.updatedAt,
             name: '',
+            withConditions: p.withConditions,
           };
           const localizedpriv = localizedPrivacy.find(
             (lpt) => lpt.refId === p.id,

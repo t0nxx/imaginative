@@ -31,9 +31,11 @@ model SequelizeMeta {
 }
 
 model Currencies {
-  id        Int      @id @default(autoincrement())
-  code      String   @db.VarChar(500)
-  symbol    String   @db.VarChar(500)
+  id             Int     @id @default(autoincrement())
+  code           String  @db.VarChar(500)
+  symbol         String  @db.VarChar(500)
+  withConditions Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -55,8 +57,10 @@ model LocalizedCurrencies {
 }
 
 model PriceTypes {
-  id                  Int                   @id @default(autoincrement())
-  code                String                @db.VarChar(150)
+  id             Int     @id @default(autoincrement())
+  code           String  @db.VarChar(150)
+  withConditions Boolean @default(false)
+
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
   LocalizedPriceTypes LocalizedPriceTypes[]
@@ -78,8 +82,10 @@ model LocalizedPriceTypes {
 }
 
 model Disclaimers {
-  id                   Int                    @id @default(autoincrement())
-  code                 String                 @db.VarChar(150)
+  id             Int     @id @default(autoincrement())
+  code           String  @db.VarChar(150)
+  withConditions Boolean @default(false)
+
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
   LocalizedDisclaimers LocalizedDisclaimers[]
@@ -100,8 +106,10 @@ model LocalizedDisclaimers {
 }
 
 model HiringTypes {
-  id        Int      @id @default(autoincrement())
-  code      String   @db.VarChar(128)
+  id             Int     @id @default(autoincrement())
+  code           String  @db.VarChar(128)
+  withConditions Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -123,9 +131,11 @@ model LocalizedHiringTypes {
 }
 
 model ListingTypes {
-  id        Int      @id @default(autoincrement())
-  code      String   @db.VarChar(150)
-  category  String   @db.VarChar(50)
+  id             Int     @id @default(autoincrement())
+  code           String  @db.VarChar(150)
+  category       String  @db.VarChar(50)
+  withConditions Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -147,8 +157,10 @@ model LocalizedListingTypes {
 }
 
 model ImaginativeYears {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(128)
+  id             Int     @id @default(autoincrement())
+  name           String  @db.VarChar(128)
+  withConditions Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -156,8 +168,10 @@ model ImaginativeYears {
 }
 
 model Privacy {
-  id        Int      @id @default(autoincrement())
-  code      String   @db.VarChar(128)
+  id             Int     @id @default(autoincrement())
+  code           String  @db.VarChar(128)
+  withConditions Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
