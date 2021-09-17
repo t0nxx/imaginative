@@ -203,40 +203,53 @@ model ListingFollowers {
 }
 
 model Listings {
-  id                Int      @id @default(autoincrement())
-  pageType          String   @db.VarChar(50)
-  privacy           String   @db.VarChar(50)
-  media             Json     @db.Json
-  name              String   @db.VarChar(200)
-  brandName         String   @db.VarChar(200)
-  description       String   @db.VarChar(3000)
-  stockAvailability String   @db.VarChar(70)
-  advantages        String   @db.VarChar(2000)
-  uses              String   @db.VarChar(1500)
-  credentials       String   @db.VarChar(3000)
-  url               String   @db.VarChar(400)
-  otherPriceType    String?  @db.VarChar(150)
-  otherHiring       String?  @db.VarChar(150)
-  offerPrice        Float
-  offerDescription  String   @db.VarChar(3000)
-  socialLinks       Json     @db.Json
-  viewsCount        Int      @default(0)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  status            Int      @db.SmallInt
-  isEdited          Boolean  @default(false)
-  price             Float
-  overallRating     Float
-  totalRatingCount  Float
-  currencyId        Int?
-  hiringTypeId      Int?
-  priceTypeId       Int?
-  listingTypeId     Int?
-  ownerId           Int?
+  id                     Int     @id @default(autoincrement())
+  name                   String  @db.VarChar(3000)
+  brandName              String  @db.VarChar(3000)
+  description            String  @db.VarChar(3000)
+  credentials            String  @db.VarChar(3000)
+  advantages             String  @db.VarChar(3000)
+  uses                   String  @db.VarChar(3000)
+  url                    String  @db.VarChar(3000)
+  price                  Float
+  offerPrice             Float
+  offerDescription       String  @db.VarChar(3000)
+  //// optional fields depend on select other option in dropdowns
+  otherStockAvailability String? @db.VarChar(150)
+  otherPriceType         String? @db.VarChar(150)
+  otherHiring            String? @db.VarChar(150)
 
+  media            String[]
+  socialLinks      String[]
+  overallRating    Float
+  totalRatingCount Float
+  /// this for track updated fields to show it in the mobile view with red color
+  updatedFields    String[]
+
+  stockAvailabilityId Int?
+  pageTypeId          Int?
+  privacyId           Int?
+  listingTypeId       Int?
+  currencyId          Int?
+  hiringTypeId        Int?
+  priceTypeId         Int?
+  ownerId             Int?
+
+  /// status 0 : normal , 1 : draft , 2 : template
+  status Int @default(0)
+
+  viewsCount   Int @default(0)
+  followCount  Int @default(0)
+  storiesCount Int @default(0)
+  shareCount   Int @default(0)
+
+  isEdited      Boolean @default(false)
+  isRepublished Boolean @default(false)
 
   owner User? @relation(fields: [ownerId], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   @@map("listings")
 }
 
@@ -268,20 +281,20 @@ model Story {
   introImages          String[]
   bodyImages           String[]
   conclusionImages     String[]
-  // /// this for track updated fields to show it in the mobile view with red color
-  /// update , it should view in product only
-  // updatedFields        String[]
+  ownerId              Int?
+  listingId            Int?
+  disclaimerId         Int?
+  privacyId            Int?
+  imaginativeYearId    Int?
 
-  ownerId           Int?
-  listingId         Int?
-  disclaimerId      Int?
-  privacyId         Int?
-  imaginativeYearId Int?
-  productViewCount  Int  @default(0)
-  viewCount         Int  @default(0)
-  likeCount         Int  @default(0)
-  commentCount      Int  @default(0)
-  shareCount        Int  @default(0)
+  /// status 0 : normal , 1 : draft , 2 : template
+  status Int @default(0)
+
+  productViewCount Int @default(0)
+  viewCount        Int @default(0)
+  likeCount        Int @default(0)
+  commentCount     Int @default(0)
+  shareCount       Int @default(0)
 
   // relations
   owner User? @relation(fields: [ownerId], references: [id])
