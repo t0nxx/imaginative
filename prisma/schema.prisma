@@ -192,14 +192,104 @@ model LocalizedPrivacy {
   @@map("localized_privacy")
 }
 
-model ListingFollowers {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  listingId Int
+model PageType {
+  id             Int     @id @default(autoincrement())
+  code           String  @db.VarChar(128)
+  withConditions Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("listing_followers")
+  LocalizedPageType LocalizedPageType[]
+  @@map("pageType")
+}
+
+model LocalizedPageType {
+  id       Int      @id @default(autoincrement())
+  name     String   @db.VarChar(100)
+  language String   @db.VarChar(10)
+  refId    Int
+  PageType PageType @relation(fields: [refId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("localized_pageType")
+}
+
+model BrandType {
+  id             Int     @id @default(autoincrement())
+  code           String  @db.VarChar(128)
+  withConditions Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  LocalizedBrandType LocalizedBrandType[]
+  @@map("brandType")
+}
+
+model LocalizedBrandType {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(100)
+  language  String    @db.VarChar(10)
+  refId     Int
+  BrandType BrandType @relation(fields: [refId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("localized_BrandType")
+}
+
+model UsesType {
+  id             Int     @id @default(autoincrement())
+  code           String  @db.VarChar(128)
+  withConditions Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  LocalizedUsesType LocalizedUsesType[]
+  @@map("usesType")
+}
+
+model LocalizedUsesType {
+  id       Int      @id @default(autoincrement())
+  name     String   @db.VarChar(100)
+  language String   @db.VarChar(10)
+  refId    Int
+  UsesType UsesType @relation(fields: [refId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("localized_UsesType")
+}
+
+model StockAvailability {
+  id             Int     @id @default(autoincrement())
+  code           String  @db.VarChar(128)
+  withConditions Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  LocalizedStockAvailability LocalizedStockAvailability[]
+  @@map("stockAvailability")
+}
+
+model LocalizedStockAvailability {
+  id                Int               @id @default(autoincrement())
+  name              String            @db.VarChar(100)
+  language          String            @db.VarChar(10)
+  refId             Int
+  StockAvailability StockAvailability @relation(fields: [refId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("localized_StockAvailability")
 }
 
 model Listings {
@@ -267,6 +357,16 @@ model ListingReviews {
 
   @@map("listing_reviews")
 }
+model ListingFollowers {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  listingId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("listing_followers")
+}
+
 
 model Story {
   id                   Int      @id @default(autoincrement())

@@ -36,7 +36,7 @@ export class StoryService {
     private readonly firebaseService: FireBaseService,
     private readonly fileService: FileService,
     private readonly i18n: LocalizationService,
-  ) { }
+  ) {}
 
   // public async updateStory(
   //   id: string,

@@ -50,6 +50,30 @@ export class LookupsController {
     return await this.lookupsService.getHiringTypes(lang);
   }
 
+  @ApiOperation({ summary: 'Gets page types' })
+  @Get('/page-types')
+  async getPageType(@I18nLang() lang: string) {
+    return await this.lookupsService.getPageType(lang);
+  }
+
+  @ApiOperation({ summary: 'Gets uses types' })
+  @Get('/uses-types')
+  async getUsesTypes(@I18nLang() lang: string) {
+    return await this.lookupsService.getUsesTypes(lang);
+  }
+
+  @ApiOperation({ summary: 'Gets brand types' })
+  @Get('/brand-types')
+  async getBrandType(@I18nLang() lang: string) {
+    return await this.lookupsService.getBrandType(lang);
+  }
+
+  @ApiOperation({ summary: 'Gets StockAvailability' })
+  @Get('/stockAvailability')
+  async getStockAvailability(@I18nLang() lang: string) {
+    return await this.lookupsService.getStockAvailability(lang);
+  }
+
   @ApiOperation({ summary: 'Gets Disclaimer options' })
   @Get('/disclaimers')
   async getDisclaimers(@I18nLang() lang: string) {

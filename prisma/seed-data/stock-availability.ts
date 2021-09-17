@@ -1,29 +1,23 @@
-export const privacy = [
+export const stockAvailability = [
   {
     id: 1,
-    code: 'public',
+    code: 'test',
     createdAt: '2021-05-28T01:26:55.898Z',
     updatedAt: '2021-05-28T01:26:55.898Z',
   },
   {
     id: 2,
-    code: 'friends only',
-    createdAt: '2021-05-28T01:26:55.898Z',
-    updatedAt: '2021-05-28T01:26:55.898Z',
-  },
-  {
-    id: 3,
-    code: 'followers only',
+    code: 'test',
     createdAt: '2021-05-28T01:26:55.898Z',
     updatedAt: '2021-05-28T01:26:55.898Z',
   },
 ];
-export const localizedPrivacy = [
+export const localizedStockAvailability = [
   {
     id: 1,
     language: 'en',
     refId: 1,
-    name: 'public',
+    name: 'test',
     createdAt: '2021-05-28T01:26:55.898Z',
     updatedAt: '2021-05-28T01:26:55.898Z',
   },
@@ -31,39 +25,23 @@ export const localizedPrivacy = [
     id: 2,
     language: 'en',
     refId: 2,
-    name: 'friends only',
+    name: 'test',
     createdAt: '2021-05-28T01:26:55.898Z',
     updatedAt: '2021-05-28T01:26:55.898Z',
   },
   {
     id: 3,
-    language: 'en',
-    refId: 3,
-    name: 'followers only',
-    createdAt: '2021-05-28T01:26:55.898Z',
-    updatedAt: '2021-05-28T01:26:55.898Z',
-  },
-  {
-    id: 6,
     language: 'ar',
     refId: 1,
-    name: 'عام',
+    name: 'ttt',
     createdAt: '2021-05-28T01:26:55.898Z',
     updatedAt: '2021-05-28T01:26:55.898Z',
   },
   {
-    id: 7,
+    id: 4,
     language: 'ar',
     refId: 2,
-    name: 'الاصدقاء فقط',
-    createdAt: '2021-05-28T01:26:55.898Z',
-    updatedAt: '2021-05-28T01:26:55.898Z',
-  },
-  {
-    id: 8,
-    language: 'ar',
-    refId: 3,
-    name: 'المتابعين فقط',
+    name: 'tttt',
     createdAt: '2021-05-28T01:26:55.898Z',
     updatedAt: '2021-05-28T01:26:55.898Z',
   },

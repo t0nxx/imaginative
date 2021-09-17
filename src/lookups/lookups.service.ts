@@ -7,8 +7,7 @@ import HiringTypeDto from './dto/HiringTypeDto';
 import DisclaimerDto from './dto/DisclaimerDto';
 import { PrismaService } from '@/shared/core/prisma.service';
 import OperationResult from '@/shared/models/OperationResult';
-import ImaginativeYearsDto from './dto/ImaginativeYearsDto';
-import PrivacyDto from './dto/PrivacyDto';
+import GenericLookupDto from './dto/GenericLookupDto';
 
 @Injectable()
 export class LookupsService {
@@ -285,7 +284,7 @@ export class LookupsService {
       `__Privacy_${lang}__`,
       60 * 120,
       async () => {
-        const result = new Array<PrivacyDto>();
+        const result = new Array<GenericLookupDto>();
         const privacy = await this.db.privacy.findMany({});
 
         const localizedPrivacy = await this.db.localizedPrivacy.findMany({
@@ -304,6 +303,163 @@ export class LookupsService {
             withConditions: p.withConditions,
           };
           const localizedpriv = localizedPrivacy.find(
+            (lpt) => lpt.refId === p.id,
+          );
+          if (localizedpriv) {
+            type.name = localizedpriv.name;
+          }
+          result.push(type);
+        }
+        return result;
+      },
+    );
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
+  }
+  public async getPageType(lang: string) {
+    const data = await AppCache.getAsync(
+      `__PageType_${lang}__`,
+      60 * 120,
+      async () => {
+        const result = new Array<GenericLookupDto>();
+        const pageType = await this.db.pageType.findMany({});
+
+        const localizedpageType = await this.db.localizedPageType.findMany({
+          where: {
+            language: lang,
+          },
+        });
+
+        for (const p of pageType) {
+          const type = {
+            id: p.id,
+            code: p.code,
+            createdAt: p.createdAt,
+            updatedAt: p.updatedAt,
+            name: '',
+            withConditions: p.withConditions,
+          };
+          const localizedpriv = localizedpageType.find(
+            (lpt) => lpt.refId === p.id,
+          );
+          if (localizedpriv) {
+            type.name = localizedpriv.name;
+          }
+          result.push(type);
+        }
+        return result;
+      },
+    );
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
+  }
+  public async getBrandType(lang: string) {
+    const data = await AppCache.getAsync(
+      `__BrandType_${lang}__`,
+      60 * 120,
+      async () => {
+        const result = new Array<GenericLookupDto>();
+        const brandType = await this.db.brandType.findMany({});
+
+        const localizedbrandType = await this.db.localizedBrandType.findMany({
+          where: {
+            language: lang,
+          },
+        });
+
+        for (const p of brandType) {
+          const type = {
+            id: p.id,
+            code: p.code,
+            createdAt: p.createdAt,
+            updatedAt: p.updatedAt,
+            name: '',
+            withConditions: p.withConditions,
+          };
+          const localizedpriv = localizedbrandType.find(
+            (lpt) => lpt.refId === p.id,
+          );
+          if (localizedpriv) {
+            type.name = localizedpriv.name;
+          }
+          result.push(type);
+        }
+        return result;
+      },
+    );
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
+  }
+  public async getUsesTypes(lang: string) {
+    const data = await AppCache.getAsync(
+      `__UsesTypes_${lang}__`,
+      60 * 120,
+      async () => {
+        const result = new Array<GenericLookupDto>();
+        const usesType = await this.db.usesType.findMany({});
+
+        const localizedusesType = await this.db.localizedUsesType.findMany({
+          where: {
+            language: lang,
+          },
+        });
+
+        for (const p of usesType) {
+          const type = {
+            id: p.id,
+            code: p.code,
+            createdAt: p.createdAt,
+            updatedAt: p.updatedAt,
+            name: '',
+            withConditions: p.withConditions,
+          };
+          const localizedpriv = localizedusesType.find(
+            (lpt) => lpt.refId === p.id,
+          );
+          if (localizedpriv) {
+            type.name = localizedpriv.name;
+          }
+          result.push(type);
+        }
+        return result;
+      },
+    );
+    const res = new OperationResult();
+    res.message[0] = 'successfully temp message';
+    res.data = data;
+    return res;
+  }
+  public async getStockAvailability(lang: string) {
+    const data = await AppCache.getAsync(
+      `__StockAvailability_${lang}__`,
+      60 * 120,
+      async () => {
+        const result = new Array<GenericLookupDto>();
+        const stockAvailability = await this.db.stockAvailability.findMany({});
+
+        const localizedstockAvailability =
+          await this.db.localizedStockAvailability.findMany({
+            where: {
+              language: lang,
+            },
+          });
+
+        for (const p of stockAvailability) {
+          const type = {
+            id: p.id,
+            code: p.code,
+            createdAt: p.createdAt,
+            updatedAt: p.updatedAt,
+            name: '',
+            withConditions: p.withConditions,
+          };
+          const localizedpriv = localizedstockAvailability.find(
             (lpt) => lpt.refId === p.id,
           );
           if (localizedpriv) {

@@ -1,4 +1,4 @@
-export default interface PrivacyDto {
+export default interface GenericLookupDto {
   id: number;
   code: string;
   name: string;

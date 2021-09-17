@@ -10,6 +10,13 @@ import { localizedPrivacy, privacy } from './seed-data/privacy';
 import { stories } from './seed-data/stories';
 import { users } from './seed-data/users';
 import { listings } from './seed-data/listings';
+import { localizedPageTypes, pageTypes } from './seed-data/page-types';
+import { localizedUsesTypes, usesTypes } from './seed-data/uses-types';
+import { brandTypes, localizedBrandTypes } from './seed-data/brand-types';
+import {
+  localizedStockAvailability,
+  stockAvailability,
+} from './seed-data/stock-availability';
 
 async function main() {
   /// seed currencies
@@ -90,6 +97,54 @@ async function main() {
 
   await prisma.localizedPrivacy.createMany({
     data: localizedPrivacy,
+  });
+
+  ///////////////////////////////////////////////////////////////
+  await prisma.localizedStockAvailability.deleteMany({});
+  await prisma.stockAvailability.deleteMany({});
+
+  await prisma.stockAvailability.createMany({
+    data: stockAvailability,
+  });
+
+  await prisma.localizedStockAvailability.createMany({
+    data: localizedStockAvailability,
+  });
+
+  ///////////////////////////////////////////////////////////////
+  await prisma.localizedBrandType.deleteMany({});
+  await prisma.brandType.deleteMany({});
+
+  await prisma.brandType.createMany({
+    data: brandTypes,
+  });
+
+  await prisma.localizedBrandType.createMany({
+    data: localizedBrandTypes,
+  });
+
+  ///////////////////////////////////////////////////////////////
+  await prisma.localizedUsesType.deleteMany({});
+  await prisma.usesType.deleteMany({});
+
+  await prisma.usesType.createMany({
+    data: usesTypes,
+  });
+
+  await prisma.localizedUsesType.createMany({
+    data: localizedUsesTypes,
+  });
+
+  ///////////////////////////////////////////////////////////////
+  await prisma.localizedPageType.deleteMany({});
+  await prisma.pageType.deleteMany({});
+
+  await prisma.pageType.createMany({
+    data: pageTypes,
+  });
+
+  await prisma.localizedPageType.createMany({
+    data: localizedPageTypes,
   });
 
   ///////////////////////////////////////////////////////////////
