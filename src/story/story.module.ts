@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -15,15 +16,10 @@ import { AuthMiddleware } from '@/user/auth.middleware';
 import { OptionalAuthMiddleware } from '@/user/optional.auth.middleware';
 import { StoryDraftController } from './storyDraft.controller';
 import { StoryTemplateController } from './storyTemplate.controller';
+import { ListingService } from '@/listing/listing.service';
 
 @Module({
-  imports: [
-    CoreModule,
-    LookupsModule,
-    UserModule,
-    ListingModule,
-    AppLoggerModule,
-  ],
+  imports: [CoreModule, LookupsModule, UserModule, AppLoggerModule],
   providers: [StoryService],
   controllers: [StoryController, StoryDraftController, StoryTemplateController],
   exports: [StoryService],

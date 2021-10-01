@@ -81,7 +81,30 @@ export class ListingController {
   async shareListing(@Param('id') id: number) {
     return this.listingService.shareListing(id);
   }
+  @Post('v1/listings/:id/toggle-follow')
+  async toggleLikeStory(
+    @User('id') myId: number,
+    @Param('id') listingId: number,
+  ) {
+    return this.listingService.toggleFollowListing(listingId, myId);
+  }
 
+  @Get('v1/listings/:id/stories')
+  async getAllLStoriesOfListing(
+    @I18nLang() lang: string,
+    @User('id') myId: number,
+    @Param('id') listingId: number,
+    @Query('pageIndex') pageIndex?: number,
+    @Query('pageSize') pageSize?: number,
+  ) {
+    return this.listingService.getAllLStoriesOfListing(
+      lang,
+      pageIndex ?? 1,
+      pageSize ?? 10,
+      myId ?? 0,
+      listingId,
+    );
+  }
   // @Post('v1/listings/search')
   // async searchListings(
   //   @User('id') userId: number,

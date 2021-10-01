@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   ForbiddenException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -26,10 +28,12 @@ import { PrismaService } from '@/shared/core/prisma.service';
 import UpdateListingDto from './dto/UpdateListing.dto';
 import { LocalizationService } from '@/shared/core/localization.service';
 import FireBaseService from '@/shared/core/FireBase.service';
+import { StoryService } from '@/story/story.service';
 
 @Injectable()
 export class ListingService {
   constructor(
+    private storyService: StoryService,
     private lookupsService: LookupsService,
     private userService: UserService,
     private readonly db: PrismaService,
@@ -76,6 +80,8 @@ export class ListingService {
     lang: string,
     ids: number[],
     myId: number,
+    pageIndex: number,
+    pageSize: number,
   ): Promise<ListingDto[]> {
     const userFollowedListings = await this.getUserFollowedListingIds(myId);
 
@@ -84,6 +90,11 @@ export class ListingService {
         id: {
           in: ids,
         },
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: 'desc',
       },
     });
     //return listingDtos;
@@ -258,6 +269,81 @@ export class ListingService {
     res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
     return res;
+  }
+  async toggleFollowListing(listingId: number, myId: number) {
+    const isAlreadyFollower = await this.db.listingFollowers.findFirst({
+      where: {
+        listingId: listingId,
+        userId: myId,
+      },
+    });
+
+    if (isAlreadyFollower) {
+      await this.db.listingFollowers.delete({
+        where: {
+          id: isAlreadyFollower.id,
+        },
+      });
+      /// decrease follow count by one
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          followCount: {
+            decrement: 1,
+          },
+        },
+      });
+    } else {
+      /// increase follow count by one
+      await this.db.listingFollowers.create({
+        data: {
+          listingId: listingId,
+          userId: myId,
+        },
+      });
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          followCount: {
+            increment: 1,
+          },
+        },
+      });
+
+      /// @ queue , add to notifications queue
+    }
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+  async getAllLStoriesOfListing(
+    lang: string,
+    pageIndex: number,
+    pageSize: number,
+    myId: number,
+    listingId: number,
+  ) {
+    const storiesOfListing = await this.db.story.findMany({
+      where: {
+        listingId: listingId,
+      },
+      select: {
+        id: true,
+      },
+    });
+    const storiesOfListingIds = storiesOfListing.map((e) => e.id);
+
+    return this.storyService.getStoriesByIds(
+      lang,
+      storiesOfListingIds,
+      myId,
+      pageIndex,
+      pageSize,
+    );
   }
   // public async searchListings(
   //   searchModel: SearchListingDto,

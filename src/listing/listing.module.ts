@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -12,9 +13,16 @@ import { LookupsModule } from '@/lookups/lookups.module';
 import { AppLoggerModule } from '@/shared/appLogger/appLogger.module';
 import { AuthMiddleware } from '@/user/auth.middleware';
 import { OptionalAuthMiddleware } from '@/user/optional.auth.middleware';
+import { StoryModule } from '@/story/story.module';
 
 @Module({
-  imports: [CoreModule, LookupsModule, UserModule, AppLoggerModule],
+  imports: [
+    CoreModule,
+    LookupsModule,
+    UserModule,
+    AppLoggerModule,
+    StoryModule,
+  ],
   providers: [ListingService],
   controllers: [ListingController],
   exports: [ListingService],
@@ -28,11 +36,15 @@ export class ListingModule implements NestModule {
         { path: 'v1/listings/:id', method: RequestMethod.PUT },
         //{path: 'v1/listings/search', method: RequestMethod.POST},
         { path: 'v1/listings/:id', method: RequestMethod.DELETE },
+        /// follow
+        { path: 'v1/listings/:id/toggle-follow', method: RequestMethod.POST },
       )
       .apply(OptionalAuthMiddleware)
       .forRoutes(
         { path: 'v1/listings', method: RequestMethod.GET },
         { path: 'v1/listings/:id', method: RequestMethod.GET },
+        { path: 'v1/listings/:id/stories', method: RequestMethod.GET },
+
         /// share
         { path: 'v1/listings/:id/share', method: RequestMethod.POST },
       );

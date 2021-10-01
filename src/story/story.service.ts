@@ -1,5 +1,7 @@
 import {
   ForbiddenException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -29,9 +31,11 @@ import { CreateStoryDraftDto } from './dto/CreateStoryDraft.dto';
 @Injectable()
 export class StoryService {
   constructor(
+    // @Inject(forwardRef(() => ListingService))
+    // private listingService: ListingService,
+
     private lookupsService: LookupsService,
     private userService: UserService,
-    private listingService: ListingService,
     private readonly db: PrismaService,
     private readonly firebaseService: FireBaseService,
     private readonly fileService: FileService,
@@ -210,6 +214,38 @@ export class StoryService {
     const stories = await this.db.story.findMany({
       where: {
         status: 0,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: 'desc',
+      },
+    });
+    let result: StoryDto[] = [];
+    // to to it in async way for performance
+    const promisesArr = [];
+    for (const story of stories) {
+      promisesArr.push(this.mapStory(story, lang, myId));
+    }
+    result = await Promise.all(promisesArr);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async getStoriesByIds(
+    lang: string,
+    ids: number[],
+    myId: number,
+    pageIndex: number,
+    pageSize: number,
+  ) {
+    const stories = await this.db.story.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
       },
       skip: (pageIndex - 1) * pageSize,
       take: pageSize,
