@@ -1,26 +1,35 @@
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsUrl,
+  Min,
+} from 'class-validator';
+
 export default class CreateListingDto {
-  name: string;
-  brandName: string;
-  description: string;
-  credentials: string;
-  advantages: string;
-  uses: string;
-  url: string;
-  price: number;
-  media: string[];
-  socialLinks: string[];
+  @IsNotEmpty() name: string;
+  @IsNotEmpty() brandName: string;
+  @IsNotEmpty() description: string;
+  @IsNotEmpty() credentials: string;
+  @IsNotEmpty() advantages: string;
+  @IsNotEmpty() uses: string;
+  @IsNotEmpty() @IsUrl() url: string;
+  @IsNotEmpty() @Min(1) price: number;
+  @IsOptional() @IsArray() media: string[];
+  @IsNotEmpty() @IsArray() socialLinks: string[];
   //// optional fields depend on select other option in dropdowns
-  offerPrice?: number;
-  offerDescription?: string;
-  otherStockAvailability?: string;
-  otherPriceType?: string;
-  otherHiring?: string;
+  @IsOptional() offerPrice?: number;
+  @IsOptional() offerDescription?: string;
+  @IsOptional() otherStockAvailability?: string;
+  @IsOptional() otherPriceType?: string;
+  @IsOptional() otherHiring?: string;
   //// drop down ids
-  stockAvailabilityId?: number;
-  pageTypeId?: number;
-  privacyId?: number;
-  listingTypeId?: number;
-  currencyId?: number;
-  hiringTypeId?: number;
-  priceTypeId?: number;
+  @IsOptional() @IsNumber() @Min(1) stockAvailabilityId?: number;
+  @IsOptional() @IsNumber() @Min(1) pageTypeId?: number;
+  @IsOptional() @IsNumber() @Min(1) privacyId?: number;
+  @IsOptional() @IsNumber() @Min(1) listingTypeId?: number;
+  @IsOptional() @IsNumber() @Min(1) currencyId?: number;
+  @IsOptional() @IsNumber() @Min(1) hiringTypeId?: number;
+  @IsOptional() @IsNumber() @Min(1) priceTypeId?: number;
 }

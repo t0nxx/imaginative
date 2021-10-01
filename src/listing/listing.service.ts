@@ -43,7 +43,7 @@ export class ListingService {
     pageSize: number,
     myId: number,
   ): Promise<OperationResult> {
-    const listings = await this.db.story.findMany({
+    const listings = await this.db.listings.findMany({
       where: {
         status: 0,
       },
@@ -138,11 +138,17 @@ export class ListingService {
         ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
       );
     }
+    //// new fields that will update
+    const updateFields = Object.keys(listingDataToUpdate);
     const list = await this.db.listings.update({
       where: {
         id: dbList.id,
       },
-      data: listingDataToUpdate,
+      data: {
+        ...listingDataToUpdate,
+        updatedFields: updateFields,
+        isEdited: true,
+      },
     });
 
     return this.getOneListingById(dbList.id, lang, myId);

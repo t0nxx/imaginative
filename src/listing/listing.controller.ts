@@ -21,6 +21,7 @@ import ListingReviewDto from './dto/ListingReviewDto';
 import ToggleListingFollowDto from './dto/ToggleListingFollowDto';
 import OperationResult from '@/shared/models/OperationResult';
 import { I18nLang } from 'nestjs-i18n';
+import UpdateListingDto from './dto/UpdateListing.dto';
 
 @ApiBearerAuth()
 @ApiTags('Listings')
@@ -42,7 +43,7 @@ export class ListingController {
     @I18nLang() lang: string,
     @User('id') myId: number,
     @Param('id') id: number,
-    @Body() listingData: CreateListingDto,
+    @Body() listingData: UpdateListingDto,
   ) {
     return this.listingService.updateListing(lang, id, listingData, myId);
   }
