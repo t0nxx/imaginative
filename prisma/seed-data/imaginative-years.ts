@@ -128,12 +128,14 @@ export const imaginativeYears = [
   {
     id: 22,
     name: 'Other',
+    withConditions: true,
     createdAt: '2021-05-28T01:26:55.898Z',
     updatedAt: '2021-05-28T01:26:55.898Z',
   },
   {
     id: 23,
     name: 'Other/Years BC',
+    withConditions: true,
     createdAt: '2021-05-28T01:26:55.898Z',
     updatedAt: '2021-05-28T01:26:55.898Z',
   },
