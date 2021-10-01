@@ -345,6 +345,26 @@ export class ListingService {
       pageSize,
     );
   }
+  /// this endpoind dropdown should show in create story feature product
+  async getFeatureListings(myId: number) {
+    const result = await this.db.listings.findMany({
+      where: {
+        ownerId: myId,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
   // public async searchListings(
   //   searchModel: SearchListingDto,
   //   lang: string,

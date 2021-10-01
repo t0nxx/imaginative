@@ -34,10 +34,13 @@ export class ListingModule implements NestModule {
       .forRoutes(
         { path: 'v1/listings', method: RequestMethod.POST },
         { path: 'v1/listings/:id', method: RequestMethod.PUT },
+
         //{path: 'v1/listings/search', method: RequestMethod.POST},
         { path: 'v1/listings/:id', method: RequestMethod.DELETE },
         /// follow
         { path: 'v1/listings/:id/toggle-follow', method: RequestMethod.POST },
+        /// get my feature products
+        { path: 'v1/listings/myfeatureproduct', method: RequestMethod.GET },
       )
       .apply(OptionalAuthMiddleware)
       .forRoutes(

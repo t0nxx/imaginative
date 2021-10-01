@@ -38,6 +38,11 @@ export class ListingController {
     return this.listingService.addListing(lang, listingData, myId);
   }
 
+  @Get('v1/listings/myfeatureproduct')
+  async getFeatureListings(@User('id') myId: number) {
+    return this.listingService.getFeatureListings(myId);
+  }
+
   @Put('v1/listings/:id')
   async updateListing(
     @I18nLang() lang: string,
