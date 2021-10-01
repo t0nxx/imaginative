@@ -1,21 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import Listing from '../models/Listing';
-import CreateListingDto from './dto/CreateListingDto';
-import ListingDto from './dto/ListingDto';
+import CreateListingDto from './dto/CreateListing.dto';
+import ListingDto from './dto/Listing.dto';
 import { LookupsService } from './../lookups/lookups.service';
 import { UserService } from '@/user/user.service';
 import OperationResult from './../shared/models/OperationResult';
-import { ErrorCodes } from '@/shared/constants';
+import { ErrorCodes, MessageCodes } from '@/shared/constants';
 import SearchListingDto from './dto/SearchListingDto';
-import { Op } from 'sequelize';
 import SearchResultDto from '@/shared/models/SearchResultDto';
 import Story from '@/models/Story';
 import CreateListingReviewDto from './dto/CreateListingReviewDto';
 import ListingReviewDto from './dto/ListingReviewDto';
 import ListingReview from '@/models/ListingReview';
 import ToggleListingFollowDto from './dto/ToggleListingFollowDto';
-import sequelize from 'sequelize';
 import { PrismaService } from '@/shared/core/prisma.service';
+import UpdateListingDto from './dto/UpdateListing.dto';
+import { LocalizationService } from '@/shared/core/localization.service';
 
 @Injectable()
 export class ListingService {
@@ -23,159 +28,180 @@ export class ListingService {
     private lookupsService: LookupsService,
     private userService: UserService,
     private readonly db: PrismaService,
+    private readonly i18n: LocalizationService,
   ) {}
 
-  // public async addListing(_lang: string, _listingData: CreateListingDto) {
-  //   // const listing = await this.db.listings.create({
-  //   //   data : listingData,
-  //   // });
-  //   // return this.mapListing(listing, lang);
-  // }
+  public async getAllListings(
+    lang: string,
+    pageIndex: number,
+    pageSize: number,
+    myId: number,
+  ): Promise<OperationResult> {
+    const listings = await this.db.story.findMany({
+      where: {
+        status: 0,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: 'desc',
+      },
+    });
 
-  // public async updateListing(
-  //   _id: number,
-  //   _lang: string,
-  //   _listingData: CreateListingDto,
-  // ) {
-  //   // await Listing.update(listingData, {
-  //   //   where: {
-  //   //     id: id,
-  //   //   },
-  //   // });
-  //   // const listing = await this.getListing(id, lang);
-  //   // return this.mapListing(listing, lang);
-  // }
+    const userFollowedListings = await this.getUserFollowedListingIds(myId);
 
-  // public async getAllListings(lang: string): Promise<ListingDto[]> {
-  //   const listings = await Listing.findAll({
-  //     order: [['createdAt', 'DESC']],
-  //   });
-  //   const listingDtos: ListingDto[] = [];
-  //   for (const listing of listings) {
-  //     listingDtos.push(await this.mapListing(listing, lang));
-  //   }
-  //   return listingDtos;
-  // }
+    //return listingDtos;
+    let result: ListingDto[] = [];
+    // to to it in async way for performance
+    const promisesArr = [];
+    for (const listing of listings) {
+      promisesArr.push(
+        this.mapListing(listing, lang, myId, userFollowedListings),
+      );
+    }
+    result = await Promise.all(promisesArr);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
 
-  // public async getListingsByIds(
-  //   lang: string,
-  //   ids: number[],
-  // ): Promise<ListingDto[]> {
-  //   // const listings = await Listing.findAll({
-  //   //   where: {
-  //   //     id: ids,
-  //   //   },
-  //   // });
-  //   const listings = await this.db.listings.findMany({
-  //     where: {
-  //       id: {
-  //         in: ids,
-  //       },
-  //     },
-  //   });
-  //   return this.mapListings(listings, lang);
-  // }
+  public async getListingsByIds(
+    lang: string,
+    ids: number[],
+    myId: number,
+  ): Promise<ListingDto[]> {
+    const userFollowedListings = await this.getUserFollowedListingIds(myId);
 
-  // public async getListing(
-  //   id: number,
-  //   lang: string,
-  //   userId?: number,
-  // ): Promise<ListingDto | null> {
-  //   const listing = await this.db.listings.findUnique({
-  //     where: {
-  //       id: id,
-  //     },
-  //   });
-  //   let userReviews: number[] = [];
-  //   let userFollowedListings: number[] = [];
-  //   if (userId && listing) {
-  //     userReviews = await this.getUserReviewedListingIds(userId, [listing.id]);
-  //     userFollowedListings = await this.getUserFollowedListingIds(userId, [
-  //       listing.id,
-  //     ]);
-  //   }
-  //   return await this.mapListing(
-  //     listing,
-  //     lang,
-  //     userReviews,
-  //     userFollowedListings,
-  //   );
-  // }
+    const listings = await this.db.listings.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+    //return listingDtos;
+    let result: ListingDto[] = [];
+    // to to it in async way for performance
+    const promisesArr = [];
+    for (const listing of listings) {
+      promisesArr.push(
+        this.mapListing(listing, lang, myId, userFollowedListings),
+      );
+    }
+    result = await Promise.all(promisesArr);
+    return result;
+  }
 
-  // public async deleteListing(
-  //   ownerId: number,
-  //   id: number,
-  // ): Promise<OperationResult> {
-  //   const result = new OperationResult();
-  //   try {
-  //     const listing = await Listing.findOne({
-  //       where: {
-  //         id: id,
-  //         ownerId: ownerId,
-  //       },
-  //     });
-  //     if (!listing) {
-  //       result.success = false;
-  //       result.code = ErrorCodes.NOT_FOUND;
-  //     } else {
-  //       const stories = await Story.findAll({
-  //         where: {
-  //           listingId: listing.id,
-  //         },
-  //       });
-  //       //Remove the listing from template and draft stories
-  //       const templateStories = stories.filter(
-  //         (s) =>
-  //           s.status === 0 /* draft */ ||
-  //           s.status === 2 /* user template*/ ||
-  //           s.status === 3 /* example template */,
-  //       );
-  //       console.log('Tempalte stories', templateStories);
-  //       for (const templateStory of templateStories) {
-  //         await Story.update(
-  //           { listingId: null },
-  //           {
-  //             where: {
-  //               id: templateStory.id,
-  //             },
-  //           },
-  //         );
-  //       }
-  //       //Reject deletion in case a published story were linked the listing
-  //       const publishedStories = stories.filter(
-  //         (s) => s.status === 1 /* published */,
-  //       );
-  //       if (publishedStories && publishedStories.length > 0) {
-  //         result.success = false;
-  //         result.code = ErrorCodes.LISTING_HAVE_STORIES;
-  //       } else {
-  //         const mediaFiles = listing.media;
-  //         if (mediaFiles) {
-  //           for (const media of mediaFiles) {
-  //             if (media.bucket && media.type && media.fileName)
-  //               this.lookupsService.deleteFile(
-  //                 media.bucket,
-  //                 media.type,
-  //                 media.fileName,
-  //               );
-  //           }
-  //         }
-  //         await Listing.destroy({
-  //           where: {
-  //             id: id,
-  //             ownerId: ownerId,
-  //           },
-  //         });
-  //         result.success = true;
-  //       }
-  //     }
-  //   } catch (error) {
-  //     result.success = false;
-  //     result.code = ErrorCodes.GENERAL_ERROR;
-  //     result.message = error;
-  //   }
-  //   return result;
-  // }
+  public async addListing(
+    lang: string,
+    listingData: CreateListingDto,
+    myId: number,
+  ): Promise<OperationResult> {
+    const listing = await this.db.listings.create({
+      data: listingData,
+    });
+
+    const result = await this.mapListing(listing, lang, myId);
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async updateListing(
+    lang: string,
+    listingId: number,
+    listingDataToUpdate: UpdateListingDto,
+    myId: number,
+  ): Promise<OperationResult> {
+    const dbList = await this.db.listings.findUnique({
+      where: {
+        id: listingId,
+      },
+    });
+    if (!dbList) {
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+    }
+
+    if (dbList.ownerId != myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+    const list = await this.db.listings.update({
+      where: {
+        id: dbList.id,
+      },
+      data: listingDataToUpdate,
+    });
+
+    return this.getOneListingById(dbList.id, lang, myId);
+  }
+  public async getOneListingById(
+    id: number,
+    lang: string,
+    myId: number,
+  ): Promise<OperationResult> {
+    const listing = await this.db.listings.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    // let userReviews: number[] = [];
+
+    const userFollowedListings = await this.getUserFollowedListingIds(myId);
+
+    const result = await this.mapListing(
+      listing,
+      lang,
+      myId,
+      userFollowedListings,
+    );
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  public async deleteListing(
+    myId: number,
+    listingId: number,
+  ): Promise<OperationResult> {
+    const dbList = await this.db.listings.findUnique({
+      where: {
+        id: listingId,
+      },
+    });
+    if (!dbList) {
+      throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+    }
+
+    if (dbList.ownerId != myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+    const stories = await this.db.story.findFirst({
+      where: {
+        ownerId: myId,
+      },
+    });
+    if (stories) {
+      throw new BadRequestException(
+        'you must delete all stories related to this product first',
+      );
+    } else {
+      await this.db.listings.delete({
+        where: {
+          id: listingId,
+        },
+      });
+    }
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
 
   // public async searchListings(
   //   searchModel: SearchListingDto,
@@ -497,108 +523,121 @@ export class ListingService {
   //   return reviews.map((r) => r.listingId);
   // }
 
-  // public async getUserFollowedListingIds(
-  //   userId: number,
-  //   listingIds: number[],
-  // ): Promise<Array<number>> {
-  //   const listings = await this.db.listingFollowers.findMany({
-  //     where: {
-  //       userId: userId,
-  //       listingId: {
-  //         in: listingIds,
-  //       },
-  //     },
-  //   });
+  public async getUserFollowedListingIds(
+    userId: number,
+  ): Promise<Array<number>> {
+    const listings = await this.db.listingFollowers.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+    return listings.map((r) => r.listingId);
+  }
 
-  //   return listings.map((r) => r.listingId);
-  // }
+  async mapListing(
+    listing: any,
+    lang: string,
+    myId: number,
+    // userReviews: number[] = [],
+    userFollowedListings: number[] = [],
+  ): Promise<ListingDto> {
+    const [
+      { data: user },
+      { data: privacy },
+      { data: listingTypes },
+      { data: priceTypes },
+      { data: currencies },
+      { data: hiringTypes },
+      { data: pageTypes },
+      { data: stockAvailability },
+    ] = await Promise.all([
+      this.userService.getUser(listing.ownerId, myId),
+      this.lookupsService.getPrivacy(lang),
+      this.lookupsService.getAllListingTypes(lang),
+      this.lookupsService.getPriceTypes(lang),
+      this.lookupsService.getCurrencies(lang),
+      this.lookupsService.getHiringTypes(lang),
+      this.lookupsService.getPageType(lang),
+      this.lookupsService.getStockAvailability(lang),
+    ]);
 
-  // async mapListing(
-  //   listing: any,
-  //   lang: string,
-  //   userReviews: number[] = [],
-  //   userFollowedListings: number[] = [],
-  // ): Promise<ListingDto> {
-  //   const listingTypes = await this.lookupsService.getListingTypes(
-  //     listing.pageType,
-  //     lang,
-  //   );
-  //   const priceTypes = await this.lookupsService.getPriceTypes(lang);
-  //   const currencies = await this.lookupsService.getCurrencies(lang);
-  //   const user = await this.userService.getUser(
-  //     listing.ownerId,
-  //     listing.ownerId,
-  //   );
-  //   const currency = currencies.find((c) => c.id === listing.currencyId);
-  //   const hiringTypes = await this.lookupsService.getHiringTypes(lang);
+    const result = {
+      id: listing.id,
+      type: 'Listing',
+      name: listing.name,
+      brandName: listing.brandName,
+      description: listing.description,
+      credentials: listing.credentials,
+      advantages: listing.advantages,
+      uses: listing.uses,
+      url: listing.url,
+      price: listing.price,
+      media: listing.media,
+      socialLinks: listing.socialLinks,
+      updatedFields: listing.updatedFields,
+      status: listing.status,
+      ownerId: listing.ownerId,
+      owner: user,
 
-  //   const result = {
-  //     id: listing.id,
-  //     type: 'Listing',
-  //     ownerId: listing.ownerId,
-  //     owner: user,
-  //     pageType: listing.pageType,
-  //     listingTypeId: listing.listingTypeId,
-  //     listingTypeName:
-  //       listingTypes.find((lt) => lt.id === listing.listingTypeId)?.name || '',
-  //     privacy: listing.privacy,
-  //     media: listing.media,
-  //     name: listing.name,
-  //     brandName: listing.brandName,
-  //     description: listing.description,
-  //     credentials: listing.credentials,
-  //     uses: listing.uses,
-  //     stockAvailability: listing.stockAvailability,
-  //     advantages: listing.advantages,
-  //     url: listing.url,
-  //     price: listing.price,
-  //     priceTypeId: listing.priceTypeId,
-  //     otherPriceType: listing.otherPriceType,
-  //     priceTypeName:
-  //       priceTypes.find((pt) => pt.id === listing.priceTypeId)?.name || '',
-  //     priceTypeFormat:
-  //       priceTypes.find((pt) => pt.id === listing.priceTypeId)?.format || '',
-  //     currencyId: listing.currencyId,
-  //     currencyName: currency?.name || '',
-  //     currencySymbol: currency?.symbol || '',
-  //     currencyStandardCode: currency?.standardCode || '',
-  //     hiringTypeId: listing.hiringTypeId,
-  //     hiringTypeName:
-  //       hiringTypes.find((ht) => ht.id === listing.hiringTypeId)?.name || '',
-  //     otherHiring: listing.otherHiring,
-  //     offerPrice: listing.offerPrice,
-  //     offerDescription: listing.offerDescription,
-  //     socialLinks: listing.socialLinks,
-  //     viewsCount: listing.viewsCount,
-  //     status: listing.status,
-  //     createdAt: listing.createdAt,
-  //     updatedAt: listing.updatedAt,
-  //     isEdited: listing.isEdited,
-  //     avgReviews: listing.overallRating.toFixed(2),
-  //     reviewsCount: listing.totalRatingCount,
-  //     isReviewed: userReviews.find((listingId) => listingId === listing.id)
-  //       ? true
-  //       : false,
-  //     isFollowed: userFollowedListings.find(
-  //       (listingId) => listingId === listing.id,
-  //     )
-  //       ? true
-  //       : false,
-  //   };
+      offerPrice: listing.offerPrice,
+      offerDescription: listing.offerDescription,
+      otherStockAvailability: listing.otherStockAvailability,
+      otherPriceType: listing.otherPriceType,
+      otherHiring: listing.otherHiring,
 
-  //   if (
-  //     result.offerPrice &&
-  //     result.offerPrice > 0 &&
-  //     result.priceTypeFormat != ''
-  //   ) {
-  //     result.priceTypeFormat = result.priceTypeFormat.replace(
-  //       '*PRICE *CURRENCY',
-  //       '<line>*PRICE *CURRENCY</line>',
-  //     );
-  //   }
+      overallRating: listing.overallRating,
+      totalRatingCount: listing.totalRatingCount,
+      viewsCount: listing.viewsCount,
+      followCount: listing.followCount,
+      storiesCount: listing.storiesCount,
+      shareCount: listing.shareCount,
+      isEdited: listing.isEdited,
+      isRepublished: listing.isRepublished,
+      createdAt: listing.createdAt,
+      updatedAt: listing.updatedAt,
+      /// userfolloed list is the products that user are follow
+      isFollowed: userFollowedListings.some((listId) => listId == listing.id),
 
-  //   return result;
-  // }
+      stockAvailability:
+        stockAvailability.find((lt) => lt.id === listing.stockAvailabilityId) ||
+        null,
+
+      pageType: pageTypes.find((lt) => lt.id === listing.pageTypeId) || null,
+
+      privacy: privacy.find((lt) => lt.id === listing.privacyId) || null,
+
+      listingType:
+        listingTypes.find((lt) => lt.id === listing.listingTypeId) || null,
+
+      currency: currencies.find((c) => c.id === listing.currencyId) || null,
+
+      hiringType:
+        hiringTypes.find((ht) => ht.id === listing.hiringTypeId) || null,
+
+      priceType: priceTypes.find((pt) => pt.id === listing.priceTypeId) || null,
+
+      // isReviewed: userReviews.find((listingId) => listingId === listing.id)
+      //   ? true
+      //   : false,
+      // isFollowed: userFollowedListings.find(
+      //   (listingId) => listingId === listing.id,
+      // )
+      //   ? true
+      //   : false,
+    };
+    // if (
+    //   result.offerPrice &&
+    //   result.offerPrice > 0 &&
+    //   result.priceTypeFormat != ''
+    // ) {
+    //   result.priceTypeFormat = result.priceTypeFormat.replace(
+    //     '*PRICE *CURRENCY',
+    //     '<line>*PRICE *CURRENCY</line>',
+    //   );
+    // }
+
+    return result;
+  }
 
   // async mapListings(
   //   listings: any[],

@@ -11,6 +11,7 @@ import { UserModule } from '@/user/user.module';
 import { LookupsModule } from '@/lookups/lookups.module';
 import { AppLoggerModule } from '@/shared/appLogger/appLogger.module';
 import { AuthMiddleware } from '@/user/auth.middleware';
+import { OptionalAuthMiddleware } from '@/user/optional.auth.middleware';
 
 @Module({
   imports: [CoreModule, LookupsModule, UserModule, AppLoggerModule],
@@ -20,13 +21,18 @@ import { AuthMiddleware } from '@/user/auth.middleware';
 })
 export class ListingModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes(
-      { path: 'v1/listings', method: RequestMethod.POST },
-      { path: 'v1/listings/:id', method: RequestMethod.PUT },
-      { path: 'v1/listings', method: RequestMethod.GET },
-      //{path: 'v1/listings/search', method: RequestMethod.POST},
-      { path: 'v1/listings/:id', method: RequestMethod.DELETE },
-      { path: 'v1/listings/:id', method: RequestMethod.GET },
-    );
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes(
+        { path: 'v1/listings', method: RequestMethod.POST },
+        { path: 'v1/listings/:id', method: RequestMethod.PUT },
+        //{path: 'v1/listings/search', method: RequestMethod.POST},
+        { path: 'v1/listings/:id', method: RequestMethod.DELETE },
+      )
+      .apply(OptionalAuthMiddleware)
+      .forRoutes(
+        { path: 'v1/listings', method: RequestMethod.GET },
+        { path: 'v1/listings/:id', method: RequestMethod.GET },
+      );
   }
 }

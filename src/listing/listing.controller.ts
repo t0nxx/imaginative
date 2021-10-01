@@ -11,9 +11,9 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ListingService } from './listing.service';
-import CreateListingDto from './dto/CreateListingDto';
+import CreateListingDto from './dto/CreateListing.dto';
 import { User } from '@/user/user.decorator';
-import ListingDto from './dto/ListingDto';
+import ListingDto from './dto/Listing.dto';
 import { execOperation } from './../utils/Utils';
 import SearchListingDto from './dto/SearchListingDto';
 import CreateListingReviewDto from './dto/CreateListingReviewDto';

@@ -17,7 +17,7 @@ import {
 import SearchResultDto from '@/shared/models/SearchResultDto';
 import SearchStoryDto from './dto/SearchStoryDto';
 import { ListingService } from '@/listing/listing.service';
-import ListingDto from '@/listing/dto/ListingDto';
+import ListingDto from '@/listing/dto/Listing.dto';
 import { PrismaService } from '@/shared/core/prisma.service';
 import { Prisma } from '@prisma/client';
 import FireBaseService from '@/shared/core/FireBase.service';
