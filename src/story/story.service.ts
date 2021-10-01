@@ -242,6 +242,17 @@ export class StoryService {
       if (!listing) {
         throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
       }
+      // update number of stories  count in product
+      await this.db.listings.update({
+        where: {
+          id: listing.id,
+        },
+        data: {
+          storiesCount: {
+            increment: 1,
+          },
+        },
+      });
     }
     const story = await this.db.story.create({
       data: {

@@ -20,6 +20,7 @@ import CreateListingReviewDto from './dto/CreateListingReviewDto';
 import ListingReviewDto from './dto/ListingReviewDto';
 import ToggleListingFollowDto from './dto/ToggleListingFollowDto';
 import OperationResult from '@/shared/models/OperationResult';
+import { I18nLang } from 'nestjs-i18n';
 
 @ApiBearerAuth()
 @ApiTags('Listings')
@@ -27,38 +28,58 @@ import OperationResult from '@/shared/models/OperationResult';
 export class ListingController {
   constructor(private readonly listingService: ListingService) {}
 
-  // @Post('v1/listings')
-  // async createListing(
-  //   @Headers('lang') lang = 'en',
-  //   @User('id') userid: number,
-  //   @Body() listingData: CreateListingDto,
-  // ): Promise<ListingDto> {
-  //   return await execOperation(async () => {
-  //     listingData.ownerId = userid;
-  //     const listing = await this.listingService.addListing(lang, listingData);
-  //     return listing;
-  //   });
-  // }
+  @Post('v1/listings')
+  async createListing(
+    @I18nLang() lang: string,
+    @User('id') myId: number,
+    @Body() listingData: CreateListingDto,
+  ) {
+    return this.listingService.addListing(lang, listingData, myId);
+  }
 
-  // @Put('v1/listings/:id')
-  // async updateListing(
-  //   @Headers('lang') lang = 'en',
-  //   @Param('id') id: number,
-  //   @Body() listingData: CreateListingDto,
-  // ) {
-  //   const listing = await this.listingService.updateListing(
-  //     id,
-  //     lang,
-  //     listingData,
-  //   );
-  //   return listing;
-  // }
+  @Put('v1/listings/:id')
+  async updateListing(
+    @I18nLang() lang: string,
+    @User('id') myId: number,
+    @Param('id') id: number,
+    @Body() listingData: CreateListingDto,
+  ) {
+    return this.listingService.updateListing(lang, id, listingData, myId);
+  }
 
-  // @Get('v1/listings')
-  // async getAllListings(@Headers('lang') lang = 'en'): Promise<any> {
-  //   const listings = await this.listingService.getAllListings(lang);
-  //   return listings;
-  // }
+  @Get('v1/listings')
+  async getAllListings(
+    @I18nLang() lang: string,
+    @User('id') myId: number,
+    @Query('pageIndex') pageIndex?: number,
+    @Query('pageSize') pageSize?: number,
+  ) {
+    return this.listingService.getAllListings(
+      lang,
+      pageIndex ?? 1,
+      pageSize ?? 10,
+      myId ?? 0,
+    );
+  }
+  @Get('v1/listings/:id')
+  async getOneListingById(
+    @I18nLang() lang: string,
+    @User('id') myId: number,
+    @Param('id') id: number,
+  ) {
+    return this.listingService.getOneListingById(id, lang, myId ?? 0);
+  }
+
+  @Delete('v1/listings/:id')
+  async deleteListing(@User('id') myId: number, @Param('id') id: number) {
+    return this.listingService.deleteListing(myId ?? 0, id);
+  }
+
+  /// story actions like , comment .... etc
+  @Post('v1/listings/:id/share')
+  async shareListing(@Param('id') id: number) {
+    return this.listingService.shareListing(id);
+  }
 
   // @Post('v1/listings/search')
   // async searchListings(
@@ -72,25 +93,6 @@ export class ListingController {
   //     userId,
   //   );
   //   return listings;
-  // }
-
-  // @Get('v1/listings/:id')
-  // async getListing(
-  //   @User('id') userId: number,
-  //   @Headers('lang') lang = 'en',
-  //   @Param('id') id: number,
-  // ): Promise<any> {
-  //   const listing = await this.listingService.getListing(id, lang, userId);
-  //   return listing;
-  // }
-
-  // @Delete('v1/listings/:id')
-  // async deleteListing(
-  //   @User('id') userId: number,
-  //   @Param('id') id: number,
-  // ): Promise<any> {
-  //   const result = await this.listingService.deleteListing(userId, id);
-  //   return result;
   // }
 
   // @Post('v1/listings/:id/reviews')

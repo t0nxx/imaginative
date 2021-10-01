@@ -33,6 +33,8 @@ export class ListingModule implements NestModule {
       .forRoutes(
         { path: 'v1/listings', method: RequestMethod.GET },
         { path: 'v1/listings/:id', method: RequestMethod.GET },
+        /// share
+        { path: 'v1/listings/:id/share', method: RequestMethod.POST },
       );
   }
 }

@@ -10,7 +10,11 @@ import ListingDto from './dto/Listing.dto';
 import { LookupsService } from './../lookups/lookups.service';
 import { UserService } from '@/user/user.service';
 import OperationResult from './../shared/models/OperationResult';
-import { ErrorCodes, MessageCodes } from '@/shared/constants';
+import {
+  DeepLinkShareRoutes,
+  ErrorCodes,
+  MessageCodes,
+} from '@/shared/constants';
 import SearchListingDto from './dto/SearchListingDto';
 import SearchResultDto from '@/shared/models/SearchResultDto';
 import Story from '@/models/Story';
@@ -21,6 +25,7 @@ import ToggleListingFollowDto from './dto/ToggleListingFollowDto';
 import { PrismaService } from '@/shared/core/prisma.service';
 import UpdateListingDto from './dto/UpdateListing.dto';
 import { LocalizationService } from '@/shared/core/localization.service';
+import FireBaseService from '@/shared/core/FireBase.service';
 
 @Injectable()
 export class ListingService {
@@ -29,6 +34,7 @@ export class ListingService {
     private userService: UserService,
     private readonly db: PrismaService,
     private readonly i18n: LocalizationService,
+    private firebaseService: FireBaseService,
   ) {}
 
   public async getAllListings(
@@ -99,7 +105,10 @@ export class ListingService {
     myId: number,
   ): Promise<OperationResult> {
     const listing = await this.db.listings.create({
-      data: listingData,
+      data: {
+        ...listingData,
+        ownerId: myId,
+      },
     });
 
     const result = await this.mapListing(listing, lang, myId);
@@ -158,6 +167,17 @@ export class ListingService {
       myId,
       userFollowedListings,
     );
+    // update view count
+    await this.db.listings.update({
+      where: {
+        id: listing.id,
+      },
+      data: {
+        viewsCount: {
+          increment: 1,
+        },
+      },
+    });
     const res = new OperationResult();
     res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     res.data = result;
@@ -203,6 +223,36 @@ export class ListingService {
     return res;
   }
 
+  public async shareListing(id: number) {
+    const dbListing = await this.db.listings.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!dbListing) {
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+    }
+    const result = await this.firebaseService.getFirebaseDynamicLink(
+      DeepLinkShareRoutes.product,
+      { resourceId: dbListing.id },
+    );
+    /// increase share count by one
+    await this.db.listings.update({
+      where: {
+        id: dbListing.id,
+      },
+      data: {
+        shareCount: {
+          increment: 1,
+        },
+      },
+    });
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
   // public async searchListings(
   //   searchModel: SearchListingDto,
   //   lang: string,
