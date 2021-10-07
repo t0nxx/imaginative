@@ -48,4 +48,6 @@ export default interface ListingDto {
   hiringType: any;
 
   priceType: any;
+
+  brandType: any;
 }

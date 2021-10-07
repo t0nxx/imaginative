@@ -712,6 +712,7 @@ export class ListingService {
       { data: hiringTypes },
       { data: pageTypes },
       { data: stockAvailability },
+      { data: brandType },
     ] = await Promise.all([
       this.userService.getUser(listing.ownerId, myId),
       this.lookupsService.getPrivacy(lang),
@@ -721,6 +722,7 @@ export class ListingService {
       this.lookupsService.getHiringTypes(lang),
       this.lookupsService.getPageType(lang),
       this.lookupsService.getStockAvailability(lang),
+      this.lookupsService.getBrandType(lang),
     ]);
 
     const result = {
@@ -777,6 +779,8 @@ export class ListingService {
         hiringTypes.find((ht) => ht.id === listing.hiringTypeId) || null,
 
       priceType: priceTypes.find((pt) => pt.id === listing.priceTypeId) || null,
+
+      brandType: brandType.find((pt) => pt.id === listing.brandTypeId) || null,
 
       // isReviewed: userReviews.find((listingId) => listingId === listing.id)
       //   ? true

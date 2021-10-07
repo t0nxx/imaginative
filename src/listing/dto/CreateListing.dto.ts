@@ -32,4 +32,5 @@ export default class CreateListingDto {
   @IsOptional() @IsNumber() @Min(1) currencyId?: number;
   @IsOptional() @IsNumber() @Min(1) hiringTypeId?: number;
   @IsOptional() @IsNumber() @Min(1) priceTypeId?: number;
+  @IsOptional() @IsNumber() @Min(1) brandTypeId?: number;
 }

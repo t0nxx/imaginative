@@ -321,6 +321,7 @@ model Listings {
   currencyId          Int?
   hiringTypeId        Int?
   priceTypeId         Int?
+  brandTypeId         Int?
   ownerId             Int?
 
   /// status 0 : normal , 1 : draft , 2 : template
