@@ -50,4 +50,6 @@ export default interface ListingDto {
   priceType: any;
 
   brandType: any;
+
+  usesType: any;
 }

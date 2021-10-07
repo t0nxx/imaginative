@@ -322,6 +322,7 @@ model Listings {
   hiringTypeId        Int?
   priceTypeId         Int?
   brandTypeId         Int?
+  usesTypeId          Int?
   ownerId             Int?
 
   /// status 0 : normal , 1 : draft , 2 : template
@@ -493,7 +494,7 @@ model UserNotificationTokens {
 
 model UserSettings {
   id     Int  @id @default(autoincrement())
-  userId Int
+  userId Int  @unique
   User   User @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())

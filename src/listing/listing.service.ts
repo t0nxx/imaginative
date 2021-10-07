@@ -6,7 +6,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import Listing from '../models/Listing';
 import CreateListingDto from './dto/CreateListing.dto';
 import ListingDto from './dto/Listing.dto';
 import { LookupsService } from './../lookups/lookups.service';
@@ -17,18 +16,15 @@ import {
   ErrorCodes,
   MessageCodes,
 } from '@/shared/constants';
-import SearchListingDto from './dto/SearchListingDto';
-import SearchResultDto from '@/shared/models/SearchResultDto';
-import Story from '@/models/Story';
+
 import CreateListingReviewDto from './dto/CreateListingReview.dto';
 import ListingReviewDto from './dto/ListingReview.dto';
-import ListingReview from '@/models/ListingReview';
-import ToggleListingFollowDto from './dto/ToggleListingFollowDto';
 import { PrismaService } from '@/shared/core/prisma.service';
 import UpdateListingDto from './dto/UpdateListing.dto';
 import { LocalizationService } from '@/shared/core/localization.service';
 import FireBaseService from '@/shared/core/FireBase.service';
 import { StoryService } from '@/story/story.service';
+import { addDays, isBefore } from 'date-fns';
 
 @Injectable()
 export class ListingService {
@@ -367,6 +363,49 @@ export class ListingService {
     return res;
   }
 
+  public async republishListing(
+    myId: number,
+    listingId: number,
+  ): Promise<OperationResult> {
+    const dbList = await this.db.listings.findUnique({
+      where: {
+        id: listingId,
+      },
+    });
+    if (!dbList) {
+      throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+    }
+
+    if (dbList.ownerId != myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+
+    /// listing can't be republished before 3 days from creation
+    const allowedDateToRepublish = addDays(dbList.createdAt, 3);
+
+    if (isBefore(new Date(), allowedDateToRepublish)) {
+      throw new BadRequestException(
+        'you cant republish before three days from creation',
+      );
+    } else {
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          isRepublished: true,
+          /// new date to show up in top of timeline
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      });
+    }
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
   public async getUserFollowedListingIds(
     userId: number,
   ): Promise<Array<number>> {
@@ -395,6 +434,7 @@ export class ListingService {
       { data: pageTypes },
       { data: stockAvailability },
       { data: brandType },
+      { data: usesType },
     ] = await Promise.all([
       this.userService.getUser(listing.ownerId, myId),
       this.lookupsService.getPrivacy(lang),
@@ -405,6 +445,7 @@ export class ListingService {
       this.lookupsService.getPageType(lang),
       this.lookupsService.getStockAvailability(lang),
       this.lookupsService.getBrandType(lang),
+      this.lookupsService.getUsesTypes(lang),
     ]);
 
     const result = {
@@ -463,6 +504,8 @@ export class ListingService {
       priceType: priceTypes.find((pt) => pt.id === listing.priceTypeId) || null,
 
       brandType: brandType.find((pt) => pt.id === listing.brandTypeId) || null,
+
+      usesType: usesType.find((pt) => pt.id === listing.usesTypeId) || null,
 
       // isReviewed: userReviews.find((listingId) => listingId === listing.id)
       //   ? true

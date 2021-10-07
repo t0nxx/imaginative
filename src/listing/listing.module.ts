@@ -39,6 +39,10 @@ export class ListingModule implements NestModule {
         { path: 'v1/listings/:id', method: RequestMethod.DELETE },
         /// follow
         { path: 'v1/listings/:id/toggle-follow', method: RequestMethod.POST },
+
+        /// republish
+        { path: 'v1/listings/:id/republish', method: RequestMethod.POST },
+
         /// get my feature products
         { path: 'v1/listings/myfeatureproduct', method: RequestMethod.GET },
 

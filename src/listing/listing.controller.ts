@@ -94,6 +94,14 @@ export class ListingController {
     return this.listingService.toggleFollowListing(listingId, myId);
   }
 
+  @Post('v1/listings/:id/republish')
+  async republishListing(
+    @User('id') myId: number,
+    @Param('id') listingId: number,
+  ) {
+    return this.listingService.republishListing(myId, listingId);
+  }
+
   @Get('v1/listings/:id/stories')
   async getAllLStoriesOfListing(
     @I18nLang() lang: string,
