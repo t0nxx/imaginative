@@ -20,8 +20,8 @@ import {
 import SearchListingDto from './dto/SearchListingDto';
 import SearchResultDto from '@/shared/models/SearchResultDto';
 import Story from '@/models/Story';
-import CreateListingReviewDto from './dto/CreateListingReviewDto';
-import ListingReviewDto from './dto/ListingReviewDto';
+import CreateListingReviewDto from './dto/CreateListingReview.dto';
+import ListingReviewDto from './dto/ListingReview.dto';
 import ListingReview from '@/models/ListingReview';
 import ToggleListingFollowDto from './dto/ToggleListingFollowDto';
 import { PrismaService } from '@/shared/core/prisma.service';
@@ -41,6 +41,7 @@ export class ListingService {
     private firebaseService: FireBaseService,
   ) {}
 
+  /// new mahmoud /////////////////
   public async getAllListings(
     lang: string,
     pageIndex: number,
@@ -365,325 +366,6 @@ export class ListingService {
     res.data = result;
     return res;
   }
-  // public async searchListings(
-  //   searchModel: SearchListingDto,
-  //   lang: string,
-  //   userId?: number,
-  // ): Promise<SearchResultDto<ListingDto>> {
-  //   const where: any = {};
-  //   if (searchModel.freeText && searchModel.freeText !== '') {
-  //     where.name = { [Op.like]: `%${searchModel.freeText}%` };
-  //   }
-  //   if (searchModel.followerId && searchModel.followerId !== '') {
-  //     where.id = {
-  //       [Op.in]: sequelize.literal(
-  //         `(SELECT "listingId"::uuid FROM "listing_followers" WHERE "userId" = :followerId)`,
-  //       ),
-  //     };
-  //   }
-  //   if (searchModel.ownerId && searchModel.ownerId !== '') {
-  //     where.ownerId = searchModel.ownerId;
-  //   }
-  //   if (searchModel.pageType && searchModel.pageType !== '') {
-  //     where.pageType = searchModel.pageType;
-  //   }
-  //   if (searchModel.status != undefined) {
-  //     where.status = searchModel.status;
-  //   }
-  //   if (searchModel.listingTypeId && searchModel.listingTypeId !== '') {
-  //     where.listingTypeId = searchModel.listingTypeId;
-  //   }
-
-  //   // const listings = await Listing.findAndCountAll({
-  //   //   where: where,
-  //   //   offset: ((searchModel.pageIndex || 1) - 1) * (searchModel.pageSize || 10),
-  //   //   limit: searchModel.pageSize,
-  //   //   order: [['createdAt', 'DESC']],
-  //   //   replacements: {
-  //   //     followerId: searchModel.followerId,
-  //   //   },
-  //   // });
-  //   const listings = await this.db.listings.findMany({
-  //     where: where,
-  //   });
-  //   const result = new SearchResultDto<ListingDto>();
-  //   result.count = listings.length;
-  //   if (result.count > 0) {
-  //     let userReviews: number[] = [];
-  //     let userFollowedListings: number[] = [];
-  //     if (userId && listings.length > 0) {
-  //       const listingIds = listings.map((r) => r.id);
-  //       userReviews = await this.getUserReviewedListingIds(userId, listingIds);
-  //       userFollowedListings = await this.getUserFollowedListingIds(
-  //         userId,
-  //         listingIds,
-  //       );
-  //     }
-  //     for (const listing of listings) {
-  //       result.data.push(
-  //         await this.mapListing(
-  //           listing,
-  //           lang,
-  //           userReviews,
-  //           userFollowedListings,
-  //         ),
-  //       );
-  //     }
-  //   }
-  //   return result;
-  // }
-
-  // public async upsertReview(_reviewModel: CreateListingReviewDto) {
-  //   // const existingReview = await ListingReview.findOne({
-  //   //   where: {
-  //   //     userId: reviewModel.userId,
-  //   //     listingId: reviewModel.listingId,
-  //   //   },
-  //   // });
-  //   // const listing = await Listing.findOne({
-  //   //   where: {
-  //   //     id: reviewModel.listingId,
-  //   //   },
-  //   // });
-  //   // const user = await User.findOne({
-  //   //   where: {
-  //   //     id: reviewModel.userId,
-  //   //   },
-  //   // });
-  //   // if (existingReview) {
-  //   //   await ListingReview.update(
-  //   //     {
-  //   //       goodAboutListing: reviewModel.goodAboutListing,
-  //   //       notGoodAboutListing: reviewModel.notGoodAboutListing,
-  //   //       starRating: reviewModel.starRating,
-  //   //       title: reviewModel.title,
-  //   //       reviewText: reviewModel.reviewText,
-  //   //     },
-  //   //     {
-  //   //       where: {
-  //   //         userId: reviewModel.userId,
-  //   //         listingId: reviewModel.listingId,
-  //   //       },
-  //   //     },
-  //   //   );
-  //   //   //Replace current rating of the user in 2 steps:
-  //   //   //1-Subtract current user rating
-  //   //   let newTotalReviews = (listing?.totalRatingCount ?? 0) - 1;
-  //   //   newTotalReviews = newTotalReviews < 0 ? 0 : newTotalReviews;
-  //   //   let overallRating =
-  //   //     newTotalReviews == 0
-  //   //       ? 0
-  //   //       : ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) -
-  //   //           existingReview.starRating) /
-  //   //         newTotalReviews;
-  //   //   //2-Then again add the user rating
-  //   //   overallRating =
-  //   //     (overallRating * newTotalReviews + reviewModel.starRating) /
-  //   //     (newTotalReviews + 1);
-  //   //   await Listing.update(
-  //   //     {
-  //   //       overallRating: overallRating,
-  //   //       totalRatingCount: newTotalReviews + 1,
-  //   //     },
-  //   //     {
-  //   //       where: {
-  //   //         id: reviewModel.listingId,
-  //   //       },
-  //   //     },
-  //   //   );
-  //   //   return {
-  //   //     id: reviewModel.id,
-  //   //     userId: reviewModel.userId,
-  //   //     listingId: reviewModel.listingId,
-  //   //     title: reviewModel.title,
-  //   //     goodAboutListing: reviewModel.goodAboutListing,
-  //   //     notGoodAboutListing: reviewModel.notGoodAboutListing,
-  //   //     reviewText: reviewModel.reviewText,
-  //   //     starRating: reviewModel.starRating,
-  //   //     createdAt: existingReview.createdAt,
-  //   //     updatedAt: existingReview.updatedAt,
-  //   //     userName: user?.name || '',
-  //   //   };
-  //   // } else {
-  //   //   reviewModel.id = v4();
-  //   //   const newReview = await ListingReview.create(reviewModel);
-  //   //   const newTotalReviews = (listing?.totalRatingCount ?? 0) + 1;
-  //   //   const overallRating =
-  //   //     ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) +
-  //   //       reviewModel.starRating) /
-  //   //     newTotalReviews;
-  //   //   await Listing.update(
-  //   //     {
-  //   //       overallRating: overallRating,
-  //   //       totalRatingCount: newTotalReviews,
-  //   //     },
-  //   //     {
-  //   //       where: {
-  //   //         id: reviewModel.listingId,
-  //   //       },
-  //   //     },
-  //   //   );
-  //   //   return {
-  //   //     id: newReview.id,
-  //   //     userId: newReview.userId,
-  //   //     listingId: newReview.listingId,
-  //   //     title: newReview.title,
-  //   //     goodAboutListing: newReview.goodAboutListing,
-  //   //     notGoodAboutListing: newReview.notGoodAboutListing,
-  //   //     reviewText: newReview.reviewText,
-  //   //     starRating: newReview.starRating,
-  //   //     createdAt: newReview.createdAt,
-  //   //     updatedAt: newReview.updatedAt,
-  //   //     userName: user?.name || '',
-  //   //   };
-  //   // }
-  // }
-
-  // public async deleteReview(
-  //   _userId: number,
-  //   _reviewId: number,
-  //   _listingId: number,
-  // ): Promise<OperationResult> {
-  //   const result = new OperationResult();
-  //   try {
-  //     // const existingReview = await ListingReview.findOne({
-  //     //   where: {
-  //     //     id: reviewId,
-  //     //     userId: userId,
-  //     //   },
-  //     // });
-  //     // if (existingReview && existingReview.listingId === listingId) {
-  //     //   const listing = await Listing.findOne({
-  //     //     where: {
-  //     //       id: existingReview.listingId,
-  //     //     },
-  //     //   });
-  //     //   await ListingReview.destroy({
-  //     //     where: {
-  //     //       id: reviewId,
-  //     //     },
-  //     //   });
-  //     //   let newTotalReviews = (listing?.totalRatingCount ?? 0) - 1;
-  //     //   newTotalReviews = newTotalReviews < 0 ? 0 : newTotalReviews;
-  //     //   const overallRating =
-  //     //     newTotalReviews == 0
-  //     //       ? 0
-  //     //       : ((listing?.overallRating ?? 0) *
-  //     //           (listing?.totalRatingCount ?? 0) -
-  //     //           existingReview.starRating) /
-  //     //         newTotalReviews;
-  //     //   await Listing.update(
-  //     //     {
-  //     //       overallRating: overallRating,
-  //     //       totalRatingCount: newTotalReviews,
-  //     //     },
-  //     //     {
-  //     //       where: {
-  //     //         id: existingReview.listingId,
-  //     //       },
-  //     //     },
-  //     //   );
-  //     //   result.success = true;
-  //     // } else {
-  //     //   result.success = false;
-  //     //   result.code = ErrorCodes.NOT_FOUND;
-  //     // }
-  //   } catch (error) {
-  //     result.success = false;
-  //     result.code = ErrorCodes.GENERAL_ERROR;
-  //     result.message = error;
-  //   }
-  //   return result;
-  // }
-
-  // public async getListingReviews(
-  //   listingId: number,
-  //   pageIndex: number,
-  //   pageSize: number,
-  // ): Promise<SearchResultDto<ListingReviewDto>> {
-  //   const reviews = await ListingReview.findAndCountAll({
-  //     where: {
-  //       listingId: listingId,
-  //     },
-  //     offset: ((pageIndex || 1) - 1) * (pageSize || 10),
-  //     limit: pageSize,
-  //     order: [['createdAt', 'DESC']],
-  //   });
-  //   const result = new SearchResultDto<ListingReviewDto>();
-  //   result.count = 0;
-  //   if (reviews.count > 0) {
-  //     result.count = reviews.count;
-  //     const users = [];
-  //     // await this.userService.getUsers(
-  //     //   reviews.rows.map((review) => review.userId),
-  //     // );
-  //     result.data = reviews.rows.map((review) => {
-  //       const reviewDto: ListingReviewDto = {
-  //         id: review.id,
-  //         userId: review.userId,
-  //         listingId: review.listingId,
-  //         userName: users?.find((u) => u.id === review.userId)?.name ?? '',
-  //         title: review.title,
-  //         goodAboutListing: review.goodAboutListing,
-  //         notGoodAboutListing: review.notGoodAboutListing,
-  //         reviewText: review.reviewText,
-  //         starRating: review.starRating,
-  //         createdAt: review.createdAt,
-  //         updatedAt: review.updatedAt,
-  //       };
-  //       return reviewDto;
-  //     });
-  //   }
-  //   return result;
-  // }
-
-  // public async toggleListingFollow(
-  //   _toggleModel: ToggleListingFollowDto,
-  // ): Promise<OperationResult> {
-  //   const result = new OperationResult();
-  //   try {
-  //     // const existingFollower = await ListingFollower.findOne({
-  //     //   where: {
-  //     //     userId: toggleModel.userId,
-  //     //     listingId: toggleModel.listingId,
-  //     //   },
-  //     // });
-  //     // if (!existingFollower && toggleModel.isFollowed === true) {
-  //     //   await ListingFollower.create({
-  //     //     id: v4(),
-  //     //     userId: toggleModel.userId,
-  //     //     listingId: toggleModel.listingId,
-  //     //   });
-  //     // } else if (existingFollower && toggleModel.isFollowed === false) {
-  //     //   await ListingFollower.destroy({
-  //     //     where: {
-  //     //       id: existingFollower.id,
-  //     //     },
-  //     //   });
-  //     // }
-  //     // result.success = true;
-  //   } catch (error) {
-  //     result.success = false;
-  //     result.message = error;
-  //   }
-  //   return result;
-  // }
-
-  // public async getUserReviewedListingIds(
-  //   userId: number,
-  //   listingIds: number[],
-  // ): Promise<Array<number>> {
-  //   const reviews = await this.db.listingReviews.findMany({
-  //     where: {
-  //       userId: userId,
-  //       listingId: {
-  //         in: listingIds,
-  //       },
-  //     },
-  //   });
-
-  //   return reviews.map((r) => r.listingId);
-  // }
 
   public async getUserFollowedListingIds(
     userId: number,
@@ -804,6 +486,287 @@ export class ListingService {
 
     return result;
   }
+
+  // public async searchListings(
+  //   searchModel: SearchListingDto,
+  //   lang: string,
+  //   userId?: number,
+  // ): Promise<SearchResultDto<ListingDto>> {
+  //   const where: any = {};
+  //   if (searchModel.freeText && searchModel.freeText !== '') {
+  //     where.name = { [Op.like]: `%${searchModel.freeText}%` };
+  //   }
+  //   if (searchModel.followerId && searchModel.followerId !== '') {
+  //     where.id = {
+  //       [Op.in]: sequelize.literal(
+  //         `(SELECT "listingId"::uuid FROM "listing_followers" WHERE "userId" = :followerId)`,
+  //       ),
+  //     };
+  //   }
+  //   if (searchModel.ownerId && searchModel.ownerId !== '') {
+  //     where.ownerId = searchModel.ownerId;
+  //   }
+  //   if (searchModel.pageType && searchModel.pageType !== '') {
+  //     where.pageType = searchModel.pageType;
+  //   }
+  //   if (searchModel.status != undefined) {
+  //     where.status = searchModel.status;
+  //   }
+  //   if (searchModel.listingTypeId && searchModel.listingTypeId !== '') {
+  //     where.listingTypeId = searchModel.listingTypeId;
+  //   }
+
+  //   // const listings = await Listing.findAndCountAll({
+  //   //   where: where,
+  //   //   offset: ((searchModel.pageIndex || 1) - 1) * (searchModel.pageSize || 10),
+  //   //   limit: searchModel.pageSize,
+  //   //   order: [['createdAt', 'DESC']],
+  //   //   replacements: {
+  //   //     followerId: searchModel.followerId,
+  //   //   },
+  //   // });
+  //   const listings = await this.db.listings.findMany({
+  //     where: where,
+  //   });
+  //   const result = new SearchResultDto<ListingDto>();
+  //   result.count = listings.length;
+  //   if (result.count > 0) {
+  //     let userReviews: number[] = [];
+  //     let userFollowedListings: number[] = [];
+  //     if (userId && listings.length > 0) {
+  //       const listingIds = listings.map((r) => r.id);
+  //       userReviews = await this.getUserReviewedListingIds(userId, listingIds);
+  //       userFollowedListings = await this.getUserFollowedListingIds(
+  //         userId,
+  //         listingIds,
+  //       );
+  //     }
+  //     for (const listing of listings) {
+  //       result.data.push(
+  //         await this.mapListing(
+  //           listing,
+  //           lang,
+  //           userReviews,
+  //           userFollowedListings,
+  //         ),
+  //       );
+  //     }
+  //   }
+  //   return result;
+  // }
+
+  public async upsertReview(
+    listingId: number,
+    myId: number,
+    reviewModel: CreateListingReviewDto,
+  ) {
+    const existingReview = await this.db.listingReviews.findFirst({
+      where: {
+        ownerId: myId,
+        listingId: listingId,
+      },
+    });
+    const listing = await this.db.listings.findUnique({
+      where: {
+        id: listingId,
+      },
+    });
+    if (existingReview) {
+      await this.db.listingReviews.update({
+        where: {
+          id: existingReview.id,
+        },
+        data: {
+          ...reviewModel,
+        },
+      });
+      //Replace current rating of the user in 2 steps:
+      //1-Subtract current user rating
+      let newTotalReviews = (listing?.totalRatingCount ?? 0) - 1;
+      newTotalReviews = newTotalReviews < 0 ? 0 : newTotalReviews;
+      let overallRating =
+        newTotalReviews == 0
+          ? 0
+          : ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) -
+              existingReview.starRating) /
+            newTotalReviews;
+      //2-Then again add the user rating
+      overallRating =
+        (overallRating * newTotalReviews + reviewModel.starRating) /
+        (newTotalReviews + 1);
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          overallRating: overallRating,
+          totalRatingCount: newTotalReviews + 1,
+        },
+      });
+    } else {
+      const newReview = await this.db.listingReviews.create({
+        data: {
+          ...reviewModel,
+          listingId: listingId,
+          ownerId: myId,
+        },
+      });
+      const newTotalReviews = (listing?.totalRatingCount ?? 0) + 1;
+      const overallRating =
+        ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) +
+          reviewModel.starRating) /
+        newTotalReviews;
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          overallRating: overallRating,
+          totalRatingCount: newTotalReviews,
+        },
+      });
+    }
+
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+
+  public async deleteReview(
+    listingId: number,
+    myId: number,
+  ): Promise<OperationResult> {
+    const existingReview = await this.db.listingReviews.findFirst({
+      where: {
+        ownerId: myId,
+        listingId: listingId,
+      },
+    });
+    if (existingReview && existingReview.listingId === listingId) {
+      const listing = await this.db.listings.findUnique({
+        where: {
+          id: listingId,
+        },
+      });
+      await this.db.listingReviews.delete({
+        where: {
+          id: existingReview.id,
+        },
+      });
+      let newTotalReviews = (listing?.totalRatingCount ?? 0) - 1;
+      newTotalReviews = newTotalReviews < 0 ? 0 : newTotalReviews;
+      const overallRating =
+        newTotalReviews == 0
+          ? 0
+          : ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) -
+              existingReview.starRating) /
+            newTotalReviews;
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          overallRating: overallRating,
+          totalRatingCount: newTotalReviews,
+        },
+      });
+    }
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+
+  public async getListingReviews(
+    listingId: number,
+    myId: number,
+    pageIndex: number,
+    pageSize: number,
+  ): Promise<OperationResult> {
+    const reviews = await this.db.listingReviews.findMany({
+      where: {
+        listingId: listingId,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: 'desc',
+      },
+    });
+
+    let result: ListingReviewDto[] = [];
+    // to to it in async way for performance
+    const promisesArr = [];
+    for (const review of reviews) {
+      promisesArr.push(this.mapReview(review, myId));
+    }
+    result = await Promise.all(promisesArr);
+
+    const res = new OperationResult();
+    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data = result;
+    return res;
+  }
+
+  async mapReview(review: any, myId: number): Promise<ListingReviewDto> {
+    const { data: user } = await this.userService.getUser(review.ownerId, myId);
+    return {
+      id: review.id,
+      ownerId: review.ownerId,
+      owner: user,
+      reviewText: review.reviewText,
+      starRating: review.starRating,
+      createdAt: review.createdAt,
+      updatedAt: review.updatedAt,
+    };
+  }
+
+  // public async toggleListingFollow(
+  //   _toggleModel: ToggleListingFollowDto,
+  // ): Promise<OperationResult> {
+  //   const result = new OperationResult();
+  //   try {
+  //     // const existingFollower = await ListingFollower.findOne({
+  //     //   where: {
+  //     //     userId: toggleModel.userId,
+  //     //     listingId: toggleModel.listingId,
+  //     //   },
+  //     // });
+  //     // if (!existingFollower && toggleModel.isFollowed === true) {
+  //     //   await ListingFollower.create({
+  //     //     id: v4(),
+  //     //     userId: toggleModel.userId,
+  //     //     listingId: toggleModel.listingId,
+  //     //   });
+  //     // } else if (existingFollower && toggleModel.isFollowed === false) {
+  //     //   await ListingFollower.destroy({
+  //     //     where: {
+  //     //       id: existingFollower.id,
+  //     //     },
+  //     //   });
+  //     // }
+  //     // result.success = true;
+  //   } catch (error) {
+  //     result.success = false;
+  //     result.message = error;
+  //   }
+  //   return result;
+  // }
+
+  // public async getUserReviewedListingIds(
+  //   userId: number,
+  //   listingIds: number[],
+  // ): Promise<Array<number>> {
+  //   const reviews = await this.db.listingReviews.findMany({
+  //     where: {
+  //       userId: userId,
+  //       listingId: {
+  //         in: listingIds,
+  //       },
+  //     },
+  //   });
+
+  //   return reviews.map((r) => r.listingId);
+  // }
 
   // async mapListings(
   //   listings: any[],

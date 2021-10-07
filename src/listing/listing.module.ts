@@ -41,12 +41,19 @@ export class ListingModule implements NestModule {
         { path: 'v1/listings/:id/toggle-follow', method: RequestMethod.POST },
         /// get my feature products
         { path: 'v1/listings/myfeatureproduct', method: RequestMethod.GET },
+
+        /// create/update review
+        { path: 'v1/listings/:id/reviews', method: RequestMethod.POST },
+
+        /// delete review
+        { path: 'v1/listings/:id/reviews', method: RequestMethod.DELETE },
       )
       .apply(OptionalAuthMiddleware)
       .forRoutes(
         { path: 'v1/listings', method: RequestMethod.GET },
         { path: 'v1/listings/:id', method: RequestMethod.GET },
         { path: 'v1/listings/:id/stories', method: RequestMethod.GET },
+        { path: 'v1/listings/:id/reviews', method: RequestMethod.GET },
 
         /// share
         { path: 'v1/listings/:id/share', method: RequestMethod.POST },

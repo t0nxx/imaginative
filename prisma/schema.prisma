@@ -345,16 +345,13 @@ model Listings {
 }
 
 model ListingReviews {
-  id                  Int      @id @default(autoincrement())
-  userId              Int
-  listingId           Int
-  title               String   @db.VarChar(50)
-  goodAboutListing    String   @db.VarChar(50)
-  notGoodAboutListing String   @db.VarChar(50)
-  reviewText          String   @db.VarChar(500)
-  starRating          Float
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  ownerId    Int
+  listingId  Int
+  reviewText String   @db.VarChar(500)
+  starRating Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@map("listing_reviews")
 }

@@ -16,8 +16,8 @@ import { User } from '@/user/user.decorator';
 import ListingDto from './dto/Listing.dto';
 import { execOperation } from './../utils/Utils';
 import SearchListingDto from './dto/SearchListingDto';
-import CreateListingReviewDto from './dto/CreateListingReviewDto';
-import ListingReviewDto from './dto/ListingReviewDto';
+import CreateListingReviewDto from './dto/CreateListingReview.dto';
+import ListingReviewDto from './dto/ListingReview.dto';
 import ToggleListingFollowDto from './dto/ToggleListingFollowDto';
 import OperationResult from '@/shared/models/OperationResult';
 import { I18nLang } from 'nestjs-i18n';
@@ -110,6 +110,49 @@ export class ListingController {
       listingId,
     );
   }
+
+  @Post('v1/listings/:id/reviews')
+  async upsertListingReview(
+    @User('id') myId: number,
+    @Param('id') listingId: number,
+    @Body() body: CreateListingReviewDto,
+  ) {
+    return this.listingService.upsertReview(listingId, myId, body);
+  }
+
+  @Get('v1/listings/:id/reviews')
+  async getListingReviews(
+    @Param('id') listingId: number,
+    @User('id') myId: number,
+    @Query('pageIndex') pageIndex: number,
+    @Query('pageSize') pageSize: number,
+  ) {
+    return this.listingService.getListingReviews(
+      listingId,
+      myId ?? 0,
+      pageIndex ?? 1,
+      pageSize ?? 10,
+    );
+  }
+
+  @Delete('v1/listings/:id/reviews')
+  async deleteListingReview(
+    @User('id') userId: number,
+    @Param('id') listingId: number,
+  ) {
+    return this.listingService.deleteReview(listingId, userId);
+  }
+
+  // @Post('v1/listings/toggle-listing-follow')
+  // async toggleListingFollow(
+  //   @User('id') userId: number,
+  //   @Body() toggleModel: ToggleListingFollowDto,
+  // ): Promise<OperationResult> {
+  //   toggleModel.userId = userId;
+  //   const result = await this.listingService.toggleListingFollow(toggleModel);
+  //   return result;
+  // }
+
   // @Post('v1/listings/search')
   // async searchListings(
   //   @User('id') userId: number,
@@ -122,57 +165,5 @@ export class ListingController {
   //     userId,
   //   );
   //   return listings;
-  // }
-
-  // @Post('v1/listings/:id/reviews')
-  // async upsertListingReview(
-  //   @User('id') userId: number,
-  //   @Param('id') id: number,
-  //   @Body() listingReviewData: CreateListingReviewDto,
-  // ) {
-  //   listingReviewData.userId = userId;
-  //   listingReviewData.listingId = id;
-  //   const listingReview = await this.listingService.upsertReview(
-  //     listingReviewData,
-  //   );
-  //   // return listingReview;
-  // }
-
-  // @Get('v1/listings/:listingId/reviews')
-  // async getListingReviews(
-  //   @Param('listingId') listingId: number,
-  //   @Query('pageIndex') pageIndex: number,
-  //   @Query('pageSize') pageSize: number,
-  // ): Promise<any> {
-  //   const reviews = await this.listingService.getListingReviews(
-  //     listingId,
-  //     pageIndex ?? 1,
-  //     pageSize ?? 10,
-  //   );
-  //   return reviews;
-  // }
-
-  // @Delete('v1/listings/:listingId/reviews/:reviewId')
-  // async deleteListingReview(
-  //   @User('id') userId: number,
-  //   @Param('listingId') listingId: number,
-  //   @Param('reviewId') reviewId: number,
-  // ): Promise<any> {
-  //   const result = await this.listingService.deleteReview(
-  //     userId,
-  //     reviewId,
-  //     listingId,
-  //   );
-  //   return result;
-  // }
-
-  // @Post('v1/listings/toggle-listing-follow')
-  // async toggleListingFollow(
-  //   @User('id') userId: number,
-  //   @Body() toggleModel: ToggleListingFollowDto,
-  // ): Promise<OperationResult> {
-  //   toggleModel.userId = userId;
-  //   const result = await this.listingService.toggleListingFollow(toggleModel);
-  //   return result;
   // }
 }
