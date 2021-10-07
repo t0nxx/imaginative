@@ -148,7 +148,7 @@ export class StoryService {
       disclaimer:
         disclaimers.find((lt) => lt.id === story.disclaimerId) || null,
 
-      privacy: privacy.find((lt) => lt.id === story.privacyId)?.name || null,
+      privacy: privacy.find((lt) => lt.id === story.privacyId) || null,
 
       imaginativeYear:
         imaginativeYears.find((lt) => lt.id === story.imaginativeYearId) ||
