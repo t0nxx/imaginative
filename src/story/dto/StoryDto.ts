@@ -19,17 +19,14 @@ export default interface StoryDto {
   shareCount: number;
   productViewCount: number;
   ///// fields related to with relation ids i.e need to get its names in response
-  privacyId: number;
-  privacyName: string;
 
-  disclaimerId: string;
-  disclaimerName: string;
+  privacy: any;
 
-  imaginativeYearId: number;
-  imaginativeYearName: string;
+  disclaimer: any;
 
-  listingId: string;
-  listing: any;
+  imaginativeYear: any;
+
+  listingId: number;
 
   owner: any;
 

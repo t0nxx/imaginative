@@ -145,14 +145,15 @@ export class StoryService {
       type: 'Story',
       owner: user,
       listingId: story.listingId,
-      /// this should getted from listing service when implemented
-      listing: null,
-      disclaimerId: story.disclaimerId,
-      disclaimerName:
-        disclaimers.find((lt) => lt.id === story.disclaimerId)?.name || null,
-      privacyId: story.privacyId,
-      privacyName:
-        privacy.find((lt) => lt.id === story.privacyId)?.name || null,
+      disclaimer:
+        disclaimers.find((lt) => lt.id === story.disclaimerId) || null,
+
+      privacy: privacy.find((lt) => lt.id === story.privacyId)?.name || null,
+
+      imaginativeYear:
+        imaginativeYears.find((lt) => lt.id === story.imaginativeYearId) ||
+        null,
+
       headerLine: story.headerLine,
       headerImage: story.headerImage,
       body: story.body,
@@ -163,10 +164,7 @@ export class StoryService {
       introImages: story.introImages,
       bodyImages: story.bodyImages,
       conclusionImages: story.conclusionImages,
-      imaginativeYearId: story.imaginativeYearId,
-      imaginativeYearName:
-        imaginativeYears.find((lt) => lt.id === story.imaginativeYearId)
-          ?.name || null,
+
       otherImaginativeYear: story.otherImaginativeYear,
       status: story.status,
       viewCount: story.viewCount,
