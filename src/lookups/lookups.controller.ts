@@ -23,12 +23,10 @@ export class LookupsController {
   constructor(private readonly lookupsService: LookupsService) {}
 
   @ApiOperation({ summary: 'Gets listing types' })
-  @ApiParam({ name: 'type', enum: ListingTypesEnum })
+  /// after mobile dev req, i'll replace get by categ name with get by categ id
+  @ApiParam({ name: 'type', enum: [1, 2, 3, 4] })
   @Get('/listing-types/:type')
-  async getListingTypes(
-    @Param('type') type: ListingTypesEnum.Skill,
-    @I18nLang() lang: string,
-  ) {
+  async getListingTypes(@Param('type') type: number, @I18nLang() lang: string) {
     return await this.lookupsService.getListingTypes(type, lang);
   }
 

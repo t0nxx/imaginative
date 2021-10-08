@@ -13,15 +13,21 @@ import GenericLookupDto from './dto/GenericLookupDto';
 export class LookupsService {
   constructor(private readonly db: PrismaService) {}
 
-  public async getListingTypes(category: string, lang: string) {
+  public async getListingTypes(categoryId: number, lang: string) {
     const data = await AppCache.getAsync(
-      `__listingTypes_${category}_${lang}__`,
+      `__listingTypes_${categoryId}_${lang}__`,
       60 * 120,
       async () => {
+        const categoriesMap = {
+          1: 'Product',
+          2: 'Content',
+          3: 'Skill',
+          4: 'Service',
+        };
         const result = new Array<ListingTypeDto>();
         const listingTypes = await this.db.listingTypes.findMany({
           where: {
-            category: category,
+            category: categoriesMap[categoryId],
           },
         });
 
