@@ -26,7 +26,7 @@ export default interface StoryDto {
 
   imaginativeYear: any;
 
-  listingId: number;
+  listing: any;
 
   owner: any;
 

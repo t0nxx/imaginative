@@ -133,18 +133,23 @@ export class StoryService {
       { data: privacy },
       { data: imaginativeYears },
       { data: user },
+      listing,
     ] = await Promise.all([
       this.lookupsService.getDisclaimers(lang),
       this.lookupsService.getPrivacy(lang),
       this.lookupsService.getImaginativeYears(),
       this.userService.getUser(story.ownerId, myId),
+      this.db.listings.findUnique({
+        where: { id: story.listingId || 0 },
+        select: { id: true, name: true },
+      }),
     ]);
 
     return {
       id: story.id,
       type: 'Story',
       owner: user,
-      listingId: story.listingId,
+      listing: listing || null,
       disclaimer:
         disclaimers.find((lt) => lt.id === story.disclaimerId) || null,
 
