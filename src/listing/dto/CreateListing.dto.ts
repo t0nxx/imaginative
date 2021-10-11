@@ -15,11 +15,11 @@ export default class CreateListingDto {
   @IsNotEmpty() advantages: string;
   @IsNotEmpty() uses: string;
   @IsNotEmpty() @IsUrl() url: string;
-  @IsNotEmpty() @Min(1) price: number;
   @IsOptional() @IsArray() media: string[];
   @IsNotEmpty() @IsArray() socialLinks: string[];
   //// optional fields depend on select other option in dropdowns
-  @IsOptional() offerPrice?: number;
+  @IsOptional() price?: string;
+  @IsOptional() offerPrice?: string;
   @IsOptional() offerDescription?: string;
   @IsOptional() otherStockAvailability?: string;
   @IsOptional() otherPriceType?: string;

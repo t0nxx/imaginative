@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "listings" ALTER COLUMN "price" SET DATA TYPE TEXT,
+ALTER COLUMN "offerPrice" SET DATA TYPE TEXT;

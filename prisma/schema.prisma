@@ -301,8 +301,8 @@ model Listings {
   advantages             String  @db.VarChar(3000)
   uses                   String  @db.VarChar(3000)
   url                    String  @db.VarChar(3000)
-  price                  Float
-  offerPrice             Float?
+  price                  String?
+  offerPrice             String?
   offerDescription       String? @db.VarChar(3000)
   //// optional fields depend on select other option in dropdowns
   otherStockAvailability String? @db.VarChar(150)
