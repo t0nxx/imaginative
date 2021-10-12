@@ -51,7 +51,7 @@ export class ListingService {
       skip: (pageIndex - 1) * pageSize,
       take: pageSize,
       orderBy: {
-        id: 'desc',
+        createdAt: 'desc',
       },
     });
 
@@ -138,7 +138,7 @@ export class ListingService {
       },
     });
     if (!dbList) {
-      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+      throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
     }
 
     if (dbList.ownerId != myId) {
@@ -171,6 +171,10 @@ export class ListingService {
         id: id,
       },
     });
+
+    if (!listing) {
+      throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+    }
     // let userReviews: number[] = [];
 
     const userFollowedListings = await this.getUserFollowedListingIds(myId);
@@ -245,7 +249,7 @@ export class ListingService {
     });
 
     if (!dbListing) {
-      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+      throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
     }
     const result = await this.firebaseService.getFirebaseDynamicLink(
       DeepLinkShareRoutes.product,
