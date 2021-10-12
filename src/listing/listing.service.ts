@@ -220,22 +220,29 @@ export class ListingService {
         ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
       );
     }
-    const stories = await this.db.story.findFirst({
+    const storiesOfProduct = await this.db.story.findMany({
       where: {
-        ownerId: myId,
+        listingId: dbList.id,
       },
     });
-    if (stories) {
-      throw new BadRequestException(
-        'you must delete all stories related to this product first',
-      );
-    } else {
-      await this.db.listings.delete({
+    if (storiesOfProduct) {
+      /// after client updates , delete all stories of product without warning
+      // throw new BadRequestException(
+      //   'you must delete all stories related to this product first',
+      // );
+      await this.db.story.deleteMany({
         where: {
-          id: listingId,
+          listingId: dbList.id,
         },
       });
     }
+    await this.db.listings.delete({
+      where: {
+        id: listingId,
+      },
+    });
+
+    /// remeber to decrease user number of stories , products count base on deletion count
     const res = new OperationResult();
     res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
     return res;
