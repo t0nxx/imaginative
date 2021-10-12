@@ -367,16 +367,21 @@ export class StoryService {
       throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
     }
     const result = await this.mapStory(dbStory, lang, myId);
-    await this.db.story.update({
-      where: {
-        id: dbStory.id,
-      },
-      data: {
-        viewCount: {
-          increment: 1,
+
+    //// if i open my stories , then skip view count
+    if (dbStory.ownerId != myId) {
+      await this.db.story.update({
+        where: {
+          id: dbStory.id,
         },
-      },
-    });
+        data: {
+          viewCount: {
+            increment: 1,
+          },
+        },
+      });
+    }
+
     // if (dbStory?.listingId) {
     //   const listing = await this.listingService.getListing(
     //     dbStory.listingId,
@@ -731,6 +736,12 @@ export class StoryService {
         id: storyId,
       },
     });
+
+    if (!storyToCopy) {
+      throw new NotFoundException(ErrorCodes.STORY_NOT_FOUND);
+    }
+    /// to create new id at run time
+    delete storyToCopy.id;
     const story = await this.db.story.create({
       data: {
         ...storyToCopy,
