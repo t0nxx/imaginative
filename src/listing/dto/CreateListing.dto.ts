@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsArray,
   IsNotEmpty,
@@ -15,8 +16,12 @@ export default class CreateListingDto {
   @IsNotEmpty() advantages: string;
   @IsNotEmpty() uses: string;
   @IsNotEmpty() @IsUrl() url: string;
-  @IsOptional() @IsArray() media: string[];
-  @IsNotEmpty() @IsArray() socialLinks: string[];
+  @IsOptional()
+  @Transform(({ value }) => (value ? value : []))
+  media: string[];
+  @IsNotEmpty()
+  @Transform(({ value }) => (value ? value : []))
+  socialLinks: string[];
   //// optional fields depend on select other option in dropdowns
   @IsOptional() price?: string;
   @IsOptional() offerPrice?: string;

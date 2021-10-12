@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsArray,
   IsEnum,
@@ -23,9 +24,16 @@ export default class CreateStoryDto {
   @IsOptional() otherImaginativeYear: string;
 
   /// optional if user want to upload image with each section
-  @IsOptional() @IsArray() introImages: string[];
-  @IsOptional() @IsArray() bodyImages: string[];
-  @IsOptional() @IsArray() conclusionImages: string[];
+  /// cause the front end send null not [] in case no items , i should map the props to empty array in case the request body is null 
+  @IsOptional()
+  @Transform(({ value }) => (value ? value : []))
+  introImages: string[];
+  @IsOptional()
+  @Transform(({ value }) => (value ? value : []))
+  bodyImages: string[];
+  @IsOptional()
+  @Transform(({ value }) => (value ? value : []))
+  conclusionImages: string[];
 
   /// this is optional since it will be sent only if story of type product based on (disclaimerId) is promote product
   @IsOptional() tagline: string;
