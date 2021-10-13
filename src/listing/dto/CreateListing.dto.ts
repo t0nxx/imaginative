@@ -17,10 +17,10 @@ export default class CreateListingDto {
   @IsNotEmpty() uses: string;
   @IsNotEmpty() @IsUrl() url: string;
   @IsOptional()
-  @Transform(({ value }) => (value ? value : []))
+  @Transform((e) => (e && e.value ? e.value : []))
   media: string[];
   @IsNotEmpty()
-  @Transform(({ value }) => (value ? value : []))
+  @Transform((e) => (e && e.value ? e.value : []))
   socialLinks: string[];
   //// optional fields depend on select other option in dropdowns
   @IsOptional() price?: string;
