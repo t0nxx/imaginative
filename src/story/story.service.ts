@@ -341,7 +341,6 @@ export class StoryService {
         throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
       }
     }
-    console.log(storyData);
     const story = await this.db.story.update({
       where: {
         id: storyId,
