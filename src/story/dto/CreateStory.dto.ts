@@ -26,13 +26,22 @@ export default class CreateStoryDto {
   /// optional if user want to upload image with each section
   /// cause the front end send null not [] in case no items , i should map the props to empty array in case the request body is null
   @IsOptional()
-  @Transform((e) => (e && e.value ? e.value : []))
+  @Transform((e) => {
+    console.log(e);
+    return e && e.value ? e.value : [];
+  })
   introImages: string[];
   @IsOptional()
-  @Transform((e) => (e && e.value ? e.value : []))
+  @Transform((e) => {
+    console.log(e);
+    return e && e.value ? e.value : [];
+  })
   bodyImages: string[];
   @IsOptional()
-  @Transform((e) => (e && e.value ? e.value : []))
+  @Transform((e) => {
+    console.log(e);
+    return e && e.value ? e.value : [];
+  })
   conclusionImages: string[];
 
   /// this is optional since it will be sent only if story of type product based on (disclaimerId) is promote product
