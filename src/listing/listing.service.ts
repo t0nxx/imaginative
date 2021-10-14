@@ -496,19 +496,19 @@ export class ListingService {
       /// review summary
       reviewSummary: {
         rate1Percentage: (
-          listing.rate1Count / listing.totalRatingCount
+          listing.rate1Count / listing.totalRatingCount || 0
         ).toString(),
         rate2Percentage: (
-          listing.rate2Count / listing.totalRatingCount
+          listing.rate2Count / listing.totalRatingCount || 0
         ).toString(),
         rate3Percentage: (
-          listing.rate3Count / listing.totalRatingCount
+          listing.rate3Count / listing.totalRatingCount || 0
         ).toString(),
         rate4Percentage: (
-          listing.rate4Count / listing.totalRatingCount
+          listing.rate4Count / listing.totalRatingCount || 0
         ).toString(),
         rate5Percentage: (
-          listing.rate5Count / listing.totalRatingCount
+          listing.rate5Count / listing.totalRatingCount || 0
         ).toString(),
       },
       /// userfolloed list is the products that user are follow
@@ -724,12 +724,32 @@ export class ListingService {
     };
   }
 
-  setReviewModelStarsHelper(star: number) {
-    // rate1Count
-    // rate2Count
-    // rate3Count
-    // rate4Count
-    // rate5Count
-    `rate${star}Count`;
-  }
+  // async setReviewModelStarsHelper(star: number,listingId:number) {
+  //   // rate1Count
+  //   // rate2Count
+  //   // rate3Count
+  //   // rate4Count
+  //   // rate5Count
+  //   switch (start) {
+  //     case 1:
+  //       await this
+  //       return { rate1Count };
+  //       break;
+  //     case 2:
+  //       return rate1Count;
+  //       break;
+  //     case 3:
+  //       return rate1Count;
+  //       break;
+  //     case 1:
+  //       return rate1Count;
+  //       break;
+  //     case 1:
+  //       return rate1Count;
+  //       break;
+
+  //     default:
+  //       break;
+  //   }
+  // }
 }
