@@ -482,8 +482,8 @@ export class ListingService {
       otherStockAvailability: listing.otherStockAvailability,
       otherPriceType: listing.otherPriceType,
       otherHiring: listing.otherHiring,
-
-      overallRating: listing.overallRating.toString(),
+      //// round rating to nearest .5 ex 4 , or 4.5 , then return it as a string as mobile required
+      overallRating: (Math.round(listing.overallRating / 0.5) * 0.5).toString(),
       totalRatingCount: listing.totalRatingCount,
       viewsCount: listing.viewsCount,
       followCount: listing.followCount,
@@ -495,11 +495,21 @@ export class ListingService {
       updatedAt: listing.updatedAt,
       /// review summary
       reviewSummary: {
-        rate1Count: listing.rate1Count,
-        rate2Count: listing.rate2Count,
-        rate3Count: listing.rate3Count,
-        rate4Count: listing.rate4Count,
-        rate5Count: listing.rate5Count,
+        rate1Percentage: (
+          listing.rate1Count / listing.totalRatingCount
+        ).toString(),
+        rate2Percentage: (
+          listing.rate2Count / listing.totalRatingCount
+        ).toString(),
+        rate3Percentage: (
+          listing.rate3Count / listing.totalRatingCount
+        ).toString(),
+        rate4Percentage: (
+          listing.rate4Count / listing.totalRatingCount
+        ).toString(),
+        rate5Percentage: (
+          listing.rate5Count / listing.totalRatingCount
+        ).toString(),
       },
       /// userfolloed list is the products that user are follow
       isFollowed: userFollowedListings.some((listId) => listId == listing.id),
@@ -712,5 +722,14 @@ export class ListingService {
       createdAt: review.createdAt,
       updatedAt: review.updatedAt,
     };
+  }
+
+  setReviewModelStarsHelper(star: number) {
+    // rate1Count
+    // rate2Count
+    // rate3Count
+    // rate4Count
+    // rate5Count
+    `rate${star}Count`;
   }
 }
