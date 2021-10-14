@@ -25,6 +25,7 @@ import { LocalizationService } from '@/shared/core/localization.service';
 import FireBaseService from '@/shared/core/FireBase.service';
 import { StoryService } from '@/story/story.service';
 import { addDays, isBefore } from 'date-fns';
+import * as _ from 'lodash';
 
 @Injectable()
 export class ListingService {
@@ -146,8 +147,15 @@ export class ListingService {
         ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
       );
     }
-    //// new fields that will update
-    const updateFields = Object.keys(listingDataToUpdate);
+
+    //// new fields that will update , since front end send the wole object, i'll compare it with one in the db
+    const updateFields = _.reduce(
+      listingDataToUpdate,
+      function (result, value, key) {
+        return _.isEqual(value, dbList[key]) ? result : result.concat(key);
+      },
+      [],
+    );
     const list = await this.db.listings.update({
       where: {
         id: dbList.id,
