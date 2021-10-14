@@ -34,6 +34,8 @@ export default interface ListingDto {
   createdAt: Date;
   updatedAt: Date;
 
+  /// review summary
+  reviewSummary: any;
   //// drop down ids object (came in run time)
   stockAvailability: any;
 

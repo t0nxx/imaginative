@@ -493,6 +493,14 @@ export class ListingService {
       isRepublished: listing.isRepublished,
       createdAt: listing.createdAt,
       updatedAt: listing.updatedAt,
+      /// review summary
+      reviewSummary: {
+        rate1Count: listing.rate1Count,
+        rate2Count: listing.rate2Count,
+        rate3Count: listing.rate3Count,
+        rate4Count: listing.rate4Count,
+        rate5Count: listing.rate5Count,
+      },
       /// userfolloed list is the products that user are follow
       isFollowed: userFollowedListings.some((listId) => listId == listing.id),
 
@@ -540,74 +548,6 @@ export class ListingService {
 
     return result;
   }
-
-  // public async searchListings(
-  //   searchModel: SearchListingDto,
-  //   lang: string,
-  //   userId?: number,
-  // ): Promise<SearchResultDto<ListingDto>> {
-  //   const where: any = {};
-  //   if (searchModel.freeText && searchModel.freeText !== '') {
-  //     where.name = { [Op.like]: `%${searchModel.freeText}%` };
-  //   }
-  //   if (searchModel.followerId && searchModel.followerId !== '') {
-  //     where.id = {
-  //       [Op.in]: sequelize.literal(
-  //         `(SELECT "listingId"::uuid FROM "listing_followers" WHERE "userId" = :followerId)`,
-  //       ),
-  //     };
-  //   }
-  //   if (searchModel.ownerId && searchModel.ownerId !== '') {
-  //     where.ownerId = searchModel.ownerId;
-  //   }
-  //   if (searchModel.pageType && searchModel.pageType !== '') {
-  //     where.pageType = searchModel.pageType;
-  //   }
-  //   if (searchModel.status != undefined) {
-  //     where.status = searchModel.status;
-  //   }
-  //   if (searchModel.listingTypeId && searchModel.listingTypeId !== '') {
-  //     where.listingTypeId = searchModel.listingTypeId;
-  //   }
-
-  //   // const listings = await Listing.findAndCountAll({
-  //   //   where: where,
-  //   //   offset: ((searchModel.pageIndex || 1) - 1) * (searchModel.pageSize || 10),
-  //   //   limit: searchModel.pageSize,
-  //   //   order: [['createdAt', 'DESC']],
-  //   //   replacements: {
-  //   //     followerId: searchModel.followerId,
-  //   //   },
-  //   // });
-  //   const listings = await this.db.listings.findMany({
-  //     where: where,
-  //   });
-  //   const result = new SearchResultDto<ListingDto>();
-  //   result.count = listings.length;
-  //   if (result.count > 0) {
-  //     let userReviews: number[] = [];
-  //     let userFollowedListings: number[] = [];
-  //     if (userId && listings.length > 0) {
-  //       const listingIds = listings.map((r) => r.id);
-  //       userReviews = await this.getUserReviewedListingIds(userId, listingIds);
-  //       userFollowedListings = await this.getUserFollowedListingIds(
-  //         userId,
-  //         listingIds,
-  //       );
-  //     }
-  //     for (const listing of listings) {
-  //       result.data.push(
-  //         await this.mapListing(
-  //           listing,
-  //           lang,
-  //           userReviews,
-  //           userFollowedListings,
-  //         ),
-  //       );
-  //     }
-  //   }
-  //   return result;
-  // }
 
   public async upsertReview(
     listingId: number,
@@ -773,142 +713,4 @@ export class ListingService {
       updatedAt: review.updatedAt,
     };
   }
-
-  // public async toggleListingFollow(
-  //   _toggleModel: ToggleListingFollowDto,
-  // ): Promise<OperationResult> {
-  //   const result = new OperationResult();
-  //   try {
-  //     // const existingFollower = await ListingFollower.findOne({
-  //     //   where: {
-  //     //     userId: toggleModel.userId,
-  //     //     listingId: toggleModel.listingId,
-  //     //   },
-  //     // });
-  //     // if (!existingFollower && toggleModel.isFollowed === true) {
-  //     //   await ListingFollower.create({
-  //     //     id: v4(),
-  //     //     userId: toggleModel.userId,
-  //     //     listingId: toggleModel.listingId,
-  //     //   });
-  //     // } else if (existingFollower && toggleModel.isFollowed === false) {
-  //     //   await ListingFollower.destroy({
-  //     //     where: {
-  //     //       id: existingFollower.id,
-  //     //     },
-  //     //   });
-  //     // }
-  //     // result.success = true;
-  //   } catch (error) {
-  //     result.success = false;
-  //     result.message = error;
-  //   }
-  //   return result;
-  // }
-
-  // public async getUserReviewedListingIds(
-  //   userId: number,
-  //   listingIds: number[],
-  // ): Promise<Array<number>> {
-  //   const reviews = await this.db.listingReviews.findMany({
-  //     where: {
-  //       userId: userId,
-  //       listingId: {
-  //         in: listingIds,
-  //       },
-  //     },
-  //   });
-
-  //   return reviews.map((r) => r.listingId);
-  // }
-
-  // async mapListings(
-  //   listings: any[],
-  //   lang: string,
-  //   userReviews: string[] = [],
-  //   userFollowedListings: string[] = [],
-  // ): Promise<ListingDto[]> {
-  //   const listingTypes = await this.lookupsService.getAllListingTypes(lang);
-  //   const priceTypes = await this.lookupsService.getPriceTypes(lang);
-  //   const currencies = await this.lookupsService.getCurrencies(lang);
-  //   const users = [];
-  //   // await this.userService.getUsers(
-  //   //   listings.map((listing) => listing.ownerId),
-  //   // );
-  //   const hiringTypes = await this.lookupsService.getHiringTypes(lang);
-
-  //   return listings.map((listing) => {
-  //     const listingDto = {
-  //       id: listing.id,
-  //       type: 'Listing',
-  //       ownerId: listing.ownerId,
-  //       owner: users?.find((user) => user.id === listing.ownerId),
-  //       pageType: listing.pageType,
-  //       listingTypeId: listing.listingTypeId,
-  //       listingTypeName:
-  //         listingTypes.find((lt) => lt.id === listing.listingTypeId)?.name ||
-  //         '',
-  //       privacy: listing.privacy,
-  //       media: listing.media,
-  //       name: listing.name,
-  //       brandName: listing.brandName,
-  //       description: listing.description,
-  //       credentials: listing.credentials,
-  //       uses: listing.uses,
-  //       stockAvailability: listing.stockAvailability,
-  //       advantages: listing.advantages,
-  //       url: listing.url,
-  //       price: listing.price,
-  //       priceTypeId: listing.priceTypeId,
-  //       otherPriceType: listing.otherPriceType,
-  //       priceTypeName:
-  //         priceTypes.find((pt) => pt.id === listing.priceTypeId)?.name || '',
-  //       priceTypeFormat:
-  //         priceTypes.find((pt) => pt.id === listing.priceTypeId)?.format || '',
-  //       currencyId: listing.currencyId,
-  //       currencyName:
-  //         currencies.find((c) => c.id === listing.currencyId)?.name || '',
-  //       currencySymbol:
-  //         currencies.find((c) => c.id === listing.currencyId)?.symbol || '',
-  //       currencyStandardCode:
-  //         currencies.find((c) => c.id === listing.currencyId)?.standardCode ||
-  //         '',
-  //       hiringTypeId: listing.hiringTypeId,
-  //       hiringTypeName:
-  //         hiringTypes.find((ht) => ht.id === listing.hiringTypeId)?.name || '',
-  //       otherHiring: listing.otherHiring,
-  //       offerPrice: listing.offerPrice,
-  //       offerDescription: listing.offerDescription,
-  //       socialLinks: listing.socialLinks,
-  //       viewsCount: listing.viewsCount,
-  //       status: listing.status,
-  //       createdAt: listing.createdAt,
-  //       updatedAt: listing.updatedAt,
-  //       isEdited: listing.isEdited,
-  //       avgReviews: listing.overallRating.toFixed(2),
-  //       reviewsCount: listing.totalRatingCount,
-  //       isReviewed: userReviews.find((listingId) => listingId === listing.id)
-  //         ? true
-  //         : false,
-  //       isFollowed: userFollowedListings.find(
-  //         (listingId) => listingId === listing.id,
-  //       )
-  //         ? true
-  //         : false,
-  //     };
-
-  //     if (
-  //       listingDto.offerPrice &&
-  //       listingDto.offerPrice > 0 &&
-  //       listingDto.priceTypeFormat != ''
-  //     ) {
-  //       listingDto.priceTypeFormat = listingDto.priceTypeFormat.replace(
-  //         '*PRICE *CURRENCY',
-  //         '<line>*PRICE *CURRENCY</line>',
-  //       );
-  //     }
-
-  //     return listingDto;
-  //   });
-  // }
 }

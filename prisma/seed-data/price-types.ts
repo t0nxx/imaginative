@@ -128,6 +128,7 @@ export const priceTypes = [
   {
     id: 22,
     code: 'Other',
+    withConditions: true,
     createdAt: '2021-05-28T01:08:22.365Z',
     updatedAt: '2021-05-28T01:08:22.365Z',
   },

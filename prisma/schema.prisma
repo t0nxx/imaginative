@@ -335,6 +335,13 @@ model Listings {
   storiesCount     Int   @default(0)
   shareCount       Int   @default(0)
 
+  /// review summary
+  rate1Count Int @default(0)
+  rate2Count Int @default(0)
+  rate3Count Int @default(0)
+  rate4Count Int @default(0)
+  rate5Count Int @default(0)
+
   isEdited      Boolean @default(false)
   isRepublished Boolean @default(false)
 
