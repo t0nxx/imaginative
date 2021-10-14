@@ -584,6 +584,12 @@ export class ListingService {
           ...reviewModel,
         },
       });
+      // decrease rate1count , rate 2 count ....etc
+      await this.setReviewModelStarsHelper(
+        existingReview.starRating,
+        listingId,
+        true,
+      );
       //Replace current rating of the user in 2 steps:
       //1-Subtract current user rating
       let newTotalReviews = (listing?.totalRatingCount ?? 0) - 1;
@@ -607,6 +613,13 @@ export class ListingService {
           totalRatingCount: newTotalReviews + 1,
         },
       });
+
+      // update rate1count , rate 2 count ....etc
+      await this.setReviewModelStarsHelper(
+        reviewModel.starRating,
+        listingId,
+        true,
+      );
     } else {
       const newReview = await this.db.listingReviews.create({
         data: {
@@ -629,6 +642,12 @@ export class ListingService {
           totalRatingCount: newTotalReviews,
         },
       });
+      /// update rate1count , rate 2 count ....etc
+      await this.setReviewModelStarsHelper(
+        reviewModel.starRating,
+        listingId,
+        false,
+      );
     }
 
     const res = new OperationResult();
@@ -724,32 +743,32 @@ export class ListingService {
     };
   }
 
-  // async setReviewModelStarsHelper(star: number,listingId:number) {
-  //   // rate1Count
-  //   // rate2Count
-  //   // rate3Count
-  //   // rate4Count
-  //   // rate5Count
-  //   switch (start) {
-  //     case 1:
-  //       await this
-  //       return { rate1Count };
-  //       break;
-  //     case 2:
-  //       return rate1Count;
-  //       break;
-  //     case 3:
-  //       return rate1Count;
-  //       break;
-  //     case 1:
-  //       return rate1Count;
-  //       break;
-  //     case 1:
-  //       return rate1Count;
-  //       break;
-
-  //     default:
-  //       break;
-  //   }
-  // }
+  async setReviewModelStarsHelper(
+    star: number,
+    listingId: number,
+    decrement: boolean,
+  ) {
+    const incrementToDo = {
+      increment: 1,
+    };
+    const decrementToDo = {
+      decrement: 1,
+    };
+    let dataToUpdate = {};
+    if (star == 1) {
+      dataToUpdate = { rate1Count: decrement ? decrementToDo : incrementToDo };
+    } else if (star == 2) {
+      dataToUpdate = { rate2Count: decrement ? decrementToDo : incrementToDo };
+    } else if (star == 3) {
+      dataToUpdate = { rate3Count: decrement ? decrementToDo : incrementToDo };
+    } else if (star == 4) {
+      dataToUpdate = { rate4Count: decrement ? decrementToDo : incrementToDo };
+    } else if (star == 5) {
+      dataToUpdate = { rate5Count: decrement ? decrementToDo : incrementToDo };
+    }
+    await this.db.listings.update({
+      where: { id: listingId },
+      data: dataToUpdate,
+    });
+  }
 }
