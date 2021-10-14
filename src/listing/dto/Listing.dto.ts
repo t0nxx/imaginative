@@ -22,7 +22,7 @@ export default interface ListingDto {
   otherPriceType: string;
   otherHiring: string;
   /////////////////////////////////
-  overallRating: number;
+  overallRating: string;
   totalRatingCount: number;
   viewsCount: number;
   followCount: number;

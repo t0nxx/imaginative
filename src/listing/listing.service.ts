@@ -483,7 +483,7 @@ export class ListingService {
       otherPriceType: listing.otherPriceType,
       otherHiring: listing.otherHiring,
 
-      overallRating: listing.overallRating,
+      overallRating: listing.overallRating.toString(),
       totalRatingCount: listing.totalRatingCount,
       viewsCount: listing.viewsCount,
       followCount: listing.followCount,
