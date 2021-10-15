@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ApplicationModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import logger from 'morgan';
+import { urlencoded, json } from 'express';
 import { ValidationPipe } from '@nestjs/common';
 import * as firebaseAdmin from 'firebase-admin';
 import { serviceAccount } from './shared/core/FireBaseAdminKeys';
@@ -17,6 +18,9 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  /// set request limit ,ex upload limit
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ extended: true, limit: '50mb' }));
   // app.use(logger('dev'));
   const options = new DocumentBuilder()
     .setTitle('Imaginative News API v1')
