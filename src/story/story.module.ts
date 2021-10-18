@@ -10,16 +10,13 @@ import { StoryService } from './story.service';
 import { CoreModule } from '@/shared/core/core.module';
 import { UserModule } from '@/user/user.module';
 import { LookupsModule } from '@/lookups/lookups.module';
-import { AppLoggerModule } from '@/shared/appLogger/appLogger.module';
-import { ListingModule } from '@/listing/listing.module';
 import { AuthMiddleware } from '@/user/auth.middleware';
 import { OptionalAuthMiddleware } from '@/user/optional.auth.middleware';
 import { StoryDraftController } from './storyDraft.controller';
 import { StoryTemplateController } from './storyTemplate.controller';
-import { ListingService } from '@/listing/listing.service';
 
 @Module({
-  imports: [CoreModule, LookupsModule, UserModule, AppLoggerModule],
+  imports: [CoreModule, LookupsModule, UserModule],
   providers: [StoryService],
   controllers: [StoryController, StoryDraftController, StoryTemplateController],
   exports: [StoryService],

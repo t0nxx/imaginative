@@ -4,7 +4,6 @@ import { UserModule } from './user/user.module';
 import { ListingModule } from './listing/listing.module';
 import { DevModule } from './dev/dev.module';
 import { LookupsModule } from './lookups/lookups.module';
-import { AppLoggerModule } from './shared/appLogger/appLogger.module';
 import { StoryModule } from './story/story.module';
 import { AllExceptionsFilter } from './shared/exception-filters/all-exception-filter-responser';
 import { APP_FILTER } from '@nestjs/core';
@@ -47,7 +46,6 @@ import {
     ListingModule,
     DevModule,
     LookupsModule,
-    AppLoggerModule,
     StoryModule,
   ],
   controllers: [],

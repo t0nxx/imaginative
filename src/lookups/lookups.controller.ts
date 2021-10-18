@@ -10,11 +10,6 @@ import {
   ApiTags /*,ApiOperation, ApiResponse, ApiBody*/,
 } from '@nestjs/swagger';
 import { I18nLang } from 'nestjs-i18n';
-import CurrencyDto from './dto/CurrencyDto';
-import DisclaimerDto from './dto/DisclaimerDto';
-import HiringTypeDto from './dto/HiringTypeDto';
-import ListingTypeDto from './dto/ListingTypeDto';
-import PriceTypeDto from './dto/PriceTypeDto';
 import { LookupsService } from './lookups.service';
 
 @ApiTags('Lookups')

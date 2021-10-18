@@ -18,9 +18,6 @@ import {
 import { AccountTypeProviderEnum } from './dto/SocialLogin.dto';
 import ResetPassword from './dto/ResetPassword.dto';
 import * as jwt from 'jsonwebtoken';
-import UserFollower from './../models/UserFollower';
-import { UserSnippetDto } from './dto/UserSnippetDto';
-import ListingFollower from './../models/ListingFollower';
 import { PrismaService } from '@/shared/core/prisma.service';
 import LoginUserDto from './dto/LoginUser.dto';
 import { MailsService } from '@/shared/core/mail.service';
@@ -44,95 +41,6 @@ export class UserService {
   MASTER_PASS_FOR_SOCIAL_ACCOUNTS = this.configService.get(
     'MASTER_PASS_FOR_SOCIAL_ACCOUNTS',
   );
-  /// this fun will be deleted after refactor story / listing
-  public async getUserFollowedUsers(
-    _followerId: number,
-    _userIds: number[],
-  ): Promise<Array<number>> {
-    // const followings = await UserFollower.findAll({
-    //   where: {
-    //     followerId: followerId,
-    //     userId: userIds,
-    //   },
-    // });
-    // const followings = await this.db.userFollowers.findMany({
-    //   where: {
-    //     followerId: followerId,
-    //     userId: {
-    //       in: userIds,
-    //     },
-    //   },
-    // });
-    // if (followings) return followings.map((f) => f.userId);
-    return [];
-  }
-
-  public async getListingFollowers(
-    userId: string,
-    listingId: string,
-    pageIndex = 1,
-    pageSize = 10,
-  ): Promise<{ count: number; data: UserSnippetDto[] }> {
-    const followers = await ListingFollower.findAndCountAll({
-      where: {
-        listingId: listingId,
-      },
-      limit: pageSize,
-      offset: (pageIndex - 1) * pageSize,
-    });
-    const followerIds =
-      followers && followers.count > 0
-        ? followers.rows.map((f) => f.userId)
-        : [];
-    if (followerIds.length > 0) {
-      const followeds = userId
-        ? await UserFollower.findAll({
-            where: {
-              userId: followerIds,
-              followerId: userId,
-            },
-          })
-        : null;
-
-      const followings = userId
-        ? await UserFollower.findAll({
-            where: {
-              userId: userId,
-              followerId: followerIds,
-            },
-          })
-        : null;
-      // const users = await this.getUsers(followerIds);
-      const users = [];
-      const result: UserSnippetDto[] = users.map((u) => {
-        return {
-          type: 'user',
-          id: u.id,
-          name: u.name,
-          photoUrl: u.photoUrl,
-          featuredProductId: u.featuredProductId,
-          featuredProductName: u.featuredProductName,
-          isFriend: false,
-          isFollower:
-            followings && followings.find((f) => f.followerId === u.id)
-              ? true
-              : false,
-          isFollowed:
-            followeds && followeds.find((f) => f.userId === u.id)
-              ? true
-              : false,
-        };
-      });
-      return {
-        count: followers.count,
-        data: result,
-      };
-    }
-    return {
-      count: 0,
-      data: [],
-    };
-  }
 
   ///////////////////////////////////// new - mahmoud done ///////////////////////////////
 

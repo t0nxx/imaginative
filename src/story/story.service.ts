@@ -5,7 +5,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import Story from '../models/Story';
 import CreateStoryDto from './dto/CreateStory.dto';
 import StoryDto from './dto/StoryDto';
 import { LookupsService } from '../lookups/lookups.service';
@@ -16,12 +15,7 @@ import {
   ErrorCodes,
   MessageCodes,
 } from '@/shared/constants';
-import SearchResultDto from '@/shared/models/SearchResultDto';
-import SearchStoryDto from './dto/SearchStoryDto';
-import { ListingService } from '@/listing/listing.service';
-import ListingDto from '@/listing/dto/Listing.dto';
 import { PrismaService } from '@/shared/core/prisma.service';
-import { Prisma } from '@prisma/client';
 import FireBaseService from '@/shared/core/FireBase.service';
 import { FileService } from '@/shared/core/file.service';
 import { LocalizationService } from '@/shared/core/localization.service';
