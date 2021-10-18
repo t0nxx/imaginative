@@ -37,7 +37,7 @@ $ npm run test:cov
 
 ## Swagger Docs
 
-http://127.0.0.1:3000/docs/
+http://127.0.0.1:5000/docs/
 
 
 ## Documentation
