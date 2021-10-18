@@ -1,0 +1,3029 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>nest-typescript-starter documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">nest-typescript-starter documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>UserService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/user/user.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#JWT_SECRET">JWT_SECRET</a>
+                            </li>
+                            <li>
+                                <a href="#MASTER_PASS_FOR_SOCIAL_ACCOUNTS">MASTER_PASS_FOR_SOCIAL_ACCOUNTS</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#forgotPassword">forgotPassword</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#generateJWT">generateJWT</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#generateRefreshToken">generateRefreshToken</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getFollowedUsers">getFollowedUsers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getFollowersAndFriendsidsHelper">getFollowersAndFriendsidsHelper</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUser">getUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUserFollowers">getUserFollowers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUsersByIds">getUsersByIds</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUsersList">getUsersList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#isFollowed">isFollowed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#isFollower">isFollower</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#isFriend">isFriend</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#isReceivedFriendRequest">isReceivedFriendRequest</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#isSentFriendRequest">isSentFriendRequest</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#localLogin">localLogin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#notificationToken">notificationToken</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#refreshToken">refreshToken</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#register">register</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#resetPassword">resetPassword</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendVerificationEmail">sendVerificationEmail</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#socialLogin">socialLogin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#toggleUserFollow">toggleUserFollow</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateUserProfile">updateUserProfile</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#verifyEmail">verifyEmail</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(db: <a href="../injectables/PrismaService.html">PrismaService</a>, mailsService: <a href="../injectables/MailsService.html">MailsService</a>, configService: ConfigService, i18n: <a href="../injectables/LocalizationService.html">LocalizationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/user/user.service.ts:31</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>db</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PrismaService.html" target="_self" >PrismaService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>mailsService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MailsService.html" target="_self" >MailsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>configService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LocalizationService.html" target="_self" >LocalizationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="forgotPassword"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            forgotPassword
+                        </b>
+                        <a href="#forgotPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>forgotPassword(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="221"
+                            class="link-to-prism">src/user/user.service.ts:221</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>email</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateJWT"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            generateJWT
+                        </b>
+                        <a href="#generateJWT"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateJWT(user)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="440"
+                            class="link-to-prism">src/user/user.service.ts:440</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateRefreshToken"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            generateRefreshToken
+                        </b>
+                        <a href="#generateRefreshToken"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateRefreshToken(user)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="454"
+                            class="link-to-prism">src/user/user.service.ts:454</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFollowedUsers"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getFollowedUsers
+                        </b>
+                        <a href="#getFollowedUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFollowedUsers(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageIndex: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageSize: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="631"
+                            class="link-to-prism">src/user/user.service.ts:631</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageIndex</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageSize</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFollowersAndFriendsidsHelper"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getFollowersAndFriendsidsHelper
+                        </b>
+                        <a href="#getFollowersAndFriendsidsHelper"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFollowersAndFriendsidsHelper(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="577"
+                            class="link-to-prism">src/user/user.service.ts:577</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getUser
+                        </b>
+                        <a href="#getUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUser(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="331"
+                            class="link-to-prism">src/user/user.service.ts:331</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserFollowers"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getUserFollowers
+                        </b>
+                        <a href="#getUserFollowers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUserFollowers(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageIndex: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageSize: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="603"
+                            class="link-to-prism">src/user/user.service.ts:603</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageIndex</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageSize</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUsersByIds"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getUsersByIds
+                        </b>
+                        <a href="#getUsersByIds"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUsersByIds(ids: number[], myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="498"
+                            class="link-to-prism">src/user/user.service.ts:498</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ids</td>
+                                    <td>
+                                            <code>number[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUsersList"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getUsersList
+                        </b>
+                        <a href="#getUsersList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUsersList(myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageIndex: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageSize: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="369"
+                            class="link-to-prism">src/user/user.service.ts:369</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageIndex</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageSize</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFollowed"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            isFollowed
+                        </b>
+                        <a href="#isFollowed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isFollowed(myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, followedsIds: number[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="558"
+                            class="link-to-prism">src/user/user.service.ts:558</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>followedsIds</td>
+                                    <td>
+                                            <code>number[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFollower"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            isFollower
+                        </b>
+                        <a href="#isFollower"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isFollower(myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, followersIds: number[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="555"
+                            class="link-to-prism">src/user/user.service.ts:555</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>followersIds</td>
+                                    <td>
+                                            <code>number[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFriend"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            isFriend
+                        </b>
+                        <a href="#isFriend"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isFriend()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="561"
+                            class="link-to-prism">src/user/user.service.ts:561</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isReceivedFriendRequest"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            isReceivedFriendRequest
+                        </b>
+                        <a href="#isReceivedFriendRequest"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isReceivedFriendRequest()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="571"
+                            class="link-to-prism">src/user/user.service.ts:571</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isSentFriendRequest"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            isSentFriendRequest
+                        </b>
+                        <a href="#isSentFriendRequest"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isSentFriendRequest()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="566"
+                            class="link-to-prism">src/user/user.service.ts:566</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="localLogin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            localLogin
+                        </b>
+                        <a href="#localLogin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>localLogin(body: <a href="../classes/LoginUserDto.html">LoginUserDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="47"
+                            class="link-to-prism">src/user/user.service.ts:47</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                                <code><a href="../classes/LoginUserDto.html" target="_self" >LoginUserDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notificationToken"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            notificationToken
+                        </b>
+                        <a href="#notificationToken"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>notificationToken(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, body: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="713"
+                            class="link-to-prism">src/user/user.service.ts:713</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="refreshToken"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            refreshToken
+                        </b>
+                        <a href="#refreshToken"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>refreshToken(body: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="462"
+                            class="link-to-prism">src/user/user.service.ts:462</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="register"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            register
+                        </b>
+                        <a href="#register"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>register(body: <a href="../classes/RegisterUserDto.html">RegisterUserDto</a>, socialProvider?: <a href="../undefineds/AccountTypeProviderEnum.html">AccountTypeProviderEnum</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="122"
+                            class="link-to-prism">src/user/user.service.ts:122</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                                <code><a href="../classes/RegisterUserDto.html" target="_self" >RegisterUserDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>socialProvider</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/enumerations.html#AccountTypeProviderEnum" target="_self" >AccountTypeProviderEnum</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetPassword"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            resetPassword
+                        </b>
+                        <a href="#resetPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetPassword(body: ResetPassword)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="180"
+                            class="link-to-prism">src/user/user.service.ts:180</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                            <code>ResetPassword</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendVerificationEmail"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            sendVerificationEmail
+                        </b>
+                        <a href="#sendVerificationEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendVerificationEmail(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="253"
+                            class="link-to-prism">src/user/user.service.ts:253</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>email</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="socialLogin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            socialLogin
+                        </b>
+                        <a href="#socialLogin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>socialLogin(idToken: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, socialProvider: <a href="../undefineds/AccountTypeProviderEnum.html">AccountTypeProviderEnum</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="73"
+                            class="link-to-prism">src/user/user.service.ts:73</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>idToken</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>socialProvider</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/enumerations.html#AccountTypeProviderEnum" target="_self" >AccountTypeProviderEnum</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleUserFollow"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            toggleUserFollow
+                        </b>
+                        <a href="#toggleUserFollow"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toggleUserFollow(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, followerId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="659"
+                            class="link-to-prism">src/user/user.service.ts:659</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>followerId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateUserProfile"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            updateUserProfile
+                        </b>
+                        <a href="#updateUserProfile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateUserProfile(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, body: <a href="../classes/UpdateUserDto.html">UpdateUserDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="392"
+                            class="link-to-prism">src/user/user.service.ts:392</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                                <code><a href="../classes/UpdateUserDto.html" target="_self" >UpdateUserDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verifyEmail"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            verifyEmail
+                        </b>
+                        <a href="#verifyEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>verifyEmail(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, code: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="291"
+                            class="link-to-prism">src/user/user.service.ts:291</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>email</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>code</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="JWT_SECRET"></a>
+                        <span class="name">
+                            <b>
+                            JWT_SECRET</b>
+                            <a href="#JWT_SECRET"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>this.configService.get(&#x27;JWT_SECRET&#x27;)</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/user/user.service.ts:39</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="MASTER_PASS_FOR_SOCIAL_ACCOUNTS"></a>
+                        <span class="name">
+                            <b>
+                            MASTER_PASS_FOR_SOCIAL_ACCOUNTS</b>
+                            <a href="#MASTER_PASS_FOR_SOCIAL_ACCOUNTS"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>this.configService.get(
+    &#x27;MASTER_PASS_FOR_SOCIAL_ACCOUNTS&#x27;,
+  )</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/user/user.service.ts:41</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from &#x27;@nestjs/common&#x27;;
+import { ConfigService } from &#x27;@nestjs/config&#x27;;
+import { addDays } from &#x27;date-fns&#x27;;
+import crypto from &#x27;crypto&#x27;;
+import { hashSync, compareSync } from &#x27;bcryptjs&#x27;;
+import * as randomstring from &#x27;randomstring&#x27;;
+import {
+  RegisterUserDto,
+  langEnum,
+  AccountTypeEnum,
+} from &#x27;./dto/RegisterUser.dto&#x27;;
+import { AccountTypeProviderEnum } from &#x27;./dto/SocialLogin.dto&#x27;;
+import ResetPassword from &#x27;./dto/ResetPassword.dto&#x27;;
+import * as jwt from &#x27;jsonwebtoken&#x27;;
+import { PrismaService } from &#x27;@/shared/core/prisma.service&#x27;;
+import LoginUserDto from &#x27;./dto/LoginUser.dto&#x27;;
+import { MailsService } from &#x27;@/shared/core/mail.service&#x27;;
+import * as firebaseAdmin from &#x27;firebase-admin&#x27;;
+import { UpdateUserDto } from &#x27;./dto/UpdateUser.dto&#x27;;
+import OperationResult from &#x27;@/shared/models/OperationResult&#x27;;
+import normalizeEmail from &#x27;@/utils/Normalize-email&#x27;;
+import { ErrorCodes, MessageCodes } from &#x27;@/shared/constants&#x27;;
+import { LocalizationService } from &#x27;@/shared/core/localization.service&#x27;;
+@Injectable()
+export class UserService {
+  constructor(
+    private readonly db: PrismaService,
+    private readonly mailsService: MailsService,
+    private configService: ConfigService,
+    private readonly i18n: LocalizationService,
+  ) {}
+
+  JWT_SECRET &#x3D; this.configService.get(&#x27;JWT_SECRET&#x27;);
+
+  MASTER_PASS_FOR_SOCIAL_ACCOUNTS &#x3D; this.configService.get(
+    &#x27;MASTER_PASS_FOR_SOCIAL_ACCOUNTS&#x27;,
+  );
+
+  ///////////////////////////////////// new - mahmoud done ///////////////////////////////
+
+  async localLogin(body: LoginUserDto) {
+    const user &#x3D; await this.db.user.findUnique({
+      where: {
+        email: body.email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
+    }
+    const isPasswordCorrect &#x3D; compareSync(body.password, user.password);
+
+    if (!isPasswordCorrect) {
+      throw new BadRequestException(ErrorCodes.INVALID_PASSWORD);
+    }
+
+    delete user.password;
+    const token &#x3D; this.generateJWT(user);
+    const refreshToken &#x3D; await this.generateRefreshToken(user);
+
+    const result &#x3D; { ...user, token, refreshToken };
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+
+  async socialLogin(idToken: string, socialProvider: AccountTypeProviderEnum) {
+    /// verify return data
+    const firebaseResponse &#x3D; await firebaseAdmin.auth().verifyIdToken(idToken);
+    console.log(firebaseResponse);
+    if (!firebaseResponse.email) {
+      // mean invalid idToken
+      throw new NotFoundException(ErrorCodes.INVALID_TOKEN);
+    }
+
+    const user &#x3D; await this.db.user.findUnique({
+      where: {
+        email: normalizeEmail(firebaseResponse.email),
+      },
+    });
+
+    if (!user) {
+      const newUser &#x3D; {
+        name: firebaseResponse.name,
+
+        email: normalizeEmail(firebaseResponse.email),
+
+        photoUrl: firebaseResponse.picture || &#x27;&#x27;,
+
+        password:
+          this.MASTER_PASS_FOR_SOCIAL_ACCOUNTS ||
+          &#x27;MASTER_PASS_FOR_SOCIAL_ACCOUNTS&#x27;,
+
+        notificationsEnabled: true,
+
+        lang: langEnum.en,
+
+        type: AccountTypeEnum.individual,
+
+        isVerified: true,
+      };
+      return this.register(newUser, socialProvider);
+    }
+
+    delete user.password;
+    const token &#x3D; this.generateJWT(user);
+    const refreshToken &#x3D; await this.generateRefreshToken(user);
+
+    const result &#x3D; { ...user, token, refreshToken };
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+
+  async register(
+    body: RegisterUserDto,
+    socialProvider?: AccountTypeProviderEnum,
+  ): Promise&lt;any&gt; {
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(
+      MessageCodes.EMAIL_VERIFICATION_CODE_SENT,
+    );
+
+    const existingUser &#x3D; await this.db.user.findUnique({
+      where: { email: body.email },
+    });
+    /// after client modification , if the user not verify his account he could regist again with
+    /// same email without any server errors .
+    /// the only way to vlaidate if email exist iff the email already verified isVerifyed &#x3D; true
+    if (existingUser &amp;&amp; existingUser.isVerified &#x3D;&#x3D; true) {
+      throw new BadRequestException(
+        ErrorCodes.A_USER_WITH_THIS_EMAIL_ADDRESS_ALREADY_EXISTS,
+      );
+    } else if (existingUser &amp;&amp; existingUser.isVerified &#x3D;&#x3D; false) {
+      //// as client request , if user is not verified server should not save it&#x27;s data ,
+      /// and could regist again with same email witout isssue
+      /// for non conflict if the regist with same email and the old not verifiy
+      // i will delete the old one to ignore conflict unique in database
+      // and continue the regist cycle as normal
+      await this.db.user.delete({
+        where: { id: existingUser.id },
+      });
+    }
+    /// continue normal cycle
+    body.password &#x3D; hashSync(body.password, 10);
+    const user &#x3D; await this.db.user.create({
+      data: {
+        ...body,
+        /// this line to reuse the whole function in face/google/apple login with same implementation
+        provider: socialProvider
+          ? socialProvider
+          : AccountTypeProviderEnum.local,
+      },
+    });
+
+    if (user.provider &#x3D;&#x3D; AccountTypeProviderEnum.local) {
+      this.sendVerificationEmail(user.email);
+    }
+    // @ mail queueAccountTyprProviderEnum
+    // if (_user.notificationsEnabled) {
+    //   await sendWelcomeNotification(_user.email);
+    // }
+
+    delete user.password;
+    const token &#x3D; this.generateJWT(user);
+    const refreshToken &#x3D; await this.generateRefreshToken(user);
+
+    const result &#x3D; { ...user, token, refreshToken };
+    res.data &#x3D; result;
+    return res;
+  }
+
+  async resetPassword(body: ResetPassword) {
+    const user &#x3D; await this.db.user.findUnique({
+      where: {
+        email: body.email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
+    }
+    const isTokenExist &#x3D; await this.db.userPasswordRecoveryTokens.findFirst({
+      where: {
+        userId: user.id,
+        token: body.token,
+      },
+    });
+    if (!isTokenExist) {
+      /// link msg here cause email dynamic link
+      throw new NotFoundException(ErrorCodes.INVALID_OR_EXPIRED_LINK);
+    }
+    const newPass &#x3D; hashSync(body.newPassword, 10);
+
+    await this.db.user.update({
+      where: { id: user.id },
+      data: {
+        password: newPass,
+      },
+    });
+    /// after change pass remove token to not use it again
+    await this.db.userPasswordRecoveryTokens.delete({
+      where: { id: isTokenExist.id },
+    });
+    /// send mail to user that his password has been changed
+    this.mailsService.afterResetPasswordEmail(user.name, user.email);
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(
+      MessageCodes.PASSWORD_CHANGED_SUCCESSFULLY,
+    );
+    return res;
+  }
+
+  async forgotPassword(email: string): Promise&lt;any&gt; {
+    const user &#x3D; await this.db.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
+    }
+    // delete old tokens for not reuse it again
+    await this.db.userPasswordRecoveryTokens.deleteMany({
+      where: {
+        userId: user.id,
+      },
+    });
+    const resetCode &#x3D; crypto.randomBytes(128).toString(&#x27;hex&#x27;);
+    await this.db.userPasswordRecoveryTokens.create({
+      data: {
+        userId: user.id,
+        token: resetCode,
+      },
+    });
+
+    this.mailsService.sendResetPasswordEmail(user.name, user.email, resetCode);
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(
+      MessageCodes.EMAIL_RESET_PASSWORD_SENT,
+    );
+    return res;
+  }
+
+  async sendVerificationEmail(email: string) {
+    const user &#x3D; await this.db.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
+    }
+    // delete old codes for not reuse it again
+    await this.db.userVerificationCode.deleteMany({
+      where: {
+        userId: user.id,
+      },
+    });
+    const verificationCode &#x3D; randomstring.generate({
+      length: 6,
+      charset: &#x27;numeric&#x27;,
+    });
+    await this.db.userVerificationCode.create({
+      data: {
+        userId: user.id,
+        code: verificationCode,
+      },
+    });
+
+    this.mailsService.sendVerificationEmail(
+      user.name,
+      user.email,
+      verificationCode,
+    );
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(
+      MessageCodes.EMAIL_VERIFICATION_CODE_SENT,
+    );
+    return res;
+  }
+  async verifyEmail(email: string, code: string, password: string) {
+    const user &#x3D; await this.db.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
+    }
+    const isCodeExist &#x3D; await this.db.userVerificationCode.findFirst({
+      where: {
+        userId: user.id,
+        code: code,
+      },
+    });
+
+    if (!isCodeExist) {
+      throw new NotFoundException(ErrorCodes.INVALID_VERIFICATION_CODE);
+    }
+
+    await this.db.userVerificationCode.deleteMany({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    await this.db.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        isVerified: true,
+      },
+    });
+
+    /// old - logic to add after disc with mobile , if return user obj in response or login from his side
+    //// after client request , the whole user object like login should be returned after verification
+    return this.localLogin({ email: email, password: password });
+  }
+
+  async getUser(userId: number, myId: number) {
+    const user &#x3D; await this.db.user.findUnique({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
+    }
+    delete user.password;
+
+    const { followersIds, followedsIds } &#x3D;
+      // get followers / followed of the user
+      await this.getFollowersAndFriendsidsHelper(userId);
+
+    const isProfileOwner &#x3D; myId &amp;&amp; myId &#x3D;&#x3D; userId ? true : false;
+    const isFriend &#x3D; this.isFriend();
+    /// here send the followds of the user to check if he follow me
+    const isFollower &#x3D; this.isFollower(myId, followedsIds);
+    /// here send the followers of the user to check if i follow him
+    const isFollowed &#x3D; this.isFollowed(myId, followersIds);
+    const isSentFriendRequest &#x3D; this.isSentFriendRequest();
+    const isReceivedFriendRequest &#x3D; this.isReceivedFriendRequest();
+
+    const result &#x3D; {
+      ...user,
+      isProfileOwner,
+      isFriend,
+      isFollower,
+      isFollowed,
+      isSentFriendRequest,
+      isReceivedFriendRequest,
+    };
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+
+  public async getUsersList(myId: number, pageIndex: number, pageSize: number) {
+    const users &#x3D; await this.db.user.findMany({
+      select: {
+        id: true,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: &#x27;desc&#x27;,
+      },
+    });
+    const usersCount &#x3D; await this.db.user.count();
+
+    const usersIds &#x3D; users.map((e) &#x3D;&gt; e.id);
+    const result &#x3D; await this.getUsersByIds(usersIds, myId);
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    res.meta &#x3D; { count: usersCount };
+    return res;
+  }
+
+  public async updateUserProfile(userId: number, body: UpdateUserDto) {
+    if (body.email) {
+      const existingUser &#x3D; await this.db.user.findUnique({
+        where: { email: body.email },
+      });
+      if (existingUser.id !&#x3D; userId) {
+        /// here to check if the user want to update email with email already exist with another user
+        console.log(existingUser.id);
+        console.log(userId);
+        throw new BadRequestException(
+          ErrorCodes.A_USER_WITH_THIS_EMAIL_ADDRESS_ALREADY_EXISTS,
+        );
+      }
+    }
+    if (body.password) {
+      if (!body.oldPassword) {
+        throw new BadRequestException(ErrorCodes.YOU_MUST_ENTER_OLD_PASSWORD);
+      }
+      const user &#x3D; await this.db.user.findUnique({
+        where: { id: userId },
+      });
+      const isOldPasswordCorrect &#x3D; compareSync(body.oldPassword, user.password);
+
+      if (!isOldPasswordCorrect) {
+        throw new BadRequestException(ErrorCodes.INVALID_OLD_PASSWORD);
+      }
+      body.password &#x3D; hashSync(body.password, 10);
+      /// since it&#x27;s not db model it will cause a prisma error
+      delete body.oldPassword;
+    }
+    const user &#x3D; await this.db.user.update({
+      where: {
+        id: userId,
+      },
+      data: body,
+    });
+
+    const token &#x3D; this.generateJWT(user);
+    const refreshToken &#x3D; await this.generateRefreshToken(user);
+
+    const result &#x3D; { ...user, token, refreshToken };
+
+    delete result.password;
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+  public generateJWT(user) {
+    const today &#x3D; new Date();
+    const exp &#x3D; new Date(today);
+    exp.setDate(today.getDate() + 60);
+
+    return jwt.sign(
+      {
+        ...user,
+        exp: exp.getTime() / 1000,
+      },
+      this.JWT_SECRET,
+    );
+  }
+
+  public async generateRefreshToken(user) {
+    const expireDate &#x3D; addDays(new Date(), 30);
+    const rez &#x3D; await this.db.userRefreshTokens.create({
+      data: { userId: user.id, expireAt: expireDate },
+    });
+    return rez.token;
+  }
+
+  async refreshToken(body: string) {
+    const tokenToFound &#x3D; await this.db.userRefreshTokens.findUnique({
+      where: {
+        token: body,
+      },
+    });
+    if (!tokenToFound) {
+      throw new UnauthorizedException(ErrorCodes.INVALID_OR_EXPIRED_TOKEN);
+    }
+
+    const user &#x3D; await this.db.user.findUnique({
+      where: {
+        id: tokenToFound.userId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(ErrorCodes.USER_NOT_FOUND);
+    }
+
+    /// remove refresh token once it will be used
+    await this.db.userRefreshTokens.delete({
+      where: { token: tokenToFound.token },
+    });
+
+    delete user.password;
+    const token &#x3D; this.generateJWT(user);
+    const refreshToken &#x3D; await this.generateRefreshToken(user);
+
+    const result &#x3D; { token, refreshToken };
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+  ////////////////////////////////////// end auth section //////////////////////////////
+  public async getUsersByIds(ids: number[], myId: number) {
+    const { followersIds, followedsIds } &#x3D;
+      /// if myId sended here mean i want to show another user profile
+      // if not , then it mean i want to show my profile
+      await this.getFollowersAndFriendsidsHelper(myId);
+
+    const users &#x3D; await this.db.user.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        photoUrl: true,
+        featuredProductName: true,
+        featuredProductId: true,
+        lang: true,
+        provider: true,
+        type: true,
+        role: true,
+        notificationsEnabled: true,
+        followersCount: true,
+        storiesCount: true,
+        productsCount: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    const formatedUsersArr &#x3D; users.map((user) &#x3D;&gt; {
+      const isProfileOwner &#x3D; myId &amp;&amp; myId &#x3D;&#x3D; user.id ? true : false;
+      const isFriend &#x3D; this.isFriend();
+      /// here send the myfollowers check if he follow me
+      const isFollower &#x3D; this.isFollower(user.id, followersIds);
+      /// here send the users I follow check if he follow me
+
+      const isFollowed &#x3D; this.isFollowed(user.id, followedsIds);
+      const isSentFriendRequest &#x3D; this.isSentFriendRequest();
+      const isReceivedFriendRequest &#x3D; this.isReceivedFriendRequest();
+      return {
+        ...user,
+        isProfileOwner,
+        isFriend,
+        isFollower,
+        isFollowed,
+        isSentFriendRequest,
+        isReceivedFriendRequest,
+      };
+    });
+    return formatedUsersArr;
+  }
+
+  //////////////////////////////////////// follow / friend section ////////////////////
+  //// single responsibility methods , return true or false
+  public isFollower(myId: number, followersIds: number[]) {
+    return followersIds.some((e) &#x3D;&gt; e &#x3D;&#x3D; myId);
+  }
+  public isFollowed(myId: number, followedsIds: number[]) {
+    return followedsIds.some((e) &#x3D;&gt; e &#x3D;&#x3D; myId);
+  }
+  public isFriend() {
+    // to be implemented later
+    // return frindsIds.some((e) &#x3D;&gt; e &#x3D;&#x3D; myId);
+    return false;
+  }
+  public isSentFriendRequest() {
+    // to be implemented later
+    // return frindsIds.some((e) &#x3D;&gt; e &#x3D;&#x3D; myId);
+    return false;
+  }
+  public isReceivedFriendRequest() {
+    // to be implemented later
+    // return frindsIds.some((e) &#x3D;&gt; e &#x3D;&#x3D; myId);
+    return false;
+  }
+
+  public async getFollowersAndFriendsidsHelper(userId: number) {
+    /// promise all for better performance in parallel
+    const [followers, followeds] &#x3D; await Promise.all([
+      this.db.userFollowers.findMany({
+        where: {
+          userId: userId,
+        },
+        select: {
+          followerId: true,
+        },
+      }),
+      this.db.userFollowers.findMany({
+        where: {
+          followerId: userId,
+        },
+        select: {
+          userId: true,
+        },
+      }),
+    ]);
+
+    const followersIds &#x3D; followers.map((e) &#x3D;&gt; e.followerId);
+    const followedsIds &#x3D; followeds.map((e) &#x3D;&gt; e.userId);
+    //// add friendsIds later
+    return { followersIds, followedsIds };
+  }
+  public async getUserFollowers(
+    userId: number,
+    myId: number,
+    pageIndex: number,
+    pageSize: number,
+  ) {
+    const followers &#x3D; await this.db.userFollowers.findMany({
+      where: {
+        userId: userId,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+    });
+    const followersCount &#x3D; await this.db.userFollowers.count({
+      where: {
+        userId: userId,
+      },
+    });
+    const usersIds &#x3D; followers.map((e) &#x3D;&gt; e.followerId);
+    const result &#x3D; await this.getUsersByIds(usersIds, myId);
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    res.meta &#x3D; { count: followersCount };
+    return res;
+  }
+
+  public async getFollowedUsers(
+    userId: number,
+    myId: number,
+    pageIndex: number,
+    pageSize: number,
+  ) {
+    const followeds &#x3D; await this.db.userFollowers.findMany({
+      where: {
+        followerId: userId,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+    });
+    const followedsCount &#x3D; await this.db.userFollowers.count({
+      where: {
+        followerId: userId,
+      },
+    });
+
+    const usersIds &#x3D; followeds.map((e) &#x3D;&gt; e.userId);
+    const result &#x3D; await this.getUsersByIds(usersIds, myId);
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    res.meta &#x3D; { count: followedsCount };
+    return res;
+  }
+  public async toggleUserFollow(userId: number, followerId: number) {
+    const existingFollower &#x3D; await this.db.userFollowers.findFirst({
+      where: {
+        userId: userId,
+        followerId: followerId,
+      },
+    });
+
+    if (existingFollower) {
+      /// remove follow
+      await this.db.userFollowers.delete({
+        where: {
+          id: existingFollower.id,
+        },
+      });
+      // decrease target user followers by one
+      await this.db.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          followersCount: {
+            decrement: 1,
+          },
+        },
+      });
+    } else {
+      /// add follow
+      await this.db.userFollowers.create({
+        data: {
+          userId: userId,
+          followerId: followerId,
+        },
+      });
+      // increase target user followers by one
+      await this.db.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          followersCount: {
+            increment: 1,
+          },
+        },
+      });
+      /// @ queue , add to notifications queue
+    }
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+
+  ///////////////////////////////////////// notification section //////////////
+  async notificationToken(userId: number, body: string) {
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    const tokenToFound &#x3D; await this.db.userNotificationTokens.findUnique({
+      where: {
+        token: body,
+      },
+    });
+    if (tokenToFound) {
+      return res;
+    }
+
+    /// add new token in db
+    await this.db.userNotificationTokens.create({
+      data: {
+        userId: userId || 0,
+        token: body,
+      },
+    });
+    return res;
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'UserService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

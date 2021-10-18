@@ -1,0 +1,2855 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>nest-typescript-starter documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">nest-typescript-starter documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>ListingService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/listing/listing.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#addListing">addListing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteListing">deleteListing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteReview">deleteReview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllListings">getAllListings</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllLStoriesOfListing">getAllLStoriesOfListing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getFeatureListings">getFeatureListings</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getListingReviews">getListingReviews</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getListingsByIds">getListingsByIds</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getOneListingById">getOneListingById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUserFollowedListingIds">getUserFollowedListingIds</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#mapListing">mapListing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#mapReview">mapReview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#republishListing">republishListing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setReviewModelStarsHelper">setReviewModelStarsHelper</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#shareListing">shareListing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#toggleFollowListing">toggleFollowListing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateListing">updateListing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#upsertReview">upsertReview</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(storyService: <a href="../injectables/StoryService.html">StoryService</a>, lookupsService: <a href="../injectables/LookupsService.html">LookupsService</a>, userService: <a href="../injectables/UserService.html">UserService</a>, db: <a href="../injectables/PrismaService.html">PrismaService</a>, i18n: <a href="../injectables/LocalizationService.html">LocalizationService</a>, firebaseService: <a href="../injectables/FireBaseService.html">FireBaseService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/listing/listing.service.ts:31</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>storyService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/StoryService.html" target="_self" >StoryService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>lookupsService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LookupsService.html" target="_self" >LookupsService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>db</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PrismaService.html" target="_self" >PrismaService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/LocalizationService.html" target="_self" >LocalizationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>firebaseService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/FireBaseService.html" target="_self" >FireBaseService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addListing"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            addListing
+                        </b>
+                        <a href="#addListing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addListing(lang: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, listingData: <a href="../interfaces/ListingDto.html">CreateListingDto</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">src/listing/listing.service.ts:111</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lang</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listingData</td>
+                                    <td>
+                                                <code><a href="../interfaces/ListingDto.html" target="_self" >CreateListingDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/OperationResult.html" target="_self" >Promise&lt;OperationResult&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteListing"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            deleteListing
+                        </b>
+                        <a href="#deleteListing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteListing(myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, listingId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="213"
+                            class="link-to-prism">src/listing/listing.service.ts:213</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listingId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/OperationResult.html" target="_self" >Promise&lt;OperationResult&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteReview"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            deleteReview
+                        </b>
+                        <a href="#deleteReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteReview(listingId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="666"
+                            class="link-to-prism">src/listing/listing.service.ts:666</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>listingId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/OperationResult.html" target="_self" >Promise&lt;OperationResult&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllListings"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getAllListings
+                        </b>
+                        <a href="#getAllListings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllListings(lang: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, pageIndex: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageSize: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/listing/listing.service.ts:42</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lang</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageIndex</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageSize</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/OperationResult.html" target="_self" >Promise&lt;OperationResult&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllLStoriesOfListing"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getAllLStoriesOfListing
+                        </b>
+                        <a href="#getAllLStoriesOfListing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllLStoriesOfListing(lang: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, pageIndex: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageSize: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, listingId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="339"
+                            class="link-to-prism">src/listing/listing.service.ts:339</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lang</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageIndex</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageSize</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listingId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFeatureListings"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getFeatureListings
+                        </b>
+                        <a href="#getFeatureListings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFeatureListings(myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="365"
+                            class="link-to-prism">src/listing/listing.service.ts:365</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getListingReviews"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getListingReviews
+                        </b>
+                        <a href="#getListingReviews"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getListingReviews(listingId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageIndex: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageSize: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="710"
+                            class="link-to-prism">src/listing/listing.service.ts:710</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>listingId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageIndex</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageSize</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/OperationResult.html" target="_self" >Promise&lt;OperationResult&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getListingsByIds"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getListingsByIds
+                        </b>
+                        <a href="#getListingsByIds"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getListingsByIds(lang: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, ids: number[], myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageIndex: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageSize: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="77"
+                            class="link-to-prism">src/listing/listing.service.ts:77</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lang</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>ids</td>
+                                    <td>
+                                            <code>number[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageIndex</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pageSize</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/ListingDto.html" target="_self" >Promise&lt;ListingDto[]&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOneListingById"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getOneListingById
+                        </b>
+                        <a href="#getOneListingById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getOneListingById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, lang: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="172"
+                            class="link-to-prism">src/listing/listing.service.ts:172</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>lang</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/OperationResult.html" target="_self" >Promise&lt;OperationResult&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserFollowedListingIds"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getUserFollowedListingIds
+                        </b>
+                        <a href="#getUserFollowedListingIds"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUserFollowedListingIds(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="428"
+                            class="link-to-prism">src/listing/listing.service.ts:428</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Array&lt;number&gt;&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mapListing"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            mapListing
+                        </b>
+                        <a href="#mapListing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>mapListing(listing: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, lang: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, userFollowedListings: number[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="439"
+                            class="link-to-prism">src/listing/listing.service.ts:439</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>listing</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>lang</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>userFollowedListings</td>
+                                    <td>
+                                            <code>number[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>[]</code>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/ListingDto.html" target="_self" >Promise&lt;ListingDto&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mapReview"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            mapReview
+                        </b>
+                        <a href="#mapReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>mapReview(review: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="741"
+                            class="link-to-prism">src/listing/listing.service.ts:741</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>review</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/ListingReviewDto.html" target="_self" >Promise&lt;ListingReviewDto&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="republishListing"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            republishListing
+                        </b>
+                        <a href="#republishListing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>republishListing(myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, listingId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="385"
+                            class="link-to-prism">src/listing/listing.service.ts:385</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listingId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/OperationResult.html" target="_self" >Promise&lt;OperationResult&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setReviewModelStarsHelper"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setReviewModelStarsHelper
+                        </b>
+                        <a href="#setReviewModelStarsHelper"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setReviewModelStarsHelper(star: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, listingId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, decrement: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="754"
+                            class="link-to-prism">src/listing/listing.service.ts:754</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>star</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listingId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>decrement</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="shareListing"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            shareListing
+                        </b>
+                        <a href="#shareListing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>shareListing(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="259"
+                            class="link-to-prism">src/listing/listing.service.ts:259</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleFollowListing"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            toggleFollowListing
+                        </b>
+                        <a href="#toggleFollowListing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toggleFollowListing(listingId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="289"
+                            class="link-to-prism">src/listing/listing.service.ts:289</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>listingId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateListing"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            updateListing
+                        </b>
+                        <a href="#updateListing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateListing(lang: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, listingId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, listingDataToUpdate: <a href="../interfaces/ListingDto.html">UpdateListingDto</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="130"
+                            class="link-to-prism">src/listing/listing.service.ts:130</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lang</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listingId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>listingDataToUpdate</td>
+                                    <td>
+                                                <code><a href="../interfaces/ListingDto.html" target="_self" >UpdateListingDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/OperationResult.html" target="_self" >Promise&lt;OperationResult&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="upsertReview"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            upsertReview
+                        </b>
+                        <a href="#upsertReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>upsertReview(listingId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, myId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, reviewModel: <a href="../interfaces/ListingReviewDto.html">CreateListingReviewDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="570"
+                            class="link-to-prism">src/listing/listing.service.ts:570</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>listingId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>myId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>reviewModel</td>
+                                    <td>
+                                                <code><a href="../interfaces/ListingReviewDto.html" target="_self" >CreateListingReviewDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  BadRequestException,
+  ForbiddenException,
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from &#x27;@nestjs/common&#x27;;
+import CreateListingDto from &#x27;./dto/CreateListing.dto&#x27;;
+import ListingDto from &#x27;./dto/Listing.dto&#x27;;
+import { LookupsService } from &#x27;./../lookups/lookups.service&#x27;;
+import { UserService } from &#x27;@/user/user.service&#x27;;
+import OperationResult from &#x27;./../shared/models/OperationResult&#x27;;
+import {
+  DeepLinkShareRoutes,
+  ErrorCodes,
+  MessageCodes,
+} from &#x27;@/shared/constants&#x27;;
+
+import CreateListingReviewDto from &#x27;./dto/CreateListingReview.dto&#x27;;
+import ListingReviewDto from &#x27;./dto/ListingReview.dto&#x27;;
+import { PrismaService } from &#x27;@/shared/core/prisma.service&#x27;;
+import UpdateListingDto from &#x27;./dto/UpdateListing.dto&#x27;;
+import { LocalizationService } from &#x27;@/shared/core/localization.service&#x27;;
+import FireBaseService from &#x27;@/shared/core/FireBase.service&#x27;;
+import { StoryService } from &#x27;@/story/story.service&#x27;;
+import { addDays, isBefore } from &#x27;date-fns&#x27;;
+import * as _ from &#x27;lodash&#x27;;
+
+@Injectable()
+export class ListingService {
+  constructor(
+    private storyService: StoryService,
+    private lookupsService: LookupsService,
+    private userService: UserService,
+    private readonly db: PrismaService,
+    private readonly i18n: LocalizationService,
+    private firebaseService: FireBaseService,
+  ) {}
+
+  /// new mahmoud /////////////////
+  public async getAllListings(
+    lang: string,
+    pageIndex: number,
+    pageSize: number,
+    myId: number,
+  ): Promise&lt;OperationResult&gt; {
+    const listings &#x3D; await this.db.listings.findMany({
+      where: {
+        status: 0,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        createdAt: &#x27;desc&#x27;,
+      },
+    });
+
+    const userFollowedListings &#x3D; await this.getUserFollowedListingIds(myId);
+
+    //return listingDtos;
+    let result: ListingDto[] &#x3D; [];
+    // to to it in async way for performance
+    const promisesArr &#x3D; [];
+    for (const listing of listings) {
+      promisesArr.push(
+        this.mapListing(listing, lang, myId, userFollowedListings),
+      );
+    }
+    result &#x3D; await Promise.all(promisesArr);
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+
+  public async getListingsByIds(
+    lang: string,
+    ids: number[],
+    myId: number,
+    pageIndex: number,
+    pageSize: number,
+  ): Promise&lt;ListingDto[]&gt; {
+    const userFollowedListings &#x3D; await this.getUserFollowedListingIds(myId);
+
+    const listings &#x3D; await this.db.listings.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: &#x27;desc&#x27;,
+      },
+    });
+    //return listingDtos;
+    let result: ListingDto[] &#x3D; [];
+    // to to it in async way for performance
+    const promisesArr &#x3D; [];
+    for (const listing of listings) {
+      promisesArr.push(
+        this.mapListing(listing, lang, myId, userFollowedListings),
+      );
+    }
+    result &#x3D; await Promise.all(promisesArr);
+    return result;
+  }
+
+  public async addListing(
+    lang: string,
+    listingData: CreateListingDto,
+    myId: number,
+  ): Promise&lt;OperationResult&gt; {
+    const listing &#x3D; await this.db.listings.create({
+      data: {
+        ...listingData,
+        ownerId: myId,
+      },
+    });
+
+    const result &#x3D; await this.mapListing(listing, lang, myId);
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+
+  public async updateListing(
+    lang: string,
+    listingId: number,
+    listingDataToUpdate: UpdateListingDto,
+    myId: number,
+  ): Promise&lt;OperationResult&gt; {
+    const dbList &#x3D; await this.db.listings.findUnique({
+      where: {
+        id: listingId,
+      },
+    });
+    if (!dbList) {
+      throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+    }
+
+    if (dbList.ownerId !&#x3D; myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+
+    //// new fields that will update , since front end send the wole object, i&#x27;ll compare it with one in the db
+    const updateFields &#x3D; _.reduce(
+      listingDataToUpdate,
+      function (result, value, key) {
+        return _.isEqual(value, dbList[key]) ? result : result.concat(key);
+      },
+      [],
+    );
+    const list &#x3D; await this.db.listings.update({
+      where: {
+        id: dbList.id,
+      },
+      data: {
+        ...listingDataToUpdate,
+        updatedFields: updateFields,
+        isEdited: true,
+      },
+    });
+
+    return this.getOneListingById(dbList.id, lang, myId);
+  }
+  public async getOneListingById(
+    id: number,
+    lang: string,
+    myId: number,
+  ): Promise&lt;OperationResult&gt; {
+    const listing &#x3D; await this.db.listings.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!listing) {
+      throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+    }
+    // let userReviews: number[] &#x3D; [];
+
+    const userFollowedListings &#x3D; await this.getUserFollowedListingIds(myId);
+
+    const result &#x3D; await this.mapListing(
+      listing,
+      lang,
+      myId,
+      userFollowedListings,
+    );
+    // update view count
+    await this.db.listings.update({
+      where: {
+        id: listing.id,
+      },
+      data: {
+        viewsCount: {
+          increment: 1,
+        },
+      },
+    });
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+
+  public async deleteListing(
+    myId: number,
+    listingId: number,
+  ): Promise&lt;OperationResult&gt; {
+    const dbList &#x3D; await this.db.listings.findUnique({
+      where: {
+        id: listingId,
+      },
+    });
+    if (!dbList) {
+      throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+    }
+
+    if (dbList.ownerId !&#x3D; myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+    const storiesOfProduct &#x3D; await this.db.story.findMany({
+      where: {
+        listingId: dbList.id,
+      },
+    });
+    if (storiesOfProduct) {
+      /// after client updates , delete all stories of product without warning
+      // throw new BadRequestException(
+      //   &#x27;you must delete all stories related to this product first&#x27;,
+      // );
+      await this.db.story.deleteMany({
+        where: {
+          listingId: dbList.id,
+        },
+      });
+    }
+    await this.db.listings.delete({
+      where: {
+        id: listingId,
+      },
+    });
+
+    /// remeber to decrease user number of stories , products count base on deletion count
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+
+  public async shareListing(id: number) {
+    const dbListing &#x3D; await this.db.listings.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!dbListing) {
+      throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+    }
+    const result &#x3D; await this.firebaseService.getFirebaseDynamicLink(
+      DeepLinkShareRoutes.product,
+      { resourceId: dbListing.id },
+    );
+    /// increase share count by one
+    await this.db.listings.update({
+      where: {
+        id: dbListing.id,
+      },
+      data: {
+        shareCount: {
+          increment: 1,
+        },
+      },
+    });
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+  async toggleFollowListing(listingId: number, myId: number) {
+    const isAlreadyFollower &#x3D; await this.db.listingFollowers.findFirst({
+      where: {
+        listingId: listingId,
+        userId: myId,
+      },
+    });
+
+    if (isAlreadyFollower) {
+      await this.db.listingFollowers.delete({
+        where: {
+          id: isAlreadyFollower.id,
+        },
+      });
+      /// decrease follow count by one
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          followCount: {
+            decrement: 1,
+          },
+        },
+      });
+    } else {
+      /// increase follow count by one
+      await this.db.listingFollowers.create({
+        data: {
+          listingId: listingId,
+          userId: myId,
+        },
+      });
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          followCount: {
+            increment: 1,
+          },
+        },
+      });
+
+      /// @ queue , add to notifications queue
+    }
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+  async getAllLStoriesOfListing(
+    lang: string,
+    pageIndex: number,
+    pageSize: number,
+    myId: number,
+    listingId: number,
+  ) {
+    const storiesOfListing &#x3D; await this.db.story.findMany({
+      where: {
+        listingId: listingId,
+      },
+      select: {
+        id: true,
+      },
+    });
+    const storiesOfListingIds &#x3D; storiesOfListing.map((e) &#x3D;&gt; e.id);
+
+    return this.storyService.getStoriesByIds(
+      lang,
+      storiesOfListingIds,
+      myId,
+      pageIndex,
+      pageSize,
+    );
+  }
+  /// this endpoind dropdown should show in create story feature product
+  async getFeatureListings(myId: number) {
+    const result &#x3D; await this.db.listings.findMany({
+      where: {
+        ownerId: myId,
+      },
+      orderBy: {
+        id: &#x27;desc&#x27;,
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+
+  public async republishListing(
+    myId: number,
+    listingId: number,
+  ): Promise&lt;OperationResult&gt; {
+    const dbList &#x3D; await this.db.listings.findUnique({
+      where: {
+        id: listingId,
+      },
+    });
+    if (!dbList) {
+      throw new NotFoundException(ErrorCodes.LISTING_NOT_FOUND);
+    }
+
+    if (dbList.ownerId !&#x3D; myId) {
+      throw new ForbiddenException(
+        ErrorCodes.YOU_ARE_NOT_ALLOWED_TO_EDIT_THIS_RESOURCE,
+      );
+    }
+
+    /// listing can&#x27;t be republished before 3 days from creation
+    const allowedDateToRepublish &#x3D; addDays(dbList.createdAt, 3);
+
+    if (isBefore(new Date(), allowedDateToRepublish)) {
+      throw new BadRequestException(
+        &#x27;you cant republish before three days from creation&#x27;,
+      );
+    } else {
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          isRepublished: true,
+          /// new date to show up in top of timeline
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      });
+    }
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+  public async getUserFollowedListingIds(
+    userId: number,
+  ): Promise&lt;Array&lt;number&gt;&gt; {
+    const listings &#x3D; await this.db.listingFollowers.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+    return listings.map((r) &#x3D;&gt; r.listingId);
+  }
+
+  async mapListing(
+    listing: any,
+    lang: string,
+    myId: number,
+    // userReviews: number[] &#x3D; [],
+    userFollowedListings: number[] &#x3D; [],
+  ): Promise&lt;ListingDto&gt; {
+    const [
+      { data: user },
+      { data: privacy },
+      { data: listingTypes },
+      { data: priceTypes },
+      { data: currencies },
+      { data: hiringTypes },
+      { data: pageTypes },
+      { data: stockAvailability },
+      { data: brandType },
+      { data: usesType },
+    ] &#x3D; await Promise.all([
+      this.userService.getUser(listing.ownerId, myId),
+      this.lookupsService.getPrivacy(lang),
+      this.lookupsService.getAllListingTypes(lang),
+      this.lookupsService.getPriceTypes(lang),
+      this.lookupsService.getCurrencies(lang),
+      this.lookupsService.getHiringTypes(lang),
+      this.lookupsService.getPageType(lang),
+      this.lookupsService.getStockAvailability(lang),
+      this.lookupsService.getBrandType(lang),
+      this.lookupsService.getUsesTypes(lang),
+    ]);
+
+    const result &#x3D; {
+      id: listing.id,
+      type: &#x27;Listing&#x27;,
+      name: listing.name,
+      brandName: listing.brandName,
+      description: listing.description,
+      credentials: listing.credentials,
+      advantages: listing.advantages,
+      uses: listing.uses,
+      url: listing.url,
+      price: listing.price,
+      media: listing.media,
+      socialLinks: listing.socialLinks,
+      updatedFields: listing.updatedFields,
+      status: listing.status,
+      ownerId: listing.ownerId,
+      owner: user,
+
+      offerPrice: listing.offerPrice,
+      offerDescription: listing.offerDescription,
+      otherStockAvailability: listing.otherStockAvailability,
+      otherPriceType: listing.otherPriceType,
+      otherHiring: listing.otherHiring,
+      //// round rating to nearest .5 ex 4 , or 4.5 , then return it as a string as mobile required
+      overallRating: (Math.round(listing.overallRating / 0.5) * 0.5).toString(),
+      totalRatingCount: listing.totalRatingCount,
+      viewsCount: listing.viewsCount,
+      followCount: listing.followCount,
+      storiesCount: listing.storiesCount,
+      shareCount: listing.shareCount,
+      isEdited: listing.isEdited,
+      isRepublished: listing.isRepublished,
+      createdAt: listing.createdAt,
+      updatedAt: listing.updatedAt,
+      /// review summary
+      reviewSummary: {
+        rate1Percentage: (
+          listing.rate1Count / listing.totalRatingCount || 0
+        ).toString(),
+        rate2Percentage: (
+          listing.rate2Count / listing.totalRatingCount || 0
+        ).toString(),
+        rate3Percentage: (
+          listing.rate3Count / listing.totalRatingCount || 0
+        ).toString(),
+        rate4Percentage: (
+          listing.rate4Count / listing.totalRatingCount || 0
+        ).toString(),
+        rate5Percentage: (
+          listing.rate5Count / listing.totalRatingCount || 0
+        ).toString(),
+      },
+      /// userfolloed list is the products that user are follow
+      isFollowed: userFollowedListings.some((listId) &#x3D;&gt; listId &#x3D;&#x3D; listing.id),
+
+      stockAvailability:
+        stockAvailability.find((lt) &#x3D;&gt; lt.id &#x3D;&#x3D;&#x3D; listing.stockAvailabilityId) ||
+        null,
+
+      pageType: pageTypes.find((lt) &#x3D;&gt; lt.id &#x3D;&#x3D;&#x3D; listing.pageTypeId) || null,
+
+      privacy: privacy.find((lt) &#x3D;&gt; lt.id &#x3D;&#x3D;&#x3D; listing.privacyId) || null,
+
+      listingType:
+        listingTypes.find((lt) &#x3D;&gt; lt.id &#x3D;&#x3D;&#x3D; listing.listingTypeId) || null,
+
+      currency: currencies.find((c) &#x3D;&gt; c.id &#x3D;&#x3D;&#x3D; listing.currencyId) || null,
+
+      hiringType:
+        hiringTypes.find((ht) &#x3D;&gt; ht.id &#x3D;&#x3D;&#x3D; listing.hiringTypeId) || null,
+
+      priceType: priceTypes.find((pt) &#x3D;&gt; pt.id &#x3D;&#x3D;&#x3D; listing.priceTypeId) || null,
+
+      brandType: brandType.find((pt) &#x3D;&gt; pt.id &#x3D;&#x3D;&#x3D; listing.brandTypeId) || null,
+
+      usesType: usesType.find((pt) &#x3D;&gt; pt.id &#x3D;&#x3D;&#x3D; listing.usesTypeId) || null,
+
+      // isReviewed: userReviews.find((listingId) &#x3D;&gt; listingId &#x3D;&#x3D;&#x3D; listing.id)
+      //   ? true
+      //   : false,
+      // isFollowed: userFollowedListings.find(
+      //   (listingId) &#x3D;&gt; listingId &#x3D;&#x3D;&#x3D; listing.id,
+      // )
+      //   ? true
+      //   : false,
+    };
+    // if (
+    //   result.offerPrice &amp;&amp;
+    //   result.offerPrice &gt; 0 &amp;&amp;
+    //   result.priceTypeFormat !&#x3D; &#x27;&#x27;
+    // ) {
+    //   result.priceTypeFormat &#x3D; result.priceTypeFormat.replace(
+    //     &#x27;*PRICE *CURRENCY&#x27;,
+    //     &#x27;&lt;line&gt;*PRICE *CURRENCY&lt;/line&gt;&#x27;,
+    //   );
+    // }
+
+    return result;
+  }
+
+  public async upsertReview(
+    listingId: number,
+    myId: number,
+    reviewModel: CreateListingReviewDto,
+  ) {
+    const existingReview &#x3D; await this.db.listingReviews.findFirst({
+      where: {
+        ownerId: myId,
+        listingId: listingId,
+      },
+    });
+    const listing &#x3D; await this.db.listings.findUnique({
+      where: {
+        id: listingId,
+      },
+    });
+    if (existingReview) {
+      await this.db.listingReviews.update({
+        where: {
+          id: existingReview.id,
+        },
+        data: {
+          ...reviewModel,
+        },
+      });
+      // decrease rate1count , rate 2 count ....etc
+      await this.setReviewModelStarsHelper(
+        existingReview.starRating,
+        listingId,
+        true,
+      );
+      //Replace current rating of the user in 2 steps:
+      //1-Subtract current user rating
+      let newTotalReviews &#x3D; (listing?.totalRatingCount ?? 0) - 1;
+      newTotalReviews &#x3D; newTotalReviews &lt; 0 ? 0 : newTotalReviews;
+      let overallRating &#x3D;
+        newTotalReviews &#x3D;&#x3D; 0
+          ? 0
+          : ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) -
+              existingReview.starRating) /
+            newTotalReviews;
+      //2-Then again add the user rating
+      overallRating &#x3D;
+        (overallRating * newTotalReviews + reviewModel.starRating) /
+        (newTotalReviews + 1);
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          overallRating: overallRating,
+          totalRatingCount: newTotalReviews + 1,
+        },
+      });
+
+      // update rate1count , rate 2 count ....etc
+      await this.setReviewModelStarsHelper(
+        reviewModel.starRating,
+        listingId,
+        true,
+      );
+    } else {
+      const newReview &#x3D; await this.db.listingReviews.create({
+        data: {
+          ...reviewModel,
+          listingId: listingId,
+          ownerId: myId,
+        },
+      });
+      const newTotalReviews &#x3D; (listing?.totalRatingCount ?? 0) + 1;
+      const overallRating &#x3D;
+        ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) +
+          reviewModel.starRating) /
+        newTotalReviews;
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          overallRating: overallRating,
+          totalRatingCount: newTotalReviews,
+        },
+      });
+      /// update rate1count , rate 2 count ....etc
+      await this.setReviewModelStarsHelper(
+        reviewModel.starRating,
+        listingId,
+        false,
+      );
+    }
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+
+  public async deleteReview(
+    listingId: number,
+    myId: number,
+  ): Promise&lt;OperationResult&gt; {
+    const existingReview &#x3D; await this.db.listingReviews.findFirst({
+      where: {
+        ownerId: myId,
+        listingId: listingId,
+      },
+    });
+    if (existingReview &amp;&amp; existingReview.listingId &#x3D;&#x3D;&#x3D; listingId) {
+      const listing &#x3D; await this.db.listings.findUnique({
+        where: {
+          id: listingId,
+        },
+      });
+      await this.db.listingReviews.delete({
+        where: {
+          id: existingReview.id,
+        },
+      });
+      let newTotalReviews &#x3D; (listing?.totalRatingCount ?? 0) - 1;
+      newTotalReviews &#x3D; newTotalReviews &lt; 0 ? 0 : newTotalReviews;
+      const overallRating &#x3D;
+        newTotalReviews &#x3D;&#x3D; 0
+          ? 0
+          : ((listing?.overallRating ?? 0) * (listing?.totalRatingCount ?? 0) -
+              existingReview.starRating) /
+            newTotalReviews;
+      await this.db.listings.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          overallRating: overallRating,
+          totalRatingCount: newTotalReviews,
+        },
+      });
+    }
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    return res;
+  }
+
+  public async getListingReviews(
+    listingId: number,
+    myId: number,
+    pageIndex: number,
+    pageSize: number,
+  ): Promise&lt;OperationResult&gt; {
+    const reviews &#x3D; await this.db.listingReviews.findMany({
+      where: {
+        listingId: listingId,
+      },
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize,
+      orderBy: {
+        id: &#x27;desc&#x27;,
+      },
+    });
+
+    let result: ListingReviewDto[] &#x3D; [];
+    // to to it in async way for performance
+    const promisesArr &#x3D; [];
+    for (const review of reviews) {
+      promisesArr.push(this.mapReview(review, myId));
+    }
+    result &#x3D; await Promise.all(promisesArr);
+
+    const res &#x3D; new OperationResult();
+    res.message[0] &#x3D; await this.i18n.translateMsg(MessageCodes.DONE);
+    res.data &#x3D; result;
+    return res;
+  }
+
+  async mapReview(review: any, myId: number): Promise&lt;ListingReviewDto&gt; {
+    const { data: user } &#x3D; await this.userService.getUser(review.ownerId, myId);
+    return {
+      id: review.id,
+      ownerId: review.ownerId,
+      owner: user,
+      reviewText: review.reviewText,
+      starRating: review.starRating,
+      createdAt: review.createdAt,
+      updatedAt: review.updatedAt,
+    };
+  }
+
+  async setReviewModelStarsHelper(
+    star: number,
+    listingId: number,
+    decrement: boolean,
+  ) {
+    const incrementToDo &#x3D; {
+      increment: 1,
+    };
+    const decrementToDo &#x3D; {
+      decrement: 1,
+    };
+    let dataToUpdate &#x3D; {};
+    if (star &#x3D;&#x3D; 1) {
+      dataToUpdate &#x3D; { rate1Count: decrement ? decrementToDo : incrementToDo };
+    } else if (star &#x3D;&#x3D; 2) {
+      dataToUpdate &#x3D; { rate2Count: decrement ? decrementToDo : incrementToDo };
+    } else if (star &#x3D;&#x3D; 3) {
+      dataToUpdate &#x3D; { rate3Count: decrement ? decrementToDo : incrementToDo };
+    } else if (star &#x3D;&#x3D; 4) {
+      dataToUpdate &#x3D; { rate4Count: decrement ? decrementToDo : incrementToDo };
+    } else if (star &#x3D;&#x3D; 5) {
+      dataToUpdate &#x3D; { rate5Count: decrement ? decrementToDo : incrementToDo };
+    }
+    await this.db.listings.update({
+      where: { id: listingId },
+      data: dataToUpdate,
+    });
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ListingService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
