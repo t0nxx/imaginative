@@ -3,6 +3,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import * as path from 'path';
 import { BullModule } from '@nestjs/bull';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 // import { MulterExtendedModule } from 'nestjs-multer-extended';
 
 import FireBaseService from './FireBase.service';
@@ -16,28 +17,32 @@ import { LocalizationService } from './localization.service';
 @Module({
   imports: [
     /// mailer module
-    MailerModule.forRoot({
-      transport: {
-        host: process.env.SMTP_SERVER,
-        port: +process.env.SMTP_PORT,
-        secure: false, // upgrade later with STARTTLS,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        transport: {
+          host: configService.get('SMTP_SERVER'),
+          port: configService.get('SMTP_PORT'),
+          secure: false, // upgrade later with STARTTLS,
+          auth: {
+            user: configService.get('SMTP_USER'),
+            pass: configService.get('SMTP_PASS'),
+          },
         },
-      },
-      defaults: {
-        from: '"noreply" <no-reply@imaginativenews.com>',
-      },
-      preview: true,
-      template: {
-        /// root of folder
-        dir: path.join(__dirname, '..', '..', '..', 'mail-templates'),
-        adapter: new HandlebarsAdapter(),
-        options: {
-          strict: true,
+        defaults: {
+          from: '"noreply" <no-reply@imaginativenews.com>',
         },
-      },
+        preview: true,
+        template: {
+          /// root of folder
+          dir: path.join(__dirname, '..', '..', '..', 'mail-templates'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
     }),
 
     /// background jobs module
