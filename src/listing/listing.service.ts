@@ -372,13 +372,22 @@ export class ListingService {
       },
       select: {
         id: true,
-        name: true,
+        /// as client request , want to show brand name instead of product name
+        //name: true,
+        brandName: true,
       },
+    });
+    /// to not disrupt mobile dev logic , i'll rename each brandname as old name
+    const mappedResult = result.map((e) => {
+      return {
+        id: e.id,
+        name: e.brandName,
+      };
     });
 
     const res = new OperationResult();
     res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
-    res.data = result;
+    res.data = mappedResult;
     return res;
   }
 

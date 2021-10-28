@@ -345,7 +345,7 @@ export class StoryService {
     });
     const result = await this.mapStory(story, lang, myId);
     const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.message[0] = 'Changes are Saved Successfully';
     res.data = result;
     return res;
   }
@@ -424,7 +424,7 @@ export class StoryService {
     });
 
     const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.message[0] = 'Deleted';
     return res;
   }
   async shareStory(id: number) {
@@ -688,7 +688,7 @@ export class StoryService {
 
     const result = await this.mapStory(story, lang, myId);
     const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.message[0] = 'Saved at Drafts Successfully';
     res.data = result;
     return res;
   }
@@ -745,7 +745,7 @@ export class StoryService {
 
     const result = await this.mapStory(story, lang, myId);
     const res = new OperationResult();
-    res.message[0] = await this.i18n.translateMsg(MessageCodes.DONE);
+    res.message[0] = 'Saved at My Template Successfully ';
     res.data = result;
     return res;
   }
