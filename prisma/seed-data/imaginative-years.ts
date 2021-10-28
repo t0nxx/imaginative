@@ -134,7 +134,7 @@ export const imaginativeYears = [
   },
   {
     id: 23,
-    name: 'Other/Years BC',
+    name: 'Other/Years B.C',
     withConditions: true,
     createdAt: '2021-05-28T01:26:55.898Z',
     updatedAt: '2021-05-28T01:26:55.898Z',
