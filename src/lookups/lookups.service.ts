@@ -159,6 +159,9 @@ export class LookupsService {
           where: {
             language: lang,
           },
+          orderBy: {
+            name: 'asc',
+          },
         });
 
         for (const localizedCurrency of localizedCurrencies) {

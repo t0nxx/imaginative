@@ -489,7 +489,16 @@ export class ListingService {
       price: listing.price,
       media: listing.media,
       socialLinks: listing.socialLinks,
-      updatedFields: listing.updatedFields,
+      /// client not wan't to show Id prefix in any field ex: brandId , priceTypeId
+      /// so i'll remove the last two char from any field containg id
+      updatedFields: listing.updatedFields.map((e) => {
+        if (e.endsWith('Id')) {
+          /// remove last Id from char
+          e = e.slice(0, -2);
+        }
+        // return string in format (first letter is capital, split camel case ex-worng : priceType , ex-correct : Price type)
+        return _.capitalize(_.lowerCase(e)) + ' info';
+      }),
       status: listing.status,
       ownerId: listing.ownerId,
       owner: user,

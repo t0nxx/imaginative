@@ -27,8 +27,10 @@ export default class CreateListingDto {
   @IsOptional() offerPrice?: string;
   @IsOptional() offerDescription?: string;
   @IsOptional() otherStockAvailability?: string;
-  @IsOptional() otherPriceType?: string;
-  @IsOptional() otherHiring?: string;
+
+  /// removed from fornt end view
+  // @IsOptional() otherPriceType?: string;
+  // @IsOptional() otherHiring?: string;
   //// drop down ids
   @IsOptional() @IsNumber() @Min(1) stockAvailabilityId?: number;
   @IsOptional() @IsNumber() @Min(1) pageTypeId?: number;
