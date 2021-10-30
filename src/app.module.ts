@@ -15,6 +15,7 @@ import {
   I18nJsonParser,
   AcceptLanguageResolver,
 } from 'nestjs-i18n';
+import { HomeModule } from './home/home.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -47,6 +48,7 @@ import {
     DevModule,
     LookupsModule,
     StoryModule,
+    HomeModule,
   ],
   controllers: [],
   providers: [
