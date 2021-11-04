@@ -104,28 +104,24 @@ export const priceTypes = [
   {
     id: 18,
     code: 'Estimates-based price',
-    withConditions: true,
     createdAt: '2021-05-28T01:08:22.365Z',
     updatedAt: '2021-05-28T01:08:22.365Z',
   },
   {
     id: 19,
     code: 'Negotiable',
-    withConditions: true,
     createdAt: '2021-05-28T01:08:22.365Z',
     updatedAt: '2021-05-28T01:08:22.365Z',
   },
   {
     id: 20,
     code: 'As per employer price',
-    withConditions: true,
     createdAt: '2021-05-28T01:08:22.365Z',
     updatedAt: '2021-05-28T01:08:22.365Z',
   },
   {
     id: 21,
     code: 'As per purchaser price',
-    withConditions: true,
     createdAt: '2021-05-28T01:08:22.365Z',
     updatedAt: '2021-05-28T01:08:22.365Z',
   },
