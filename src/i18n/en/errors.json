@@ -13,6 +13,10 @@
 
     "LISTING_NOT_FOUND" : "listing not found",
     "STORY_NOT_FOUND" : "story not found",
+    "INDIVIDUAL_USER_CAN_HAVE_TWO_PRODUCTS_AT_MOST" : "Individual user can have two products at most",
+    
+    "COMPANY_USER_CAN_HAVE_THREE_PRODUCTS_AT_MOST" : "Company user can have three products at most",
+    "INSTITUTION_USER_CAN_HAVE_THREE_PRODUCTS_AT_MOST" : "Institution user can have three products at most",
   
     "COMMENT_NOT_FOUND" : "comment not found"
 }

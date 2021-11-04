@@ -113,6 +113,49 @@ export class ListingService {
     listingData: CreateListingDto,
     myId: number,
   ): Promise<OperationResult> {
+    /**
+     * client updates
+     * company,institution can add 3 products at max , indidivual 2 products at max
+     */
+
+    const getUser = await this.db.user.findUnique({
+      where: { id: myId },
+    });
+    const listingOfUser = await this.db.listings.findMany({
+      where: {
+        ownerId: myId,
+      },
+      select: {
+        id: true,
+      },
+    });
+    //// validation for max number of products
+    switch (getUser.type) {
+      case 'individual':
+        if (listingOfUser.length >= 2) {
+          throw new BadRequestException(
+            ErrorCodes.INDIVIDUAL_USER_CAN_HAVE_TWO_PRODUCTS_AT_MOST,
+          );
+        }
+        break;
+      case 'company':
+        if (listingOfUser.length >= 3) {
+          throw new BadRequestException(
+            ErrorCodes.COMPANY_USER_CAN_HAVE_THREE_PRODUCTS_AT_MOST,
+          );
+        }
+        break;
+      case 'institution':
+        if (listingOfUser.length >= 3) {
+          throw new BadRequestException(
+            ErrorCodes.INSTITUTION_USER_CAN_HAVE_THREE_PRODUCTS_AT_MOST,
+          );
+        }
+        break;
+      default:
+        break;
+    }
+
     const listing = await this.db.listings.create({
       data: {
         ...listingData,
