@@ -395,5 +395,7 @@ Temporary Items
 =======
 # Local
 .env
+.env.dev
+.env.prod
 dist
 documentation/
